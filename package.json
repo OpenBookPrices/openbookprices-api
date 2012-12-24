@@ -1,0 +1,22 @@
+{
+  "name": "l2b-api",
+  "version": "0.0.0",
+  "description": "API for the LinkToBooks components",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LinkToBooks/l2b-api.git"
+  },
+  "dependencies": {
+    "express": ">= 3"
+  },
+  "devDependencies": {
+    "jshint": ">= 0.9.1"
+  },
+  "author": "",
+  "license": "AGPLv3",
+  "readmeFilename": "README.md"
+}
