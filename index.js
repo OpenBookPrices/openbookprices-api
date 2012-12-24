@@ -6,6 +6,12 @@ module.exports = function () {
   
   var app = express();
 
+  // Allow all domains to request data (see CORS for more details)
+  app.use(function (req, res, next) {
+    res.set("Access-Control-Allow-Origin", "*");
+    next();
+  });
+
   // fake handler for the books endpoints
   app.get("/books/:isbn", function (req, res) {
     var isbn = req.param("isbn");
