@@ -22,6 +22,16 @@ module.exports = function () {
     });
   });
 
+  // fake handler for the books endpoints
+  app.get("/books/:isbn/prices", function (req, res) {
+    var isbn = req.param("isbn");
+    res.jsonp([
+      { price: 56.78 },
+      { price: 12.34 },
+      { price: 34.56 },
+    ]);
+  });
+
   // 404 everything
   app.all("*", function (req, res) {
     res.status(404);
