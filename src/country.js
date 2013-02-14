@@ -47,7 +47,9 @@ function slugHandler (req,res,next) {
 function loadCountryData (code, cb ) {
   var data = {
     id:   code,
-    name: code
+    code: code,
+    name: code,
+    defaultCurrency: 'GBP',
   };
 
   cb(null, data);
