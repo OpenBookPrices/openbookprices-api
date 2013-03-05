@@ -14,26 +14,7 @@ module.exports = function () {
   
   
   app.use("/country", require("./src/country"));
-
-  // fake handler for the books endpoints
-  app.get("/books/:isbn", function (req, res) {
-    var isbn = req.param("isbn");
-    res.jsonp({
-      isbn:   isbn,
-      title:  "Title of " + isbn,
-      author: "Author of " + isbn,
-    });
-  });
-
-  // fake handler for the books endpoints
-  app.get("/books/:isbn/prices/:country/:currency", function (req, res) {
-    // var isbn = req.param("isbn");
-    res.jsonp([
-      { price: 56.78 },
-      { price: 12.34 },
-      { price: 34.56 },
-    ]);
-  });
+  app.use("/books",   require("./src/books"));
 
   // 404 everything
   app.all("*", function (req, res) {
