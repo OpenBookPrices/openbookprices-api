@@ -19,7 +19,10 @@ app.param("isbn", function (req, res, next) {
   }
   
   if (!clean || !ean.isValid(clean)) {
-    return next("404");
+    return res.jsonp(
+      { error: "isbn '" + dirty + "' is not valid" },
+      404
+    );
   } else if (clean != dirty) {
     // FIXME - could break in interesting ways. Better to reconstruct the URL properly
     return res.redirect(req.originalUrl.replace(dirty, clean));
