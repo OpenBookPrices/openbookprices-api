@@ -9,6 +9,22 @@ request = request(booksApp);
 describe("Books", function () {
   describe("book details", function () {
 
+    it("should redirect to normalised isbn13", function (done) {
+      request
+        .get("/0340831499")
+        .expect(302)
+        .expect("Location", "/9780340831496")
+        .end(done);
+    });
+
+    it("should redirect to normalised isbn13 (callback)", function (done) {
+      request
+        .get("/0340831499?callback=foobar")
+        .expect(302)
+        .expect("Location", "/9780340831496?callback=foobar")
+        .end(done);
+    });
+
     it("should return 404 when the isbn is not valid", function (done) {
       request
         .get("/123456789")
