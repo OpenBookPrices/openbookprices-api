@@ -50,8 +50,8 @@ describe("Books", function () {
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect({
           isbn: "9780340831496",
-          title: "Title of 9780340831496",
-          author: "Author of 9780340831496",
+          title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
+          authors: ["Harold McGee"],
         })
         .end(done);
     });

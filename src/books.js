@@ -1,7 +1,8 @@
 "use strict";
 
 var express = require("express"),
-    ean     = require("ean");
+    ean     = require("ean"),
+    _       = require("underscore");
 
 var app = module.exports = express();
 
@@ -34,13 +35,15 @@ app.param("isbn", function (req, res, next) {
 
 
 // fake handler for the books endpoints
-app.get("/:isbn", function (req, res) {
+app.get("/:isbn", function (req, res, next) {
   var isbn = req.param("isbn");
-  res.jsonp({
-    isbn:   isbn,
-    title:  "Title of " + isbn,
-    author: "Author of " + isbn,
-  });
+  getBookDetails(
+    isbn,
+    function (err, data) {
+      if (err) { return next(err); }
+      res.jsonp(data);
+    }
+  );
 });
 
 // fake handler for the books endpoints
@@ -58,3 +61,18 @@ app.get("/:isbn/prices/:country/:currency", function (req, res) {
 });
 
 
+var Fetcher = require("l2b-price-fetchers");
+
+
+function getBookDetails (isbn, cb) {
+
+  var f = new Fetcher();
+  f.fetch(
+    {vendor: "foyles", isbn: isbn },
+    function (err, data) {
+      if (err) { return cb(err); }
+      var returnData = _.pick(data, "isbn", "authors", "title");
+      cb(null, returnData);
+    }
+  );
+}

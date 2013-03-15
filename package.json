@@ -16,7 +16,8 @@
     "geoip-lite": "~1.0.10",
     "mocha": "~1.8.2",
     "supertest": "~0.5.1",
-    "jshint": "~1.1.0"
+    "jshint": "~1.1.0",
+    "underscore": "~1.4.4"
   },
   "devDependencies": {
     "jshint": ">= 0.9.1"
