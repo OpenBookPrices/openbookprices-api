@@ -23,9 +23,9 @@ function convertIPtoCountry(req, res, next) {
   if (!ip || ip == "127.0.0.1") {
     ip = fallbackIP;
   }
-  
+
   var data = geoip.lookup(ip);
-        
+
   // This means that the IP address could not be looked up. Not an error for us.
   if (data) {
     req.params.slug = data.country;

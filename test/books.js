@@ -64,6 +64,6 @@ describe("Books", function () {
         .expect(/^foobar && foobar\(\{/)
         .end(done);
     });
-    
+
   });
 });

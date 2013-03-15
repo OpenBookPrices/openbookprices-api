@@ -3,7 +3,7 @@
 var express = require("express");
 
 module.exports = function () {
-  
+
   var app = express();
 
   // Allow all domains to request data (see CORS for more details)
@@ -11,8 +11,8 @@ module.exports = function () {
     res.set("Access-Control-Allow-Origin", "*");
     next();
   });
-  
-  
+
+
   app.use("/country", require("./src/country"));
   app.use("/books",   require("./src/books"));
 

@@ -8,7 +8,7 @@ var app = module.exports = express();
 app.use(app.router);
 
 app.param("isbn", function (req, res, next) {
-  
+
   var dirty = req.param("isbn");
   var clean = dirty.replace(/\D/g, "");
 
@@ -17,7 +17,7 @@ app.param("isbn", function (req, res, next) {
     clean = "978" + clean.substr(0, 9);
     clean += ean.checksum(clean.split(""));
   }
-  
+
   if (!clean || !ean.isValid(clean)) {
     return res.jsonp(
       { error: "isbn '" + dirty + "' is not valid" },
@@ -27,7 +27,7 @@ app.param("isbn", function (req, res, next) {
     // FIXME - could break in interesting ways. Better to reconstruct the URL properly
     return res.redirect(req.originalUrl.replace(dirty, clean));
   }
-  
+
   req.param("isbn", clean);
   next();
 });
@@ -49,7 +49,7 @@ app.get("/:isbn/prices/:country/:currency", function (req, res) {
   // var isbn     = req.param("isbn");
   // var country  = req.param("country");
   // var currency = req.param("currency");
-  
+
   res.jsonp([
     { price: 56.78 },
     { price: 12.34 },
