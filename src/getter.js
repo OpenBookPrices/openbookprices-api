@@ -6,9 +6,13 @@ var redis   = require("redis"),
     Fetcher = require("l2b-price-fetchers");
 
 
+function bookDetailsCacheKey (isbn) {
+  return "details-" + isbn;
+}
+
 function getBookDetails (isbn, cb) {
 
-  var cacheKey = "details-" + isbn;
+  var cacheKey = bookDetailsCacheKey(isbn);
 
   client.get(cacheKey, function (err, reply) {
     if ( reply ) {
@@ -18,10 +22,8 @@ function getBookDetails (isbn, cb) {
         {vendor: "foyles", isbn: isbn },
         function (err, results) {
           if (err) { return cb(err); }
-          var returnData = _.pick(results, "isbn", "authors", "title");
-          // TODO perhaps put an expiry in here...
-          client.set(cacheKey, JSON.stringify(returnData));
-          cb(null, returnData);
+          var bookDetails = extractBookDetails(results);
+          cb(null, bookDetails);
         }
       );
     }
@@ -29,12 +31,33 @@ function getBookDetails (isbn, cb) {
 
 }
 
+function extractBookDetails (results) {
+  return _.pick(results, "isbn", "authors", "title");
+}
+
+
+function cacheBookDetails (data) {
+  var isbn = data.isbn;
+  var cacheKey = bookDetailsCacheKey(isbn);
+
+  client.exists(cacheKey, function (err, exists) {
+    if (!err && !exists) {
+      // TODO perhaps put an expiry in here...
+      var bookDetails = extractBookDetails(data);
+      client.set(cacheKey, JSON.stringify(bookDetails));
+    }
+  });
+
+}
+
+
 function fetchFromScrapers (options, cb) {
   var f = new Fetcher();
   f.fetch(
     options,
     function (err, data) {
       if (err) { return cb(err); }
+      cacheBookDetails(data);
       cb(null, data);
     }
   );
