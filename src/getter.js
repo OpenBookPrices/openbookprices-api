@@ -7,7 +7,7 @@ var redis   = require("redis"),
 
 
 function bookDetailsCacheKey (isbn) {
-  return "details-" + isbn;
+  return "bookDetails-" + isbn;
 }
 
 function getBookDetails (isbn, cb) {
@@ -58,9 +58,41 @@ function fetchFromScrapers (options, cb) {
     function (err, data) {
       if (err) { return cb(err); }
       cacheBookDetails(data);
+      cacheBookPrices(data);
       cb(null, data);
     }
   );
+}
+
+
+
+
+function bookPricesCacheKey (opt) {
+  return ["bookPrice", opt.isbn, opt.country, opt.currency, opt.vendor].join("-");
+}
+
+function cacheBookPrices (data) {
+  // console.log(data);
+
+  _.each(data.prices, function (price) {
+    _.each( price.countries, function (country) {
+
+      var entry = _.chain(price)
+        .omit("countries")
+        .defaults({country: country})
+        .value();
+
+      var cacheKey = bookPricesCacheKey(entry);
+
+      var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
+
+      client.setex(
+        cacheKey,
+        ttl,
+        JSON.stringify(entry)
+      );
+    });
+  });
 }
 
 
