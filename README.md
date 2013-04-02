@@ -1,5 +1,7 @@
 # l2b-api
 
+[![Build Status](https://secure.travis-ci.org/LinkToBooks/l2b-api.png)](http://travis-ci.org/LinkToBooks/l2b-api)
+
 LinkToBooks API for book and price data
 
 
