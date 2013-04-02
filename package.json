@@ -19,7 +19,8 @@
     "jshint": "~1.1.0",
     "underscore": "~1.4.4",
     "redis": "~0.8.2",
-    "hiredis": "~0.1.15"
+    "hiredis": "~0.1.15",
+    "l2b-price-fetchers": "git://github.com/LinkToBooks/l2b-price-fetchers.git"
   },
   "devDependencies": {
     "jshint": ">= 0.9.1"

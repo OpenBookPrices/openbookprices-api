@@ -4,5 +4,5 @@ services:
   - redis
 
 install:
-  - npm install git://github.com/LinkToBooks/l2b-price-fetchers.git
+  - npm install --quiet
 
