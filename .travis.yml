@@ -2,3 +2,7 @@ language: node_js
 
 services:
   - redis
+
+install:
+  - npm install git://github.com/LinkToBooks/l2b-price-fetchers.git
+
