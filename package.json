@@ -21,7 +21,8 @@
     "underscore": "~1.4.4",
     "redis": "~0.8.2",
     "hiredis": "~0.1.15",
-    "l2b-price-fetchers": "git://github.com/LinkToBooks/l2b-price-fetchers.git"
+    "l2b-price-fetchers": "git://github.com/LinkToBooks/l2b-price-fetchers.git",
+    "country-data": "0.0.3"
   },
   "devDependencies": {
     "jshint": ">= 0.9.1"
