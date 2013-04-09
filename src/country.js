@@ -10,50 +10,50 @@ var app = module.exports = express();
 app.set("trust proxy", true);
 app.use(app.router);
 
-app.get("/determineFromIPAddress", convertIPtoCountry);
-// app.get("/:slug", slugHandler);
+app.get("/determineFromIPAddress", geolocateFromIP, determineFromIPAddress);
 
 
-function convertIPtoCountry(req, res) {
-
-  // This result is specific to the IP address of the request, so should not be cached.
-  res.header("Cache-Control", "private, max-age=600");
+function geolocateFromIP (req, res, next) {
 
   var ip = req.ip;
 
   var lookup = geoip.lookup(ip);
 
-  var data = loadCountryData(lookup ? lookup.country : null);
-  data.ip = ip;
-  res.jsonp(data);
+  var data = null;
 
-}
-
-// function slugHandler(req, res, next) {
-// 
-//   var slug = req.param("slug");
-// 
-//   loadCountryData(slug, function (err, data) {
-//     if (err)   { return next(err); }
-//     if (!data) { return next("404"); }
-//     res.jsonp(data);
-//   });
-// 
-// }
-
-function loadCountryData(code) {
-  var data;
-  if (code) {
-    var reference = countryData.countries[code];
+  if (lookup) {
+    var country = countryData.countries[lookup.country];
     data = {
-      id: code,
-      code: code,
-      name: reference.name,
-      currencies: _.map(reference.currencies, function (code) { return _.pick(countryData.currencies[code], "code", "name"); } ),
+      id:         country.alpha2,
+      code:       country.alpha2,
+      name:       country.name,
+      currencies: _.map(
+        country.currencies,
+        function (code) { return _.pick(countryData.currencies[code], "code", "name"); }
+      ),
+      ip: ip
     };
   } else {
-    data = { id: "", name: "", code: "", currencies: [] };
+    data = {
+      id:         "",
+      name:       "",
+      code:       "",
+      currencies: [],
+      ip:         ip
+    };
   }
 
-  return data;
+  req.geolocatedData = data;
+  next();
 }
+
+
+function determineFromIPAddress(req, res) {
+
+  // This result is specific to the IP address of the request, so should not be cached.
+  res.header("Cache-Control", "private, max-age=600");
+
+  res.jsonp(req.geolocatedData);
+
+}
+
