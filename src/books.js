@@ -1,11 +1,16 @@
 "use strict";
 
-var express = require("express"),
-    ean     = require("ean"),
-    getter  = require("./getter");
+var express         = require("express"),
+    ean             = require("ean"),
+    getter          = require("./getter"),
+    geolocateFromIP = require("./geolocate").geolocateFromIP;
+
+var FALLBACK_COUNTRY  = "US";
+var FALLBACK_CURRENCY = "USD";
 
 var app = module.exports = express();
 
+app.set("trust proxy", true);
 app.use(app.router);
 
 app.param("isbn", function (req, res, next) {
@@ -43,6 +48,25 @@ app.get("/:isbn", function (req, res, next) {
       if (err) { return next(err); }
       res.jsonp(data);
     }
+  );
+});
+
+app.get("/:isbn/prices", geolocateFromIP, function (req,res) {
+  res.header("Cache-Control", "private, max-age=600");
+
+  var countryCode  = req.geolocatedData.code || FALLBACK_COUNTRY;
+  var currencyCode =
+    req.geolocatedData.currencies.length  ?
+    req.geolocatedData.currencies[0].code :
+    FALLBACK_CURRENCY;
+
+  res.redirect(
+    [
+      req.param("isbn"),
+      "prices",
+      countryCode,
+      currencyCode
+    ].join("/")
   );
 });
 

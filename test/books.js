@@ -6,8 +6,9 @@ var request = require("supertest"),
 
 request = request(apiApp());
 
-describe("Books", function () {
-  describe("book details", function () {
+describe("/books", function () {
+
+  describe("/:isbn", function () {
 
     it("should redirect to normalised isbn13", function (done) {
       request
@@ -66,4 +67,29 @@ describe("Books", function () {
     });
 
   });
+
+  describe("/:isbn/prices", function () {
+
+    it("should redirect to .../GB/GBP", function (done) {
+      request
+        .get("/books/9780340831496/prices")
+        .set("X-Forwarded-For", "217.64.234.65, 127.0.0.1") // nhs.uk
+        .expect(302)
+        .expect("Cache-Control", "private, max-age=600")
+        .expect("Location", "/books/9780340831496/prices/GB/GBP")
+        .end(done);
+    });
+
+    it("should use fallbacks when not able to geolocate", function (done) {
+      request
+        .get("/books/9780340831496/prices")
+        .set("X-Forwarded-For", "127.0.0.1")
+        .expect(302)
+        .expect("Cache-Control", "private, max-age=600")
+        .expect("Location", "/books/9780340831496/prices/US/USD")
+        .end(done);
+    });
+
+  });
+
 });

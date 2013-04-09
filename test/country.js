@@ -13,6 +13,7 @@ describe("/country", function () {
       request
         .get("/country/determineFromIPAddress")
         .expect(200)
+        .expect("Cache-Control", "private, max-age=600")
         .expect({ id: "", code: "", name: "", currencies: [], ip: "127.0.0.1" })
         .end(done);
     });
