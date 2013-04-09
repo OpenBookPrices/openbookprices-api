@@ -13,7 +13,7 @@ app.get("/determineFromIPAddress", convertIPtoCountry);
 // app.get("/:slug", slugHandler);
 
 
-function convertIPtoCountry(req, res, next) {
+function convertIPtoCountry(req, res) {
 
   // This result is specific to the IP address of the request, so should not be cached.
   res.header("Cache-Control", "private, max-age=600");
@@ -22,14 +22,9 @@ function convertIPtoCountry(req, res, next) {
 
   var lookup = geoip.lookup(ip);
 
-  loadCountryData(
-    lookup ? lookup.country : null,
-    function (err, data) {
-      if (err) { return next(err); }
-      data.ip = ip;
-      res.jsonp(data);
-    }
-  );
+  var data = loadCountryData(lookup ? lookup.country : null);
+  data.ip = ip;
+  res.jsonp(data);
 
 }
 
@@ -45,7 +40,7 @@ function convertIPtoCountry(req, res, next) {
 // 
 // }
 
-function loadCountryData(code, cb) {
+function loadCountryData(code) {
   var data;
   if (code) {
     var reference = countryData.countries[code];
@@ -59,5 +54,5 @@ function loadCountryData(code, cb) {
     data = { id: "", name: "not known" };
   }
 
-  cb(null, data);
+  return data;
 }
