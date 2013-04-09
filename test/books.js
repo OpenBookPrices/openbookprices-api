@@ -90,6 +90,15 @@ describe("/books", function () {
         .end(done);
     });
 
+    it("should preserve callbacks", function (done) {
+      request
+        .get("/books/9780340831496/prices?callback=foo")
+        .expect(302)
+        .expect("Cache-Control", "private, max-age=600")
+        .expect("Location", "/books/9780340831496/prices/US/USD?callback=foo")
+        .end(done);
+    });
+
   });
 
 });

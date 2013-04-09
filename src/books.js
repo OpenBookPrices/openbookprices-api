@@ -60,14 +60,21 @@ app.get("/:isbn/prices", geolocateFromIP, function (req,res) {
     req.geolocatedData.currencies[0].code :
     FALLBACK_CURRENCY;
 
-  res.redirect(
-    [
-      req.param("isbn"),
-      "prices",
-      countryCode,
-      currencyCode
-    ].join("/")
-  );
+  var path =   [
+    req.param("isbn"),
+    "prices",
+    countryCode,
+    currencyCode
+  ].join("/");
+
+  var url = path;
+
+  var callback = req.param("callback");
+  if (callback) {
+    url += "?callback=" + callback;
+  }
+
+  res.redirect(url);
 });
 
 // fake handler for the books endpoints
