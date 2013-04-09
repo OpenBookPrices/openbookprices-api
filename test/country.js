@@ -13,10 +13,9 @@ describe("/country", function () {
       request
         .get("/country/determineFromIPAddress")
         .expect(200)
-        .expect({ id: "", name: "not known", ip: "127.0.0.1" })
+        .expect({ id: "", code: "", name: "", currencies: [], ip: "127.0.0.1" })
         .end(done);
     });
-
 
     it("UK IP address", function (done) {
       request
@@ -27,7 +26,7 @@ describe("/country", function () {
           id: "GB",
           code: "GB",
           name: "United Kingdom",
-          defaultCurrency: "GBP",
+          currencies: [{code: "GBP", name: "Pound sterling"}],
           ip: "217.64.234.65"
         })
         .end(done);
@@ -42,7 +41,7 @@ describe("/country", function () {
           id:   "US",
           code: "US",
           name: "United States",
-          defaultCurrency: "USD",
+          currencies: [{code: "USD", name: "United States dollar"}],
           ip: "173.223.104.110"
         })
         .end(done);
@@ -57,7 +56,7 @@ describe("/country", function () {
           id:   "FR",
           code: "FR",
           name: "France",
-          defaultCurrency: "EUR",
+          currencies: [{code: "EUR", name: "Euro"}],
           ip: "217.70.184.1"
         })
         .end(done);

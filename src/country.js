@@ -2,7 +2,8 @@
 
 var express = require("express"),
     geoip   = require("geoip-lite"),
-    countryData = require("country-data");
+    countryData = require("country-data"),
+    _            = require("underscore");
 
 var app = module.exports = express();
 
@@ -48,10 +49,10 @@ function loadCountryData(code) {
       id: code,
       code: code,
       name: reference.name,
-      defaultCurrency: reference.currencies[0],
+      currencies: _.map(reference.currencies, function (code) { return _.pick(countryData.currencies[code], "code", "name"); } ),
     };
   } else {
-    data = { id: "", name: "not known" };
+    data = { id: "", name: "", code: "", currencies: [] };
   }
 
   return data;
