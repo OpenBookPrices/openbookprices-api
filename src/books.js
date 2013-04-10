@@ -3,7 +3,9 @@
 var express         = require("express"),
     ean             = require("ean"),
     getter          = require("./getter"),
-    geolocateFromIP = require("./geolocate").geolocateFromIP;
+    geolocateFromIP = require("./geolocate").geolocateFromIP,
+    countryData     = require("country-data"),
+    format          = require("util").format;
 
 var FALLBACK_COUNTRY  = "US";
 var FALLBACK_CURRENCY = "USD";
@@ -36,6 +38,47 @@ app.param("isbn", function (req, res, next) {
 
   req.param("isbn", clean);
   next();
+});
+
+
+app.param("countryCode", function (req, res, next) {
+  var code    = req.param("countryCode") || "";
+  var country = countryData.countries[code];
+
+  // if not valid, or not found then 404
+  if (!/^[A-Z]{2}$/.test(code) || !country) {
+    return res.jsonp(
+      { error: format("country code '%s' is not a valid upper case ISO 3166 alpha2 identifier", code) },
+      404
+    );
+  }
+
+  // load up the country
+  req.country = country;
+
+  next();
+
+});
+
+
+app.param("currencyCode", function (req, res, next) {
+  var code     = req.param("currencyCode") || "";
+  var currency = countryData.currencies[code];
+
+  // if not valid, or not found then 404
+  if (!/^[A-Z]{3}$/.test(code) || !currency) {
+    return res.jsonp(
+      { error: format("currency code '%s' is not a valid upper case ISO 4217 identifier", code) },
+      404
+    );
+  }
+
+  // load up the country
+  req.currency = currency;
+
+  next();
+
+
 });
 
 
@@ -77,8 +120,33 @@ app.get("/:isbn/prices", geolocateFromIP, function (req,res) {
   res.redirect(url);
 });
 
+
+app.get("/:isbn/prices/:countryCode", function (req, res) {
+  var currencyCode = req.country.currencies[0] || FALLBACK_CURRENCY;
+
+  var path =   [
+    req.param("isbn"),
+    "prices",
+    req.country.alpha2,
+    currencyCode
+  ].join("/");
+
+  var url = path;
+
+  var callback = req.param("callback");
+  if (callback) {
+    url += "?callback=" + callback;
+  }
+
+  res.redirect(url);
+});
+
+// app.get("/:isbn/prices/:countryCode/:currencyCode", function (req, res) {
+//   res.send('FIXME');
+// });
+
 // fake handler for the books endpoints
-app.get("/:isbn/prices/:country/:currency", function (req, res) {
+app.get("/:isbn/prices/:countryCode/:currencyCode", function (req, res) {
 
   // var isbn     = req.param("isbn");
   // var country  = req.param("country");

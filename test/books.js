@@ -101,4 +101,47 @@ describe("/books", function () {
 
   });
 
+
+  describe("/:isbn/prices/:country", function () {
+    it("should 404 for bad country", function (done) {
+      request
+        .get("/books/9780340831496/prices/XX")
+        .expect(404)
+        .end(done);
+    });
+
+    it("should redirect to primary currency", function (done) {
+      request
+        .get("/books/9780340831496/prices/GB")
+        .expect(302)
+        .expect("Location", "/books/9780340831496/prices/GB/GBP")
+        .end(done);
+    });
+
+    it("should redirect to primary currency (with callback)", function (done) {
+      request
+        .get("/books/9780340831496/prices/GB?callback=foo")
+        .expect(302)
+        .expect("Location", "/books/9780340831496/prices/GB/GBP?callback=foo")
+        .end(done);
+    });
+  });
+
+
+  describe("/:isbn/prices/:country/:currency", function () {
+    it("should 404 for bad currency", function (done) {
+      request
+        .get("/books/9780340831496/prices/GB/ABC")
+        .expect(404)
+        .end(done);
+    });
+
+    it("should 200 for good values", function (done) {
+      request
+        .get("/books/9780340831496/prices/GB/GBP")
+        .expect(200)
+        .end(done);
+    });
+  });
+
 });
