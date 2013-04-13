@@ -14,19 +14,19 @@ LinkToBooks API for book and price data
 
 Not defined yet
 
-### /books/<isbn>
+### /books/:isbn
 
 Book details for this isbn - such as title, author, etc.
 
-### /books/<isbn>/prices/
+### /prices/:isbn
 
-Not defined
+Geolocates the request and redirects to `/prices/:isbn/:country/:currency`.
 
-### /books/<isbn>/prices/<country>
+### /prices/:isbn/:country
 
-Not defined
+Redirects to `/prices/:isbn/:country/:currency` where `:currency` is the primary currency for that country.
 
-### /books/<isbn>/prices/<country>/<currency>
+### /prices/:isbn/:country/:currency
 
 `country` is the two letter ISO code, in capitals (eg 'GB' for the United Kingdom).
 
@@ -36,7 +36,7 @@ Returns an array of all the prices for this book in this country. May contain en
 
 Cache-ability will be set to the first entry to expire, or 60 seconds, whichever is greatest.
 
-### /books/<isbn>/prices/<country>/<currency>/vendor
+### /prices/:isbn/:country/:currency/:vendor
 
 Returns the price for this `country`, `currency` and vendor. Can be made to be blocking by adding the `wait_until_fresh=1` parameter. Even with this parameter a stale response may be returned. If so retry. (This is to prevent the CloudFront proxy caches from timing out - max response time is 8 seconds, which is not long enough for some of the scrapers.) Response will be cacheable until it is no longer fresh.
 

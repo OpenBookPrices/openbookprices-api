@@ -15,6 +15,7 @@ module.exports = function () {
 
   app.use("/country", require("./src/country"));
   app.use("/books",   require("./src/books"));
+  app.use("/prices",  require("./src/prices"));
 
   // 404 everything
   app.all("*", function (req, res) {
