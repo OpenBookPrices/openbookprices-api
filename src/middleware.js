@@ -1,6 +1,7 @@
 "use strict";
 
 var ean             = require("ean"),
+    _               = require("underscore"),
     countryData     = require("country-data"),
     format          = require("util").format;
 
@@ -20,12 +21,11 @@ exports.isbn = function (req, res, next) {
       { error: "isbn '" + dirty + "' is not valid" },
       404
     );
-  } else if (clean != dirty) {
-    // FIXME - could break in interesting ways. Better to reconstruct the URL properly
-    return res.redirect(req.originalUrl.replace(dirty, clean));
   }
 
-  req.param("isbn", clean);
+  req.l2b = req.l2b || {};
+  req.l2b.isbn = clean;
+
   next();
 };
 
@@ -68,3 +68,31 @@ exports.currencyCode = function (req, res, next) {
   next();
 
 };
+
+
+exports.redirectToCanonicalURL = function (pathParts) {
+
+  return function (req, res, next) {
+
+    var components = [];
+    _.each(pathParts, function (key) {
+      components.push( req.l2b[key]);
+    });
+
+    var canonicalPath = components.join("/");
+
+    if (req.path == "/" + canonicalPath) {
+      return next();
+    }
+
+    // Add the callback
+    if (req.param("callback")) {
+      canonicalPath += "?callback=" + req.param("callback");
+    }
+
+    res.redirect( canonicalPath );
+
+  };
+};
+
+

@@ -2,7 +2,7 @@
 
 var express         = require("express"),
     // getter          = require("./getter"),
-    params          = require("./params"),
+    middleware      = require("./middleware"),
     geolocateFromIP = require("./geolocate").geolocateFromIP;
 
 var FALLBACK_COUNTRY  = "US";
@@ -13,12 +13,12 @@ var app = module.exports = express();
 app.set("trust proxy", true);
 app.use(app.router);
 
-app.param("isbn",         params.isbn);
-app.param("countryCode",  params.countryCode);
-app.param("currencyCode", params.currencyCode);
+app.param("isbn",         middleware.isbn);
+app.param("countryCode",  middleware.countryCode);
+app.param("currencyCode", middleware.currencyCode);
 
 
-app.get("/:isbn", geolocateFromIP, function (req,res) {
+app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), geolocateFromIP, function (req,res) {
   res.header("Cache-Control", "private, max-age=600");
 
   var countryCode  = req.geolocatedData.code || FALLBACK_COUNTRY;
