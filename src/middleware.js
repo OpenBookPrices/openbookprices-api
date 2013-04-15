@@ -7,7 +7,7 @@ var ean             = require("ean"),
 
 exports.isbn = function (req, res, next) {
 
-  var dirty = req.param("isbn");
+  var dirty = req.params.isbn;
   var clean = dirty.replace(/\D/g, "");
 
   // isbn10 to isbn13 - see http://www.isbn-13.info/ for algorithm
@@ -23,52 +23,49 @@ exports.isbn = function (req, res, next) {
     );
   }
 
-  req.l2b = req.l2b || {};
-  req.l2b.isbn = clean;
+  req.params.isbn = clean;
 
   next();
 };
 
 
 exports.countryCode = function (req, res, next) {
-  var code    = req.param("countryCode") || "";
-  var country = countryData.countries[code];
+  var code    = req.params.countryCode || "";
+  var country = countryData.countries[code.toUpperCase()];
 
   // if not valid, or not found then 404
-  if (!/^[A-Z]{2}$/.test(code) || !country) {
+  if (!country) {
     return res.jsonp(
-      { error: format("country code '%s' is not a valid upper case ISO 3166 alpha2 identifier", code) },
+      { error: format("country code '%s' is not a valid ISO 3166 alpha2 identifier", code) },
       404
     );
   }
 
   // load up the country
   req.country = country;
-  req.l2b.country  = country.alpha2;
-  req.l2b.currency = country.currencies[0];
+  req.params.countryCode  = country.alpha2;
 
   next();
-
 };
 
 
 exports.currencyCode = function (req, res, next) {
-  var code     = req.param("currencyCode") || "";
-  var currency = countryData.currencies[code];
+  var code     = req.params.currencyCode || "";
+  var currency = countryData.currencies[code.toUpperCase()];
 
   // if not valid, or not found then 404
-  if (!/^[A-Z]{3}$/.test(code) || !currency) {
+  if (!currency) {
     return res.jsonp(
-      { error: format("currency code '%s' is not a valid upper case ISO 4217 identifier", code) },
+      { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
       404
     );
   }
 
-  // load up the country
-  req.l2b.currency = currency;
+  // load up the currency
+  req.currency = currency;
+  req.params.currencyCode = currency.code;
 
   next();
-
 };
 
 
@@ -78,7 +75,7 @@ exports.redirectToCanonicalURL = function (pathParts) {
 
     var components = [];
     _.each(pathParts, function (key) {
-      components.push( req.l2b[key]);
+      components.push( req.params[key]);
     });
 
     var canonicalPath = components.join("/");

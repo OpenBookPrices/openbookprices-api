@@ -17,36 +17,44 @@ app.param("isbn",         middleware.isbn);
 app.param("countryCode",  middleware.countryCode);
 app.param("currencyCode", middleware.currencyCode);
 
+app.get(
+  "/:isbn",
+  middleware.redirectToCanonicalURL(["isbn"]),
+  geolocateFromIP,
+  function (req,res) {
+    res.header("Cache-Control", "private, max-age=600");
 
-app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), geolocateFromIP, function (req,res) {
-  res.header("Cache-Control", "private, max-age=600");
+    var countryCode  = req.geolocatedData.code || FALLBACK_COUNTRY;
+    var currencyCode =
+      req.geolocatedData.currencies.length  ?
+      req.geolocatedData.currencies[0].code :
+      FALLBACK_CURRENCY;
 
-  var countryCode  = req.geolocatedData.code || FALLBACK_COUNTRY;
-  var currencyCode =
-    req.geolocatedData.currencies.length  ?
-    req.geolocatedData.currencies[0].code :
-    FALLBACK_CURRENCY;
+    var path =   [
+      req.param("isbn"),
+      countryCode,
+      currencyCode
+    ].join("/");
 
-  var path =   [
-    req.param("isbn"),
-    countryCode,
-    currencyCode
-  ].join("/");
+    var url = path;
 
-  var url = path;
+    var callback = req.param("callback");
+    if (callback) {
+      url += "?callback=" + callback;
+    }
 
-  var callback = req.param("callback");
-  if (callback) {
-    url += "?callback=" + callback;
+    res.redirect(url);
   }
-
-  res.redirect(url);
-});
-
+);
 
 app.get(
   "/:isbn/:countryCode",
-  middleware.redirectToCanonicalURL(["isbn", "country", "currency"])
+  middleware.redirectToCanonicalURL(["isbn", "countryCode"]),
+  function (req, res, next) {
+    req.params.currencyCode = req.country.currencies[0] || FALLBACK_CURRENCY;
+    next();
+  },
+  middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"])
 );
 
 // app.get("/:isbn/:countryCode/:currencyCode", function (req, res) {
@@ -54,17 +62,14 @@ app.get(
 // });
 
 // fake handler for the books endpoints
-app.get("/:isbn/:countryCode/:currencyCode", function (req, res) {
-
-  // var isbn     = req.param("isbn");
-  // var country  = req.param("country");
-  // var currency = req.param("currency");
-
-  res.jsonp([
-    { price: 56.78 },
-    { price: 12.34 },
-    { price: 34.56 },
-  ]);
-});
-
-
+app.get(
+  "/:isbn/:countryCode/:currencyCode",
+  middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"]),
+  function (req, res) {
+    res.jsonp([
+      { price: 56.78 },
+      { price: 12.34 },
+      { price: 34.56 },
+    ]);
+  }
+);

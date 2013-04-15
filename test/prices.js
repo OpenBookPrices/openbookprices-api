@@ -84,6 +84,14 @@ describe("/prices", function () {
         .end(done);
     });
 
+    it("should redirect for fixable country", function (done) {
+      request
+        .get("/prices/9780340831496/gb")
+        .expect(302)
+        .expect("Location", "/prices/9780340831496/GB")
+        .end(done);
+    });
+
     it("should redirect to primary currency", function (done) {
       request
         .get("/prices/9780340831496/GB")
@@ -99,6 +107,16 @@ describe("/prices", function () {
         .expect("Location", "/prices/9780340831496/GB/GBP?callback=foo")
         .end(done);
     });
+
+    it("should cope with no currency", function (done) {
+      // AQ in Antartica, which has no currency
+      request
+        .get("/prices/9780340831496/AQ")
+        .expect(302)
+        .expect("Location", "/prices/9780340831496/AQ/USD")
+        .end(done);
+    });
+
   });
 
 
@@ -107,6 +125,22 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/ABC")
         .expect(404)
+        .end(done);
+    });
+
+    it("should redirect for fixable currency", function (done) {
+      request
+        .get("/prices/9780340831496/GB/gBp")
+        .expect(302)
+        .expect("Location", "/prices/9780340831496/GB/GBP")
+        .end(done);
+    });
+
+    it("should redirect for fixable country and currency", function (done) {
+      request
+        .get("/prices/9780340831496/gb/gBp")
+        .expect(302)
+        .expect("Location", "/prices/9780340831496/GB/GBP")
         .end(done);
     });
 
