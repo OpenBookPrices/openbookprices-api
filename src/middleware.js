@@ -44,6 +44,8 @@ exports.countryCode = function (req, res, next) {
 
   // load up the country
   req.country = country;
+  req.l2b.country  = country.alpha2;
+  req.l2b.currency = country.currencies[0];
 
   next();
 
@@ -63,7 +65,7 @@ exports.currencyCode = function (req, res, next) {
   }
 
   // load up the country
-  req.currency = currency;
+  req.l2b.currency = currency;
 
   next();
 

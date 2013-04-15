@@ -44,24 +44,10 @@ app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), geolocateFromIP, 
 });
 
 
-app.get("/:isbn/:countryCode", function (req, res) {
-  var currencyCode = req.country.currencies[0] || FALLBACK_CURRENCY;
-
-  var path =   [
-    req.param("isbn"),
-    req.country.alpha2,
-    currencyCode
-  ].join("/");
-
-  var url = path;
-
-  var callback = req.param("callback");
-  if (callback) {
-    url += "?callback=" + callback;
-  }
-
-  res.redirect(url);
-});
+app.get(
+  "/:isbn/:countryCode",
+  middleware.redirectToCanonicalURL(["isbn", "country", "currency"])
+);
 
 // app.get("/:isbn/:countryCode/:currencyCode", function (req, res) {
 //   res.send('FIXME');
