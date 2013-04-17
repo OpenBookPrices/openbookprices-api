@@ -18,7 +18,7 @@ app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, re
     isbn,
     function (err, data) {
       if (err) { return next(err); }
-      res.jsonp(data);
+      res.json(data);
     }
   );
 });

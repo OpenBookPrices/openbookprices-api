@@ -66,7 +66,7 @@ app.get(
   "/:isbn/:countryCode/:currencyCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"]),
   function (req, res) {
-    res.jsonp([
+    res.json([
       { price: 56.78 },
       { price: 12.34 },
       { price: 34.56 },

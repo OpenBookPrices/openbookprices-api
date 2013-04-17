@@ -18,29 +18,12 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it("should redirect to normalised isbn13 (callback)", function (done) {
-      request
-        .get("/prices/0340831499?callback=foobar")
-        .expect(302)
-        .expect("Location", "/prices/9780340831496?callback=foobar")
-        .end(done);
-    });
-
     it("should return 404 when the isbn is not valid", function (done) {
       request
         .get("/prices/123456789")
         .expect(404)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect({ error: "isbn '123456789' is not valid" })
-        .end(done);
-    });
-
-    it("should return 404 when the isbn is not valid (callback)", function (done) {
-      request
-        .get("/prices/123456789?callback=foobar")
-        .expect(404)
-        .expect("Content-Type", "text/javascript; charset=utf-8")
-        .expect(/^foobar && foobar\(\{/)
         .end(done);
     });
 
@@ -61,15 +44,6 @@ describe("/prices", function () {
         .expect(302)
         .expect("Cache-Control", "private, max-age=600")
         .expect("Location", "/prices/9780340831496/US/USD")
-        .end(done);
-    });
-
-    it("should preserve callbacks", function (done) {
-      request
-        .get("/prices/9780340831496?callback=foo")
-        .expect(302)
-        .expect("Cache-Control", "private, max-age=600")
-        .expect("Location", "/prices/9780340831496/US/USD?callback=foo")
         .end(done);
     });
 
@@ -97,14 +71,6 @@ describe("/prices", function () {
         .get("/prices/9780340831496/GB")
         .expect(302)
         .expect("Location", "/prices/9780340831496/GB/GBP")
-        .end(done);
-    });
-
-    it("should redirect to primary currency (with callback)", function (done) {
-      request
-        .get("/prices/9780340831496/GB?callback=foo")
-        .expect(302)
-        .expect("Location", "/prices/9780340831496/GB/GBP?callback=foo")
         .end(done);
     });
 

@@ -17,7 +17,7 @@ exports.isbn = function (req, res, next) {
   }
 
   if (!clean || !ean.isValid(clean)) {
-    return res.jsonp(
+    return res.json(
       { error: "isbn '" + dirty + "' is not valid" },
       404
     );
@@ -35,7 +35,7 @@ exports.countryCode = function (req, res, next) {
 
   // if not valid, or not found then 404
   if (!country) {
-    return res.jsonp(
+    return res.json(
       { error: format("country code '%s' is not a valid ISO 3166 alpha2 identifier", code) },
       404
     );
@@ -55,7 +55,7 @@ exports.currencyCode = function (req, res, next) {
 
   // if not valid, or not found then 404
   if (!currency) {
-    return res.jsonp(
+    return res.json(
       { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
       404
     );
@@ -82,11 +82,6 @@ exports.redirectToCanonicalURL = function (pathParts) {
 
     if (req.path == "/" + canonicalPath) {
       return next();
-    }
-
-    // Add the callback
-    if (req.param("callback")) {
-      canonicalPath += "?callback=" + req.param("callback");
     }
 
     res.redirect( canonicalPath );

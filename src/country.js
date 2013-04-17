@@ -15,7 +15,7 @@ app.get(
     // This result is specific to the IP address of the request, so should
     // not be cached.
     res.header("Cache-Control", "private, max-age=600");
-    res.jsonp(req.geolocatedData);
+    res.json(req.geolocatedData);
   }
 );
 

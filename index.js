@@ -20,7 +20,7 @@ module.exports = function () {
   // 404 everything
   app.all("*", function (req, res) {
     res.status(404);
-    res.jsonp({ error: "404 - page not found" });
+    res.json({ error: "404 - page not found" });
   });
 
   return app;
