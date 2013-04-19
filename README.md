@@ -30,7 +30,7 @@ Redirects to `/prices/:isbn/:country/:currency` where `:currency` is the primary
 
 `country` is the two letter ISO code, in capitals (eg 'GB' for the United Kingdom).
 
-`currency` is the three letter code ISO currency code (eg 'USD' for US Dollars).
+`currency` is the three letter ISO currency code (eg 'USD' for US Dollars).
 
 Returns an array of all the prices for this book in this country. May contain entries that have not yet been fetched, these should be queried individually.
 
