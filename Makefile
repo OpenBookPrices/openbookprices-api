@@ -7,7 +7,11 @@ node-modules:
 jshint:
 	node_modules/.bin/jshint --config config/jshint-node.json .
 
+ifdef TRAVIS
+  MOCHA_ARGS = --reporter tap
+endif
+
 test: jshint
-	mocha
+	mocha $(MOCHA_ARGS)
 
 PHONY: node-modules test jshint
