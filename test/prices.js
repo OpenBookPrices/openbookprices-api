@@ -116,6 +116,17 @@ describe("/prices", function () {
         .expect(200)
         .end(done);
     });
+
+    it.skip("should not initiate any scrape requests");
+
+    it.skip("should set the expiry headers correctly when no responses");
+
+    it.skip("should set the expiry headers correctly when some responses");
+
+    it.skip("should set the expiry headers correctly when all responses");
+
+    it.skip("should convert currency correctly");
+
   });
 
 
@@ -141,6 +152,21 @@ describe("/prices", function () {
         .expect(200)
         .end(done);
     });
+
+    it.skip("should 400 if the vendor does not sell to that country");
+
+    it.skip("should return a try-again response if the scraper times out");
+
+    it.skip("should return an accurate response");
+
+    it.skip("should set the expiry headers correctly");
+
+    it.skip("should retrieve from the cache on subsequent requests");
+
+    it.skip("should only send one request through to the scrapers");
+
+    it.skip("should convert currency correctly");
+
   });
 
 
