@@ -103,7 +103,7 @@ exports.redirectToCanonicalURL = function (pathParts) {
       return next();
     }
 
-    res.redirect( canonicalPath );
+    res.redirect( canonicalPath, 301 );
 
   };
 };

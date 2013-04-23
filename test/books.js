@@ -13,7 +13,7 @@ describe("/books", function () {
     it("should redirect to normalised isbn13", function (done) {
       request
         .get("/books/0340831499")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/books/9780340831496")
         .end(done);
     });

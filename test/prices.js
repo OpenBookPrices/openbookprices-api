@@ -13,7 +13,7 @@ describe("/prices", function () {
     it("should redirect to normalised isbn13", function (done) {
       request
         .get("/prices/0340831499")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496")
         .end(done);
     });
@@ -61,7 +61,7 @@ describe("/prices", function () {
     it("should redirect for fixable country", function (done) {
       request
         .get("/prices/9780340831496/gb")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/GB")
         .end(done);
     });
@@ -69,16 +69,16 @@ describe("/prices", function () {
     it("should redirect to primary currency", function (done) {
       request
         .get("/prices/9780340831496/GB")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/GB/GBP")
         .end(done);
     });
 
-    it("should cope with no currency", function (done) {
+    it("should cope with country that has no currency", function (done) {
       // AQ in Antartica, which has no currency
       request
         .get("/prices/9780340831496/AQ")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/AQ/USD")
         .end(done);
     });
@@ -97,7 +97,7 @@ describe("/prices", function () {
     it("should redirect for fixable currency", function (done) {
       request
         .get("/prices/9780340831496/GB/gBp")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/GB/GBP")
         .end(done);
     });
@@ -105,7 +105,7 @@ describe("/prices", function () {
     it("should redirect for fixable country and currency", function (done) {
       request
         .get("/prices/9780340831496/gb/gBp")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/GB/GBP")
         .end(done);
     });
@@ -130,7 +130,7 @@ describe("/prices", function () {
     it("should redirect for fixable country, currency and vendor", function (done) {
       request
         .get("/prices/9780340831496/gb/gBp/fOYLes")
-        .expect(302)
+        .expect(301)
         .expect("Location", "/prices/9780340831496/GB/GBP/foyles")
         .end(done);
     });
