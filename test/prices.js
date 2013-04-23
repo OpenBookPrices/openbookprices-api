@@ -118,4 +118,30 @@ describe("/prices", function () {
     });
   });
 
+
+  describe("/:isbn/:country/:currency/:vendor", function () {
+    it("should 404 for bad vendor", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP/not-a-vendor")
+        .expect(404)
+        .end(done);
+    });
+
+    it("should redirect for fixable country, currency and vendor", function (done) {
+      request
+        .get("/prices/9780340831496/gb/gBp/fOYLes")
+        .expect(302)
+        .expect("Location", "/prices/9780340831496/GB/GBP/foyles")
+        .end(done);
+    });
+
+    it("should 200 for good values", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP/foyles")
+        .expect(200)
+        .end(done);
+    });
+  });
+
+
 });

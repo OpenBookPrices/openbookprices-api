@@ -3,6 +3,7 @@
 var ean             = require("ean"),
     _               = require("underscore"),
     countryData     = require("country-data"),
+    getter          = require("./getter"),
     format          = require("util").format;
 
 exports.isbn = function (req, res, next) {
@@ -64,6 +65,24 @@ exports.currencyCode = function (req, res, next) {
   // load up the currency
   req.currency = currency;
   req.params.currencyCode = currency.code;
+
+  next();
+};
+
+
+exports.vendorCode = function (req, res, next) {
+  var code     = (req.params.vendorCode || "").toLowerCase();
+
+  // if not valid, or not found then 404
+  if (!_.contains(getter.vendorCodes, code)) {
+    return res.json(
+      { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
+      404
+    );
+  }
+
+  req.vendor            = code;
+  req.params.vendorCode = code;
 
   next();
 };

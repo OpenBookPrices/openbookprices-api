@@ -16,6 +16,7 @@ app.use(app.router);
 app.param("isbn",         middleware.isbn);
 app.param("countryCode",  middleware.countryCode);
 app.param("currencyCode", middleware.currencyCode);
+app.param("vendorCode",   middleware.vendorCode);
 
 app.get(
   "/:isbn",
@@ -57,19 +58,27 @@ app.get(
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"])
 );
 
-// app.get("/:isbn/:countryCode/:currencyCode", function (req, res) {
-//   res.send('FIXME');
-// });
 
-// fake handler for the books endpoints
 app.get(
   "/:isbn/:countryCode/:currencyCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"]),
   function (req, res) {
+    // FIXME - put in real data here
     res.json([
       { price: 56.78 },
       { price: 12.34 },
       { price: 34.56 },
+    ]);
+  }
+);
+
+
+app.get(
+  "/:isbn/:countryCode/:currencyCode/:vendorCode",
+  middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode", "vendorCode"]),
+  function (req, res) {
+    res.json([
+      "FIXME"
     ]);
   }
 );
