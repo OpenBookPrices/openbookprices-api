@@ -6,6 +6,9 @@ var redis   = require("redis"),
     Fetcher = require("l2b-price-fetchers");
 
 
+var vendorCodes = _.keys(Fetcher.prototype.scrapers);
+
+
 function bookDetailsCacheKey (isbn) {
   return "bookDetails-" + isbn;
 }
@@ -98,4 +101,5 @@ function cacheBookPrices (data) {
 
 module.exports = {
   getBookDetails: getBookDetails,
+  vendorCodes: vendorCodes,
 };
