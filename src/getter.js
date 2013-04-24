@@ -6,6 +6,11 @@ var redis   = require("redis"),
     Fetcher = require("l2b-price-fetchers");
 
 
+client.on("error", function (err) {
+  console.log("Redis error " + err);
+});
+
+
 var vendorCodes = _.keys(Fetcher.prototype.scrapers);
 
 
@@ -22,7 +27,7 @@ function getBookDetails (isbn, cb) {
       cb( null, JSON.parse(reply) );
     } else {
       fetchFromScrapers(
-        {vendor: "foyles", isbn: isbn },
+        {vendor: "foyles", isbn: isbn, country: "GB", currency: "GBP"},
         function (err, results) {
           if (err) { return cb(err); }
           var bookDetails = extractBookDetails(results);
@@ -35,7 +40,12 @@ function getBookDetails (isbn, cb) {
 }
 
 function extractBookDetails (results) {
-  return _.pick(results, "isbn", "authors", "title");
+  var data = {
+    isbn:    results.args.isbn,
+    authors: results.authors,
+    title:   results.title,
+  };
+  return data;
 }
 
 
@@ -61,7 +71,7 @@ function fetchFromScrapers (options, cb) {
     function (err, data) {
       if (err) { return cb(err); }
       cacheBookDetails(data);
-      cacheBookPrices(data);
+      // cacheBookPrices(data);
       cb(null, data);
     }
   );
@@ -70,33 +80,33 @@ function fetchFromScrapers (options, cb) {
 
 
 
-function bookPricesCacheKey (opt) {
-  return ["bookPrice", opt.isbn, opt.country, opt.currency, opt.vendor].join("-");
-}
+// function bookPricesCacheKey (opt) {
+//   return ["bookPrice", opt.isbn, opt.country, opt.currency, opt.vendor].join("-");
+// }
 
-function cacheBookPrices (data) {
-  // console.log(data);
-
-  _.each(data.prices, function (price) {
-    _.each( price.countries, function (country) {
-
-      var entry = _.chain(price)
-        .omit("countries")
-        .defaults({country: country})
-        .value();
-
-      var cacheKey = bookPricesCacheKey(entry);
-
-      var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
-
-      client.setex(
-        cacheKey,
-        ttl,
-        JSON.stringify(entry)
-      );
-    });
-  });
-}
+// function cacheBookPrices (data) {
+//   // console.log(data);
+//
+//   _.each(data.prices, function (price) {
+//     _.each( price.countries, function (country) {
+//
+//       var entry = _.chain(price)
+//         .omit("countries")
+//         .defaults({country: country})
+//         .value();
+//
+//       var cacheKey = bookPricesCacheKey(entry);
+//
+//       var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
+//
+//       client.setex(
+//         cacheKey,
+//         ttl,
+//         JSON.stringify(entry)
+//       );
+//     });
+//   });
+// }
 
 
 module.exports = {
