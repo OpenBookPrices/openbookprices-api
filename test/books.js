@@ -40,6 +40,8 @@ describe("/books", function () {
         .end(done);
     });
 
+    it.skip("should use cache");
+
   });
 
 });

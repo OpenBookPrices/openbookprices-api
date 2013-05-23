@@ -25,7 +25,8 @@
     "country-data": "0.0.3"
   },
   "devDependencies": {
-    "jshint": ">= 0.9.1"
+    "jshint": ">= 0.9.1",
+    "sinon": "~1.6.0"
   },
   "author": "",
   "license": "AGPLv3",

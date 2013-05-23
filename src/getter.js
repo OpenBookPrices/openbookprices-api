@@ -50,7 +50,7 @@ function extractBookDetails (results) {
 
 
 function cacheBookDetails (data) {
-  var isbn = data.isbn;
+  var isbn = data.args.isbn;
   var cacheKey = bookDetailsCacheKey(isbn);
 
   client.exists(cacheKey, function (err, exists) {
@@ -112,4 +112,12 @@ function fetchFromScrapers (options, cb) {
 module.exports = {
   getBookDetails: getBookDetails,
   vendorCodes: vendorCodes,
+  enterTestMode: function (cb) {
+    client.select(15, function (err) {
+      if (err) { return cb(err); }
+      client.flushdb(function(err) {
+        cb(err);
+      });
+    });
+  }
 };
