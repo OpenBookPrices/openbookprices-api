@@ -3,7 +3,7 @@
 var redis   = require("redis"),
     client  = redis.createClient(),
     _       = require("underscore"),
-    Fetcher = require("l2b-price-fetchers");
+    fetcher = require("l2b-price-fetchers");
 
 
 client.on("error", function (err) {
@@ -11,7 +11,6 @@ client.on("error", function (err) {
 });
 
 
-var vendorCodes = _.keys(Fetcher.prototype.scrapers);
 
 
 function bookDetailsCacheKey (isbn) {
@@ -65,8 +64,7 @@ function cacheBookDetails (data) {
 
 
 function fetchFromScrapers (options, cb) {
-  var f = new Fetcher();
-  f.fetch(
+  fetcher.fetch(
     options,
     function (err, data) {
       if (err) { return cb(err); }
@@ -111,7 +109,7 @@ function fetchFromScrapers (options, cb) {
 
 module.exports = {
   getBookDetails: getBookDetails,
-  vendorCodes: vendorCodes,
+  vendorCodes: fetcher.vendorCodes(),
   enterTestMode: function (cb) {
     client.select(15, function (err) {
       if (err) { return cb(err); }
