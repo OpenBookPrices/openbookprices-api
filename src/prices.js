@@ -2,6 +2,8 @@
 
 var express         = require("express"),
     // getter          = require("./getter"),
+    fetcher         = require("l2b-price-fetchers"),
+    _               = require("underscore"),
     middleware      = require("./middleware"),
     geolocateFromIP = require("./geolocate").geolocateFromIP;
 
@@ -76,6 +78,14 @@ app.get(
 app.get(
   "/:isbn/:countryCode/:currencyCode/:vendorCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode", "vendorCode"]),
+  function (req, res, next) {
+    // check that the vendor sells to this country
+    var vendorCountries = fetcher.vendorsForCountry(req.country.alpha2);
+    if (!_.contains(vendorCountries, req.vendor)) {
+      return res.json(400, {error: "Vendor does not sell to that country"});
+    }
+    next();
+  },
   function (req, res) {
     res.json([
       "FIXME"
