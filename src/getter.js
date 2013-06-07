@@ -1,8 +1,8 @@
 "use strict";
 
 var redis   = require("redis"),
-    client  = redis.createClient(),
     _       = require("underscore"),
+    client  = redis.createClient(),
     fetcher = require("l2b-price-fetchers");
 
 
@@ -107,9 +107,18 @@ function fetchFromScrapers (options, cb) {
 // }
 
 
+function doesVendorServeCountry (vendor, country) {
+  var vendorCountries = fetcher.vendorsForCountry(country);
+  return _.contains(vendorCountries, vendor);
+}
+
+
+
+
 module.exports = {
   getBookDetails: getBookDetails,
   vendorCodes: fetcher.vendorCodes(),
+  doesVendorServeCountry: doesVendorServeCountry,
   enterTestMode: function (cb) {
     client.select(15, function (err) {
       if (err) { return cb(err); }

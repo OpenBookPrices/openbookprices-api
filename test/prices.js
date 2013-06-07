@@ -168,8 +168,8 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
-      var stub = sandbox.stub(fetcher, 'vendorsForCountry').withArgs('GB').returns([]);
-      
+      sandbox.stub(fetcher, "vendorsForCountry").withArgs("GB").returns([]);
+
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
         .expect(400)
