@@ -4,7 +4,8 @@ var assert = require("assert"),
     sinon  = require("sinon"),
     async = require("async"),
     fetcher = require("l2b-price-fetchers"),
-    getter = require("../src/getter");
+    getter = require("../src/getter"),
+    samples = require("./samples");
 
 describe("Getter", function () {
 
@@ -24,28 +25,13 @@ describe("Getter", function () {
     // stub the fetch so that it does not do a scrape
     var fetchStub = sandbox.stub(fetcher, "fetch").yields(
       null,
-      {
-        args: {
-          vendor: "foyles",
-          isbn: "9780340831496",
-          country: "GB",
-          currency: "GBP",
-        },
-        url: "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-        title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
-        authors: [ "Harold McGee" ],
-        prices: [],
-      }
+      samples.fetch["9780340831496"]
     );
 
     var runTests = function (cb) {
       getter.getBookDetails("9780340831496", function (err, details) {
         assert.ifError(err);
-        assert.deepEqual(details, {
-          isbn: "9780340831496",
-          authors: [ "Harold McGee" ],
-          title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
-        });
+        assert.deepEqual(details, samples.getBookDetails["9780340831496"]);
         cb();
       });
     };
