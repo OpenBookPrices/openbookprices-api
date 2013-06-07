@@ -63,6 +63,7 @@ describe("/books", function () {
           .get("/books/9780340831496")
           .expect(200)
           .expect("Content-Type", "application/json; charset=utf-8")
+          .expect("Cache-Control", "max-age=86400")
           .expect(samples.getBookDetails["9780340831496"])
           .end(cb);
       };

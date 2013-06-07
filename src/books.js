@@ -18,6 +18,7 @@ app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, re
     isbn,
     function (err, data) {
       if (err) { return next(err); }
+      res.set("Cache-Control", "max-age=86400");
       res.json(data);
     }
   );
