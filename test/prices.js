@@ -2,23 +2,15 @@
 
 // var assert = require("assert");
 var request = require("supertest"),
-    sinon   = require("sinon"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../");
+
+
+require("./setup");
 
 request = request(apiApp());
 
 describe("/prices", function () {
-
-  var sandbox;
-
-  beforeEach(function () {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(function () {
-    sandbox.restore();
-  });
 
   describe("/:isbn", function () {
 
@@ -168,7 +160,7 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
-      sandbox.stub(fetcher, "vendorsForCountry").withArgs("GB").returns([]);
+      this.sandbox.stub(fetcher, "vendorsForCountry").withArgs("GB").returns([]);
 
       request
         .get("/prices/9780340831496/GB/GBP/foyles")

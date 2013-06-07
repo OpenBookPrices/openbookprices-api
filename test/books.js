@@ -2,33 +2,24 @@
 
 var assert = require("assert"),
     request = require("supertest"),
-    getter  = require("../src/getter"),
     fetcher = require("l2b-price-fetchers"),
-    sinon  = require("sinon"),
     async = require("async"),
     apiApp  = require("../"),
     samples = require("./samples");
+
+require("./setup");
 
 request = request(apiApp());
 
 describe("/books", function () {
 
-  var sandbox;
   var fetchStub;
 
-  beforeEach(function (done) {
-    getter.enterTestMode(done);
-    sandbox = sinon.sandbox.create();
-
+  beforeEach(function () {
     // stub the fetch so that it does not do a scrape
-    fetchStub = sandbox
+    fetchStub = this.sandbox
       .stub(fetcher, "fetch")
       .yields(null, samples.fetch["9780340831496"]);
-
-  });
-
-  afterEach(function () {
-    sandbox.restore();
   });
 
   describe("/:isbn", function () {
