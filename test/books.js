@@ -1,12 +1,35 @@
 "use strict";
 
-// var assert = require("assert");
-var request = require("supertest"),
-    apiApp  = require("../");
+var assert = require("assert"),
+    request = require("supertest"),
+    getter  = require("../src/getter"),
+    fetcher = require("l2b-price-fetchers"),
+    sinon  = require("sinon"),
+    async = require("async"),
+    apiApp  = require("../"),
+    samples = require("./samples");
 
 request = request(apiApp());
 
 describe("/books", function () {
+
+  var sandbox;
+  var fetchStub;
+
+  beforeEach(function (done) {
+    getter.enterTestMode(done);
+    sandbox = sinon.sandbox.create();
+
+    // stub the fetch so that it does not do a scrape
+    fetchStub = sandbox
+      .stub(fetcher, "fetch")
+      .yields(null, samples.fetch["9780340831496"]);
+
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
 
   describe("/:isbn", function () {
 
@@ -15,7 +38,10 @@ describe("/books", function () {
         .get("/books/0340831499")
         .expect(301)
         .expect("Location", "/books/9780340831496")
-        .end(done);
+        .end(function (err) {
+          assert(!fetchStub.called);
+          done(err);
+        });
     });
 
     it("should return 404 when the isbn is not valid", function (done) {
@@ -24,23 +50,36 @@ describe("/books", function () {
         .expect(404)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect({ error: "isbn '123456789' is not valid" })
-        .end(done);
+        .end(function (err) {
+          assert(!fetchStub.called);
+          done(err);
+        });
     });
 
     it("should return correct details for valid isbn", function (done) {
-      request
-        .get("/books/9780340831496")
-        .expect(200)
-        .expect("Content-Type", "application/json; charset=utf-8")
-        .expect({
-          isbn: "9780340831496",
-          title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
-          authors: ["Harold McGee"],
-        })
-        .end(done);
-    });
 
-    it.skip("should use cache");
+      var testRequest = function (cb) {
+        request
+          .get("/books/9780340831496")
+          .expect(200)
+          .expect("Content-Type", "application/json; charset=utf-8")
+          .expect(samples.getBookDetails["9780340831496"])
+          .end(cb);
+      };
+
+      async.series(
+        [
+          testRequest,
+          function (cb) { setTimeout(cb, 50); },
+          testRequest,
+        ],
+        function (err) {
+          assert(fetchStub.calledOnce);
+          done(err);
+        }
+      );
+
+    });
 
   });
 
