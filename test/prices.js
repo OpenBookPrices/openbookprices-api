@@ -1,9 +1,10 @@
 "use strict";
 
-// var assert = require("assert");
-var request = require("supertest"),
+var assert = require("assert"),
+    request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
-    apiApp  = require("../");
+    apiApp  = require("../"),
+    samples = require("./samples");
 
 
 require("./setup");
@@ -121,7 +122,22 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it.skip("should not initiate any scrape requests");
+    it("should not initiate any scrape requests", function (done) {
+
+      var fetchStub = this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(null, samples.fetch["9780340831496"]);
+
+      request
+        .get("/prices/9780340831496/GB/GBP")
+        .expect(200)
+        .end(function (err) {
+          assert.ifError(err);
+          assert(!fetchStub.called);
+          done();
+        });
+
+    });
 
     it.skip("should set the expiry headers correctly when no responses");
 
