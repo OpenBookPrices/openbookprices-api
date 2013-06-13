@@ -76,35 +76,68 @@ function fetchFromScrapers (options, cb) {
 }
 
 
+function getBookPrices (args, cb) {
+
+  var cacheKey = bookPricesCacheKey(args);
+
+  client.get(cacheKey, function (err, reply) {
+    if ( reply ) {
+      cb( null, JSON.parse(reply) );
+    } else {
+      fetchFromScrapers(
+        args,
+        function (err, results) {
+          if (err) { return cb(err); }
+          var bookPrices = extractBookPrices(results);
+          cacheBookPrices(bookPrices);
+          cb(null, bookPrices[args.country]);
+        }
+      );
+    }
+  });
+}
 
 
-// function bookPricesCacheKey (opt) {
-//   return ["bookPrice", opt.isbn, opt.country, opt.currency, opt.vendor].join("-");
-// }
+function extractBookPrices (results) {
+  var pricesByCountry = {};
 
-// function cacheBookPrices (data) {
-//   // console.log(data);
-//
-//   _.each(data.prices, function (price) {
-//     _.each( price.countries, function (country) {
-//
-//       var entry = _.chain(price)
-//         .omit("countries")
-//         .defaults({country: country})
-//         .value();
-//
-//       var cacheKey = bookPricesCacheKey(entry);
-//
-//       var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
-//
-//       client.setex(
-//         cacheKey,
-//         ttl,
-//         JSON.stringify(entry)
-//       );
-//     });
-//   });
-// }
+  _.each(results.prices, function (price) {
+    _.each( price.countries, function (country) {
+
+      var entry = _.chain(price)
+        .omit("countries")
+        .defaults({country: country})
+        .value();
+
+      entry.validUntil = new Date().valueOf()/1000 + entry.ttl;
+
+      pricesByCountry[country] = entry;
+
+    });
+  });
+
+  return pricesByCountry;
+}
+
+
+function bookPricesCacheKey (opt) {
+  return ["bookPrice", opt.isbn, opt.country, opt.currency, opt.vendor].join("-");
+}
+
+function cacheBookPrices (bookPrices) {
+
+  _.each(bookPrices, function (entry) {
+    var cacheKey = bookPricesCacheKey(entry);
+
+    var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
+
+    client.setex(
+      cacheKey,
+      ttl,
+      JSON.stringify(entry)
+    );
+  });
+}
 
 
 function doesVendorServeCountry (vendor, country) {
@@ -117,6 +150,7 @@ function doesVendorServeCountry (vendor, country) {
 
 module.exports = {
   getBookDetails: getBookDetails,
+  getBookPrices: getBookPrices,
   vendorCodes: fetcher.vendorCodes(),
   doesVendorServeCountry: doesVendorServeCountry,
   enterTestMode: function (cb) {
