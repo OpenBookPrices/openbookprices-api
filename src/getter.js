@@ -1,14 +1,9 @@
 "use strict";
 
-var redis   = require("redis"),
-    _       = require("underscore"),
-    client  = redis.createClient(),
+var _       = require("underscore"),
+    client  = require("./redis-client"),
     fetcher = require("l2b-price-fetchers");
 
-
-client.on("error", function (err) {
-  console.log("Redis error " + err);
-});
 
 
 
