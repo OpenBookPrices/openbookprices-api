@@ -1,13 +1,12 @@
 "use strict";
 
+require("./setup");
+
 var assert = require("assert"),
     request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../"),
     samples = require("./samples");
-
-
-require("./setup");
 
 request = request(apiApp());
 
@@ -151,6 +150,13 @@ describe("/prices", function () {
 
 
   describe("/:isbn/:country/:currency/:vendor", function () {
+
+    beforeEach(function () {
+      this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(null, samples.fetch["9780340831496"]);
+    });
+
     it("should 404 for bad vendor", function (done) {
       request
         .get("/prices/9780340831496/GB/GBP/not-a-vendor")
@@ -176,7 +182,10 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
-      this.sandbox.stub(fetcher, "vendorsForCountry").withArgs("GB").returns([]);
+      this.sandbox
+        .stub(fetcher, "vendorsForCountry")
+        .withArgs("GB")
+        .returns([]);
 
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
@@ -186,7 +195,15 @@ describe("/prices", function () {
 
     it.skip("should return a try-again response if the scraper times out");
 
-    it.skip("should return an accurate response");
+    it("should return an accurate response", function (done) {
+
+      request
+        .get("/prices/9780340831496/GB/GBP/foyles")
+        .expect(200)
+        .expect(samples.getBookPrices["9780340831496"])
+        .end(done);
+
+    });
 
     it.skip("should set the expiry headers correctly");
 

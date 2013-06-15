@@ -55,7 +55,12 @@ function cacheBookDetails (data) {
       var bookDetails = extractBookDetails(data);
       client.set(
         cacheKey,
-        JSON.stringify(bookDetails)
+        JSON.stringify(bookDetails),
+        function (err) {
+          if (err) {
+            console.warn(err);
+          }
+        }
       );
     }
   });

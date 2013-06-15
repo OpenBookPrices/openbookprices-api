@@ -24,6 +24,7 @@ exports.isbn = function (req, res, next) {
     );
   }
 
+  req.isbn = clean;
   req.params.isbn = clean;
 
   next();

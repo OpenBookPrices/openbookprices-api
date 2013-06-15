@@ -84,9 +84,33 @@ app.get(
     }
     next();
   },
-  function (req, res) {
-    res.json([
-      "FIXME"
-    ]);
+  function (req, res, next) {
+    getter.getBookPrices(
+      {
+        isbn: req.isbn,
+        vendor: req.vendor,
+        country: req.country.alpha2,
+        currency: req.currency.code,
+      },
+      function (err, details) {
+        if (err) {
+          return next(err);
+        }
+        res.json(details);
+      }
+    );
   }
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
