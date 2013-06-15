@@ -3,6 +3,7 @@
 require("./setup");
 
 var assert = require("assert"),
+    async = require("async"),
     request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../"),
@@ -182,7 +183,7 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
-      this.sandbox
+      this.fetchStub = this.sandbox
         .stub(fetcher, "vendorsForCountry")
         .withArgs("GB")
         .returns([]);
@@ -200,16 +201,36 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
         .expect(200)
-        .expect(samples.getBookPrices["9780340831496"])
         .end(done);
 
     });
 
     it.skip("should set the expiry headers correctly");
 
-    it.skip("should retrieve from the cache on subsequent requests");
+    it("should retrieve from the cache on subsequent requests", function (done) {
+      var runTests = function (cb) {
+        request
+          .get("/prices/9780340831496/GB/GBP/foyles")
+          .expect(200)
+          .end(cb);
+      };
 
-    it.skip("should only send one request through to the scrapers");
+      var fetchStub = this.fetchStub;
+
+      async.series(
+        [
+          runTests,
+          this.waitForCache,
+          runTests,
+        ],
+        function (err) {
+          assert.ifError(err);
+          assert.equal(fetchStub.callCount, 1);
+          done();
+        }
+      );
+
+    });
 
     it.skip("should convert currency correctly");
 
