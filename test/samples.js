@@ -28,7 +28,7 @@ module.exports = {
           "total": 25.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": null,
+          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
@@ -48,7 +48,7 @@ module.exports = {
           "total": 30.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": null,
+          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
@@ -67,7 +67,7 @@ module.exports = {
           "total": 32.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": null,
+          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
@@ -106,7 +106,7 @@ module.exports = {
           "total": 33.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": null,
+          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         }
       ],
@@ -136,6 +136,7 @@ module.exports = {
       "total": 25.55,
       "ttl": 86400,
       "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
+      "validUntil": Math.floor(Date.now() / 1000 + 86400),
       "vendor": "foyles"
     },
   },

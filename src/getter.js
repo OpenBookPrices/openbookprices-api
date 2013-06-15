@@ -48,10 +48,15 @@ function cacheBookDetails (data) {
   var cacheKey = bookDetailsCacheKey(isbn);
 
   client.exists(cacheKey, function (err, exists) {
+    if (err) {
+      console.warn(err);
+    }
     if (!err && !exists) {
-      // TODO perhaps put an expiry in here...
       var bookDetails = extractBookDetails(data);
-      client.set(cacheKey, JSON.stringify(bookDetails));
+      client.set(
+        cacheKey,
+        JSON.stringify(bookDetails)
+      );
     }
   });
 
@@ -104,8 +109,6 @@ function extractBookPrices (results) {
         .defaults({country: country})
         .value();
 
-      entry.validUntil = new Date().valueOf()/1000 + entry.ttl;
-
       pricesByCountry[country] = entry;
 
     });
@@ -124,7 +127,7 @@ function cacheBookPrices (bookPrices) {
   _.each(bookPrices, function (entry) {
     var cacheKey = bookPricesCacheKey(entry);
 
-    var ttl = Math.floor(entry.validUntil - new Date().valueOf()/1000);
+    var ttl = Math.floor(entry.validUntil - Date.now()/1000);
 
     client.setex(
       cacheKey,

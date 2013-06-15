@@ -1,12 +1,13 @@
 "use strict";
 
+require("./setup");
+
 var assert = require("assert"),
     async = require("async"),
     fetcher = require("l2b-price-fetchers"),
     getter = require("../src/getter"),
     samples = require("./samples");
 
-require("./setup");
 
 describe("Getter", function () {
 
@@ -33,12 +34,12 @@ describe("Getter", function () {
       [
         // Fetch the book data twice, with a slight delay to let redis cache
         runTests,
-        function (cb) { setTimeout(cb, 50); },
+        test.waitForCache,
         runTests,
 
         // Check that the scape only happened once
         function (cb) {
-          assert(test.fetchStub.calledOnce);
+          assert.equal(test.fetchStub.callCount, 1);
           cb();
         }
       ],
@@ -55,7 +56,6 @@ describe("Getter", function () {
         { isbn: "9780340831496", vendor: "foyles", country: "GB", currency: "GBP"},
         function (err, details) {
           assert.ifError(err);
-          delete details.validUntil;
           assert.deepEqual(
             details,
             samples.getBookPrices["9780340831496"]
@@ -69,7 +69,7 @@ describe("Getter", function () {
       [
         // Fetch the book data twice, with a slight delay to let redis cache
         runTests,
-        function (cb) { setTimeout(cb, 50); },
+        test.waitForCache,
         runTests,
 
         // Check that the scape only happened once

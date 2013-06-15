@@ -1,13 +1,13 @@
 "use strict";
 
+require("./setup");
+
 var assert = require("assert"),
     request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
     async = require("async"),
     apiApp  = require("../"),
     samples = require("./samples");
-
-require("./setup");
 
 request = request(apiApp());
 
@@ -49,6 +49,8 @@ describe("/books", function () {
 
     it("should return correct details for valid isbn", function (done) {
 
+      var delay = this.delay;
+
       var testRequest = function (cb) {
         request
           .get("/books/9780340831496")
@@ -62,7 +64,7 @@ describe("/books", function () {
       async.series(
         [
           testRequest,
-          function (cb) { setTimeout(cb, 50); },
+          delay(50),
           testRequest,
         ],
         function (err) {
