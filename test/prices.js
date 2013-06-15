@@ -232,7 +232,36 @@ describe("/prices", function () {
 
     });
 
+    it("should store and retrieve all data from one scrape", function (done) {
+      var runTests = function (country) {
+        return function (cb) {
+          request
+            .get("/prices/9780340831496/" + country + "/GBP/foyles")
+            .expect(200)
+            .end(cb);
+        };
+      };
+
+      var fetchStub = this.fetchStub;
+
+      async.series(
+        [
+          runTests("GB"),
+          this.waitForCache,
+          runTests("US"),
+        ],
+        function (err) {
+          assert.ifError(err);
+          assert.equal(fetchStub.callCount, 1);
+          done();
+        }
+      );
+
+    });
+
     it.skip("should convert currency correctly");
+
+    it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
 
   });
 
