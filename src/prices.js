@@ -2,7 +2,7 @@
 
 var express         = require("express"),
     getter          = require("./getter"),
-    // _               = require("underscore"),
+    _               = require("underscore"),
     middleware      = require("./middleware"),
     geolocateFromIP = require("./geolocate").geolocateFromIP;
 
@@ -63,13 +63,24 @@ app.get(
 app.get(
   "/:isbn/:countryCode/:currencyCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"]),
-  function (req, res) {
-    // FIXME - put in real data here
-    res.json([
-      { price: 56.78 },
-      { price: 12.34 },
-      { price: 34.56 },
-    ]);
+  function (req, res, next) {
+
+    getter.getBookPrices(
+      {
+        isbn: req.isbn,
+        country: req.country.alpha2,
+        currency: req.currency.code,
+      },
+      function (err, results) {
+        if (err) {
+          return next(err);
+        }
+
+        res.json( _.chain(results).values().value() );
+
+      }
+    );
+
   }
 );
 

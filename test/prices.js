@@ -139,6 +139,52 @@ describe("/prices", function () {
 
     });
 
+    it("should return values after vendor request", function (done) {
+
+      // stub the country so that only foyles is returned
+      this.sandbox
+        .stub(fetcher, "vendorsForCountry")
+        .withArgs("GB")
+        .returns(["foyles"]);
+
+      this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(null, samples.fetch["9780340831496"]);
+
+      async.series(
+        [
+          function (cb) {
+            request
+              .get("/prices/9780340831496/GB/GBP")
+              .expect(200)
+              .expect([{
+                vendor: "foyles",
+                isbn: "9780340831496",
+                country: "GB",
+                currency: "GBP",
+                validUntil: 0
+              }])
+              .end(cb);
+          },
+          function (cb) {
+            request
+              .get("/prices/9780340831496/GB/GBP/foyles")
+              .expect(200)
+              .expect(samples.getBookPricesForVendor["9780340831496"])
+              .end(cb);
+          },
+          function (cb) {
+            request
+              .get("/prices/9780340831496/GB/GBP")
+              .expect(200)
+              .expect([samples.getBookPricesForVendor["9780340831496"]])
+              .end(cb);
+          }
+        ],
+        done
+      );
+    });
+
     it.skip("should set the expiry headers correctly when no responses");
 
     it.skip("should set the expiry headers correctly when some responses");
