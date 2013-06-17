@@ -96,8 +96,8 @@ function getBookPrices (args, done) {
     },
     done
   );
-  
-};
+
+}
 
 
 function getBookPricesForVendor (args, cb) {

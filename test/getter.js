@@ -89,7 +89,7 @@ describe("Getter", function () {
     this.sandbox
       .stub(fetcher, "vendorsForCountry")
       .withArgs("GB")
-      .returns(['foyles']);
+      .returns(["foyles"]);
 
     async.series(
       [
@@ -100,12 +100,14 @@ describe("Getter", function () {
               assert.ifError(err);
               assert.deepEqual(
                 prices,
-                [{
-                  // isbn: "9780340831496",
-                  // country: "GB",
-                  // currency: "GBP",
-                  // vendor: "foyles",
-                }]
+                [
+                  {
+                    // isbn: "9780340831496",
+                    // country: "GB",
+                    // currency: "GBP",
+                    // vendor: "foyles",
+                  }
+                ]
               );
               cb();
             }
