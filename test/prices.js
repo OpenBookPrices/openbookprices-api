@@ -153,7 +153,7 @@ describe("/prices", function () {
   describe("/:isbn/:country/:currency/:vendor", function () {
 
     beforeEach(function () {
-      this.sandbox
+      this.fetchStub = this.sandbox
         .stub(fetcher, "fetch")
         .yields(null, samples.fetch["9780340831496"]);
     });
@@ -183,7 +183,7 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
-      this.fetchStub = this.sandbox
+      this.sandbox
         .stub(fetcher, "vendorsForCountry")
         .withArgs("GB")
         .returns([]);
@@ -201,6 +201,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
         .expect(200)
+        .expect(samples.getBookPrices["9780340831496"])
         .end(done);
 
     });
@@ -212,6 +213,7 @@ describe("/prices", function () {
         request
           .get("/prices/9780340831496/GB/GBP/foyles")
           .expect(200)
+          .expect(samples.getBookPrices["9780340831496"])
           .end(cb);
       };
 
