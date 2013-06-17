@@ -106,9 +106,14 @@ function getBookPricesForVendor (args, cb) {
 
   client.get(cacheKey, function (err, reply) {
     if ( reply ) {
-      cb( null, JSON.parse(reply) );
+      return cb( null, JSON.parse(reply) );
     } else if (args.fromCacheOnly) {
-      cb( null, {} );
+
+      var emptyResponse = _.omit(args, "fromCacheOnly");
+      emptyResponse.validUntil = Math.floor( new Date() / 1000 );
+
+      return cb( null, emptyResponse);
+
     } else {
       fetchFromScrapers(
         args,
@@ -116,7 +121,7 @@ function getBookPricesForVendor (args, cb) {
           if (err) { return cb(err); }
           var bookPrices = extractBookPrices(results);
           cacheBookPrices(bookPrices);
-          cb(null, bookPrices[args.country]);
+          return cb(null, bookPrices[args.country]);
         }
       );
     }

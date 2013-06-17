@@ -102,10 +102,11 @@ describe("Getter", function () {
                 prices,
                 [
                   {
-                    // isbn: "9780340831496",
-                    // country: "GB",
-                    // currency: "GBP",
-                    // vendor: "foyles",
+                    isbn: "9780340831496",
+                    country: "GB",
+                    currency: "GBP",
+                    vendor: "foyles",
+                    validUntil: Math.floor( new Date() / 1000 ),
                   }
                 ]
               );
