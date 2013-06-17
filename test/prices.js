@@ -265,6 +265,8 @@ describe("/prices", function () {
 
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
 
+    it.skip("should not block for longer than 6 seconds if scrape is slow (perhaps 302?)");
+
   });
 
 
