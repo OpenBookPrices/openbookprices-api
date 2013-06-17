@@ -82,4 +82,66 @@ describe("Getter", function () {
     );
   });
 
+
+  it("should return prices for all vendors from cache", function (done) {
+
+    // stub the country so that only foyles is returned
+    this.sandbox
+      .stub(fetcher, "vendorsForCountry")
+      .withArgs("GB")
+      .returns(['foyles']);
+
+    async.series(
+      [
+        function (cb) {
+          getter.getBookPrices(
+            { isbn: "9780340831496", country: "GB", currency: "GBP"},
+            function (err, prices) {
+              assert.ifError(err);
+              assert.deepEqual(
+                prices,
+                [{
+                  // isbn: "9780340831496",
+                  // country: "GB",
+                  // currency: "GBP",
+                  // vendor: "foyles",
+                }]
+              );
+              cb();
+            }
+          );
+        },
+        function (cb) {
+          getter.getBookPricesForVendor(
+            { isbn: "9780340831496", vendor: "foyles", country: "GB", currency: "GBP"},
+            function (err, details) {
+              assert.ifError(err);
+              assert.deepEqual(
+                details,
+                samples.getBookPricesForVendor["9780340831496"]
+              );
+              cb();
+            }
+          );
+        },
+        function (cb) {
+          getter.getBookPrices(
+            { isbn: "9780340831496", country: "GB", currency: "GBP"},
+            function (err, prices) {
+              assert.ifError(err);
+              assert.deepEqual(
+                prices,
+                [samples.getBookPricesForVendor["9780340831496"]]
+              );
+              cb();
+            }
+          );
+        }
+      ],
+      done
+    );
+
+
+  });
+
 });

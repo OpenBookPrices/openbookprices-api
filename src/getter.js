@@ -1,6 +1,7 @@
 "use strict";
 
 var _       = require("underscore"),
+    async   = require("async"),
     client  = require("./redis-client"),
     fetcher = require("l2b-price-fetchers");
 
@@ -81,6 +82,24 @@ function fetchFromScrapers (options, cb) {
 }
 
 
+function getBookPrices (args, done) {
+
+  var vendors = fetcher.vendorsForCountry(args.country);
+
+  async.map(
+    vendors,
+    function (vendor, cb) {
+      getBookPricesForVendor(
+        _.extend({vendor: vendor, fromCacheOnly: true}, args),
+        cb
+      );
+    },
+    done
+  );
+  
+};
+
+
 function getBookPricesForVendor (args, cb) {
 
   var cacheKey = bookPricesCacheKey(args);
@@ -88,6 +107,8 @@ function getBookPricesForVendor (args, cb) {
   client.get(cacheKey, function (err, reply) {
     if ( reply ) {
       cb( null, JSON.parse(reply) );
+    } else if (args.fromCacheOnly) {
+      cb( null, {} );
     } else {
       fetchFromScrapers(
         args,
@@ -153,6 +174,7 @@ function doesVendorServeCountry (vendor, country) {
 
 module.exports = {
   getBookDetails: getBookDetails,
+  getBookPrices: getBookPrices,
   getBookPricesForVendor: getBookPricesForVendor,
   vendorCodes: fetcher.vendorCodes(),
   doesVendorServeCountry: doesVendorServeCountry,
