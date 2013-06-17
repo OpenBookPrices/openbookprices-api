@@ -52,13 +52,13 @@ describe("Getter", function () {
     var test = this;
 
     var runTests = function (cb) {
-      getter.getBookPrices(
+      getter.getBookPricesForVendor(
         { isbn: "9780340831496", vendor: "foyles", country: "GB", currency: "GBP"},
         function (err, details) {
           assert.ifError(err);
           assert.deepEqual(
             details,
-            samples.getBookPrices["9780340831496"]
+            samples.getBookPricesForVendor["9780340831496"]
           );
           cb();
         }

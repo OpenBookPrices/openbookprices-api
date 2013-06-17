@@ -201,7 +201,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
         .expect(200)
-        .expect(samples.getBookPrices["9780340831496"])
+        .expect(samples.getBookPricesForVendor["9780340831496"])
         .end(done);
 
     });
@@ -213,7 +213,7 @@ describe("/prices", function () {
         request
           .get("/prices/9780340831496/GB/GBP/foyles")
           .expect(200)
-          .expect(samples.getBookPrices["9780340831496"])
+          .expect(samples.getBookPricesForVendor["9780340831496"])
           .end(cb);
       };
 

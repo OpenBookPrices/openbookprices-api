@@ -81,7 +81,7 @@ function fetchFromScrapers (options, cb) {
 }
 
 
-function getBookPrices (args, cb) {
+function getBookPricesForVendor (args, cb) {
 
   var cacheKey = bookPricesCacheKey(args);
 
@@ -153,7 +153,7 @@ function doesVendorServeCountry (vendor, country) {
 
 module.exports = {
   getBookDetails: getBookDetails,
-  getBookPrices: getBookPrices,
+  getBookPricesForVendor: getBookPricesForVendor,
   vendorCodes: fetcher.vendorCodes(),
   doesVendorServeCountry: doesVendorServeCountry,
   enterTestMode: function (cb) {

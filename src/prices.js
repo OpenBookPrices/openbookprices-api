@@ -85,7 +85,7 @@ app.get(
     next();
   },
   function (req, res, next) {
-    getter.getBookPrices(
+    getter.getBookPricesForVendor(
       {
         isbn: req.isbn,
         vendor: req.vendor,

@@ -121,7 +121,7 @@ module.exports = {
     },
   },
 
-  getBookPrices: {
+  getBookPricesForVendor: {
     "9780340831496": {
       "amount": 25.55,
       "availability": true,
