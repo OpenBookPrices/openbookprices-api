@@ -42,35 +42,31 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
 
 ## Sample price response
 
-```javascript
+``` json
 {
-  isbn:
-  country:
-  currency:
-  vendor:
-  
-  expires:
+  "isbn": "9780340831496",
+  "country": "GB",
+  "currency": "USD",
+  "vendor": "foyles",
 
-  canSell: bool,
-  canSellComment: '',
+  "preConversionCurrency": "GBP",
 
-  availability:
-  availabilityComment:
+  "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
 
-  shipping:
-  shippingComment:
+  "updated": 123456789,
+  "expires": 123456789,
+  "status": "ok",
+  "retryDelay": null,
 
-  price:
-  total:
-
-  isConverted: true,
-  originalCurrency: 'GBP'
-  originalPrice:
-  originalShipping:
-  originalTotal:
-
-  exchangeRate: 1.23,
-
+  "prices": {
+    "new": {
+      "price": 25.55,
+      "shipping": 0,
+      "total": 25.55,
+      "shippingNote": "Free second class delivery in the UK for orders over £10",
+      "availabilityNote": "Despatched in 1 business day."
+    },
+  }
 }
 ```
 
@@ -80,7 +76,7 @@ Text. The full 13 digit isbn of the book. This is the same as the EAN.
 
 ### country
 
-Text. The two letter ISO country code for the delivery country that these prices are for. 
+Text. The two letter ISO country code for the delivery country that these prices are for.
 
 ### currency
 
@@ -90,71 +86,52 @@ The three letter ISO currency code that represents the currency that the `price`
 
 The LinkToBooks code for the vendor. This is lowercase and is made up of letters, numbers and dashes (`-`).
 
-### canSell
+### preConversionCurrency
 
-Boolean. `true` if the vendor can supply the book in the country requested, `false` if not. If it was not possible to get a price from the vendor (eg because their site is down or the scraper is broken) then this will be `false`.
+Text. Three letter ISO code for the currency that the vendor listed the product in. If this is `null` it was the same as `currency`. If not `null` then the prices have been converted to `currency` from `preConversionCurrency`.
 
-### canSellComment
+### prices
 
-Text. A comment adding more information about the `canSell` status. May be empty if there is no comment.
+Hash. A hash with the keys being the category of the book: `new`, `used`, `ebook`. If a key is missing it means that the `vendor` does not stock that category. If all are missing then the book is not available.
 
-### isAvailable
 
-Bool. `true` if the book is available - eg it is in stock, it can be printed on demand, it is available for preorder. `false` if it is not available - eg it is out of stock, back ordered, no longer available.
-
-This will be set to `false` if `canSell` is `false`.
-
-### availabilityComment
-
-Text. A bit of text describing the exact availability. This will vary from vendor to vendor as it is taken from their site.
-
-### shipping
-
-Float. The cost of shipping this book if it was the only thing purchased from the vendor.
-
-### shippingComment
-
-Text. Possible further details about the shipping - eg "Orders over $20 shipped free".
-
-### price
+#### price
 
 Float. The price of the book.
 
-### total
+#### shipping
+
+Float. The cost of shipping this book if it was the only thing purchased from the vendor.
+
+#### total
 
 Float. The `price` of the book, plus the `shipping`.
 
-### isConverted
+#### shippingNote
 
-Bool. `true` if the vendor does not list prices in the requested `currency` and so a conversion has been made on the server. `false` otherwise.
+Text. Possible further details about the shipping - eg "Orders over $20 shipped free".
 
-### originalCurrency
+#### availabilityNote
 
-Text. Three letter ISO code for the currency that the vendor listed the product in.
+Text. A bit of text describing the exact availability. This will vary from vendor to vendor as it is taken from their site.
 
-### originalPrice
+### updated
 
-Float. The price of the book in the `originalCurrency`.
+Integer. When the information was last updated. Seconds since epoch.
 
-### originalShipping
+### expires
 
-Float. The shipping cost in the `originalCurrency`.
+Integer. When the information expires and should no longer be considered fresh. Seconds since epoch. This value is generally also used for the HTTP Expires header.
 
-### originalTotal
+### status
 
-Float. The total cost in the `originalCurrency`. (`originalPrice` + `originalShipping`).
+Text. A description of the status of this response. Possible values are:
 
-### exchangeRate
+- `ok`: The data is fresh and can be displayed
+- `pending`: The price data is being fetched, but is not available yet.
+- `stale`: The price data has been fetched in the past but is now too old to be trusted. New data is being fetched, but old data is still available.
+- `error`: There is an error fetching the price data.
 
-Float. The amount in 'originalCurrency' that corresponds to 1 of 'currency'. So
-if you request price in USD, but the seller sells in GBP then the 'exchangeRate'
-is the amount in GBP that corresponds to 1 USD. We use the requested currency as
-the 'base' because that will be consistent across the prices in a .
+### retryDelay
 
-
-If the vendor does not sell in the requested currency a conversion will be
-made on the server. As exchange rates vary by time, and by who's doing it, the
-original prices and exchange rates are provided so they can be displayed. If no
-conversion occurred then isConverted is false and the related fields absent.
-Currency fluctuations are not taken into account when setting the freshness.
-
+The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `expires` value should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again).
