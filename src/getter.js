@@ -174,6 +174,11 @@ function doesVendorServeCountry (vendor, country) {
   return _.contains(vendorCountries, vendor);
 }
 
+function isVendorCodeKnown (vendor) {
+  var vendorCodes = fetcher.allVendorCodes();
+  return _.contains(vendorCodes, vendor);
+}
+
 
 
 
@@ -181,8 +186,8 @@ module.exports = {
   getBookDetails: getBookDetails,
   getBookPrices: getBookPrices,
   getBookPricesForVendor: getBookPricesForVendor,
-  vendorCodes: fetcher.vendorCodes(),
   doesVendorServeCountry: doesVendorServeCountry,
+  isVendorCodeKnown: isVendorCodeKnown,
   enterTestMode: function (cb) {
     client.select(15, function (err) {
       if (err) { return cb(err); }
