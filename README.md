@@ -47,11 +47,11 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
   "isbn": "9780340831496",
   "country": "GB",
   "currency": "USD",
-  "vendor": "foyles",
+  "vendor": "test-vendor-1",
 
   "preConversionCurrency": "GBP",
 
-  "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
+  "url": "http://www.test-vendor-1.co.uk/9780340831496",
 
   "updated": 123456789,
   "expires": 123456789,

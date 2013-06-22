@@ -10,9 +10,9 @@ module.exports = {
         "country": "GB",
         "currency": "GBP",
         "isbn": "9780340831496",
-        "vendor": "foyles"
+        "vendor": "test-vendor-1"
       },
-      "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
+      "url": "http://www.test-vendor-1.co.uk/9780340831496",
       "title": "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
       "authors": [
         "Harold McGee"
@@ -35,8 +35,8 @@ module.exports = {
           },
           "isbn": "9780340831496",
           "ttl": 86400,
-          "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "vendor": "foyles"
+          "url": "http://www.test-vendor-1.co.uk/9780340831496",
+          "vendor": "test-vendor-1"
         },
         {
           "countries": [
@@ -56,8 +56,8 @@ module.exports = {
           },
           "isbn": "9780340831496",
           "ttl": 86400,
-          "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "vendor": "foyles"
+          "url": "http://www.test-vendor-1.co.uk/9780340831496",
+          "vendor": "test-vendor-1"
         },
         {
           "countries": [
@@ -76,8 +76,8 @@ module.exports = {
           },
           "isbn": "9780340831496",
           "ttl": 86400,
-          "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "vendor": "foyles"
+          "url": "http://www.test-vendor-1.co.uk/9780340831496",
+          "vendor": "test-vendor-1"
         },
         {
           "countries": [
@@ -116,8 +116,8 @@ module.exports = {
           },
           "isbn": "9780340831496",
           "ttl": 86400,
-          "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "vendor": "foyles"
+          "url": "http://www.test-vendor-1.co.uk/9780340831496",
+          "vendor": "test-vendor-1"
         }
       ],
     },
@@ -146,8 +146,8 @@ module.exports = {
         }
       },
       "isbn": "9780340831496",
-      "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-      "vendor": "foyles"
+      "url": "http://www.test-vendor-1.co.uk/9780340831496",
+      "vendor": "test-vendor-1"
     },
   },
 

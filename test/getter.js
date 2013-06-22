@@ -53,7 +53,7 @@ describe("Getter", function () {
 
     var runTests = function (cb) {
       getter.getBookPricesForVendor(
-        { isbn: "9780340831496", vendor: "foyles", country: "GB", currency: "GBP"},
+        { isbn: "9780340831496", vendor: "test-vendor-1", country: "GB", currency: "GBP"},
         function (err, details) {
           assert.ifError(err);
           assert.deepEqual(
@@ -85,12 +85,6 @@ describe("Getter", function () {
 
   it("should return prices for all vendors from cache", function (done) {
 
-    // stub the country so that only foyles is returned
-    this.sandbox
-      .stub(fetcher, "vendorsForCountry")
-      .withArgs("GB")
-      .returns(["foyles"]);
-
     async.series(
       [
         function (cb) {
@@ -105,7 +99,7 @@ describe("Getter", function () {
                     isbn: "9780340831496",
                     country: "GB",
                     currency: "GBP",
-                    vendor: "foyles",
+                    vendor: "test-vendor-1",
                     expires: Math.floor( new Date() / 1000 ),
                   }
                 ]
@@ -116,7 +110,7 @@ describe("Getter", function () {
         },
         function (cb) {
           getter.getBookPricesForVendor(
-            { isbn: "9780340831496", vendor: "foyles", country: "GB", currency: "GBP"},
+            { isbn: "9780340831496", vendor: "test-vendor-1", country: "GB", currency: "GBP"},
             function (err, details) {
               assert.ifError(err);
               assert.deepEqual(

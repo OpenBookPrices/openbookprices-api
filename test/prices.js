@@ -141,12 +141,6 @@ describe("/prices", function () {
 
     it("should return values after vendor request", function (done) {
 
-      // stub the country so that only foyles is returned
-      this.sandbox
-        .stub(fetcher, "vendorsForCountry")
-        .withArgs("GB")
-        .returns(["foyles"]);
-
       this.sandbox
         .stub(fetcher, "fetch")
         .yields(null, samples.fetch["9780340831496"]);
@@ -158,7 +152,7 @@ describe("/prices", function () {
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
               .expect([{
-                vendor: "foyles",
+                vendor: "test-vendor-1",
                 isbn: "9780340831496",
                 country: "GB",
                 currency: "GBP",
@@ -168,7 +162,7 @@ describe("/prices", function () {
           },
           function (cb) {
             request
-              .get("/prices/9780340831496/GB/GBP/foyles")
+              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(samples.getBookPricesForVendor["9780340831496"])
               .end(cb);
@@ -213,15 +207,15 @@ describe("/prices", function () {
 
     it("should redirect for fixable country, currency and vendor", function (done) {
       request
-        .get("/prices/9780340831496/gb/gBp/fOYLes")
+        .get("/prices/9780340831496/gb/gBp/TEST-veNDor-1")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB/GBP/foyles")
+        .expect("Location", "/prices/9780340831496/GB/GBP/test-vendor-1")
         .end(done);
     });
 
     it("should 200 for good values", function (done) {
       request
-        .get("/prices/9780340831496/GB/GBP/foyles")
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
         .end(done);
     });
@@ -229,13 +223,14 @@ describe("/prices", function () {
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
+      fetcher.vendorsForCountry.restore();
       this.sandbox
         .stub(fetcher, "vendorsForCountry")
         .withArgs("GB")
         .returns([]);
 
       request
-        .get("/prices/9780340831496/GB/GBP/foyles")
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(400)
         .end(done);
     });
@@ -245,7 +240,7 @@ describe("/prices", function () {
     it("should return an accurate response", function (done) {
 
       request
-        .get("/prices/9780340831496/GB/GBP/foyles")
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
         .expect(samples.getBookPricesForVendor["9780340831496"])
         .end(done);
@@ -254,7 +249,7 @@ describe("/prices", function () {
 
     it("should set the expiry headers correctly", function (done) {
       request
-        .get("/prices/9780340831496/GB/GBP/foyles")
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
         .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
         .expect("Cache-Control", "max-age=86400")
@@ -264,7 +259,7 @@ describe("/prices", function () {
     it("should retrieve from the cache on subsequent requests", function (done) {
       var runTests = function (cb) {
         request
-          .get("/prices/9780340831496/GB/GBP/foyles")
+          .get("/prices/9780340831496/GB/GBP/test-vendor-1")
           .expect(200)
           .expect(samples.getBookPricesForVendor["9780340831496"])
           .end(cb);
@@ -291,7 +286,7 @@ describe("/prices", function () {
       var runTests = function (country) {
         return function (cb) {
           request
-            .get("/prices/9780340831496/" + country + "/GBP/foyles")
+            .get("/prices/9780340831496/" + country + "/GBP/test-vendor-1")
             .expect(200)
             .end(cb);
         };

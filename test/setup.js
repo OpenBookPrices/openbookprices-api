@@ -3,7 +3,8 @@
 var sinon   = require("sinon"),
     getter = require("../src/getter"),
     client = require("../src/redis-client"),
-    samples = require("./samples");
+    samples = require("./samples"),
+    fetcher = require("l2b-price-fetchers");
 
 
 // Put the getter into test mode. This means using a nonstandard redis database
@@ -33,6 +34,18 @@ beforeEach(function () {
       sandbox.clock.tick(delay);
     };
   };
+
+  // Stub the tester so that we only use our test vendors.
+  sandbox
+    .stub(fetcher, "allVendorCodes")
+    .returns(["test-vendor-1", "test-vendor-2"]);
+
+  // stub the country so that only test-vendor-1 is returned
+  var vendorsForCountry = this.sandbox
+    .stub(fetcher, "vendorsForCountry");
+  vendorsForCountry.withArgs("GB").returns(["test-vendor-1"]);
+  vendorsForCountry.withArgs("US").returns(["test-vendor-1"]);
+
 
 });
 
