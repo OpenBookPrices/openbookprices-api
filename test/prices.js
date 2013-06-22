@@ -162,7 +162,7 @@ describe("/prices", function () {
                 isbn: "9780340831496",
                 country: "GB",
                 currency: "GBP",
-                validUntil: 0
+                expires: 0
               }])
               .end(cb);
           },

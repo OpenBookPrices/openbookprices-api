@@ -110,7 +110,7 @@ function getBookPricesForVendor (args, cb) {
     } else if (args.fromCacheOnly) {
 
       var emptyResponse = _.omit(args, "fromCacheOnly");
-      emptyResponse.validUntil = Math.floor( new Date() / 1000 );
+      emptyResponse.expires = Math.floor( new Date() / 1000 );
 
       return cb( null, emptyResponse);
 
@@ -132,15 +132,15 @@ function getBookPricesForVendor (args, cb) {
 function extractBookPrices (results) {
   var pricesByCountry = {};
 
-  _.each(results.prices, function (price) {
-    _.each( price.countries, function (country) {
+  _.each(results.entries, function (entry) {
+    _.each( entry.countries, function (country) {
 
-      var entry = _.chain(price)
-        .omit("countries")
+      var countryPrice = _.chain(entry)
+        .omit("countries", "ttl")
         .defaults({country: country})
         .value();
 
-      pricesByCountry[country] = entry;
+      pricesByCountry[country] = countryPrice;
 
     });
   });
@@ -158,7 +158,7 @@ function cacheBookPrices (bookPrices) {
   _.each(bookPrices, function (entry) {
     var cacheKey = bookPricesCacheKey(entry);
 
-    var ttl = Math.floor(entry.validUntil - Date.now()/1000);
+    var ttl = Math.floor(entry.expires - Date.now()/1000);
 
     client.setex(
       cacheKey,

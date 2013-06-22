@@ -106,7 +106,7 @@ describe("Getter", function () {
                     country: "GB",
                     currency: "GBP",
                     vendor: "foyles",
-                    validUntil: Math.floor( new Date() / 1000 ),
+                    expires: Math.floor( new Date() / 1000 ),
                   }
                 ]
               );

@@ -2,80 +2,80 @@ module.exports = {
 
   fetch: {
     "9780340831496": {
-      args: {
-        vendor: "foyles",
-        isbn: "9780340831496",
-        country: "GB",
-        currency: "GBP",
+      "args": {
+        "country": "GB",
+        "currency": "GBP",
+        "isbn": "9780340831496",
+        "vendor": "foyles"
       },
-      url: "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-      title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
-      authors: [ "Harold McGee" ],
-      prices: [
+      "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
+      "title": "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
+      "authors": [
+        "Harold McGee"
+      ],
+      "entries": [
         {
-          "amount": 25.55,
-          "availability": true,
-          "availabilityComment": "Despatched in 1 business day.",
-          "canSell": true,
-          "condition": "new",
           "countries": [
             "GB"
           ],
           "currency": "GBP",
+          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "formats": {
+            "new": {
+              "availabilityNote": "Despatched in 1 business day.",
+              "price": 25.55,
+              "shipping": 0,
+              "shippingNote": "Free second class delivery in the UK for orders over £10",
+              "total": 25.55
+            }
+          },
           "isbn": "9780340831496",
-          "shipping": 0,
-          "shippingComment": "Free second class delivery in the UK for orders over £10",
-          "total": 25.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
-          "amount": 25.55,
-          "availability": true,
-          "availabilityComment": "Despatched in 1 business day.",
-          "canSell": true,
-          "condition": "new",
           "countries": [
             "AT", "BE", "DK", "FR", "DE", "GR", "IS", "IE", "IT", "LU", "NL",
             "PT", "ES", "SE", "CH"
           ],
           "currency": "GBP",
+          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "formats": {
+            "new": {
+              "availabilityNote": "Despatched in 1 business day.",
+              "price": 25.55,
+              "shipping": 5,
+              "shippingNote": "Air mail from UK: 4 - 14 days",
+              "total": 30.55
+            }
+          },
           "isbn": "9780340831496",
-          "shipping": 5,
-          "shippingComment": "Air mail from UK: 4 - 14 days",
-          "total": 30.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
-          "amount": 25.55,
-          "availability": true,
-          "availabilityComment": "Despatched in 1 business day.",
-          "canSell": true,
-          "condition": "new",
           "countries": [
             "US", "CA"
           ],
           "currency": "GBP",
+          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "formats": {
+            "new": {
+              "availabilityNote": "Despatched in 1 business day.",
+              "price": 25.55,
+              "shipping": 7,
+              "shippingNote": "Air mail from UK: 4 - 14 days",
+              "total": 32.55
+            }
+          },
           "isbn": "9780340831496",
-          "shipping": 7,
-          "shippingComment": "Air mail from UK: 4 - 14 days",
-          "total": 32.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         },
         {
-          "amount": 25.55,
-          "availability": true,
-          "availabilityComment": "Despatched in 1 business day.",
-          "canSell": true,
-          "condition": "new",
           "countries": [
             "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS",
             "AU", "AW", "AZ", "BA", "BB", "BD", "BF", "BG", "BH", "BI", "BJ",
@@ -100,13 +100,19 @@ module.exports = {
             "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"
           ],
           "currency": "GBP",
+          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "formats": {
+            "new": {
+              "availabilityNote": "Despatched in 1 business day.",
+              "price": 25.55,
+              "shipping": 8,
+              "shippingNote": "Air mail from UK: 7 - 21 days",
+              "total": 33.55
+            }
+          },
           "isbn": "9780340831496",
-          "shipping": 8,
-          "shippingComment": "Air mail from UK: 7 - 21 days",
-          "total": 33.55,
           "ttl": 86400,
           "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-          "validUntil": Math.floor(Date.now() / 1000 + 86400),
           "vendor": "foyles"
         }
       ],
@@ -123,20 +129,20 @@ module.exports = {
 
   getBookPricesForVendor: {
     "9780340831496": {
-      "amount": 25.55,
-      "availability": true,
-      "availabilityComment": "Despatched in 1 business day.",
-      "canSell": true,
-      "condition": "new",
       "country": "GB",
       "currency": "GBP",
+      "expires": Math.floor(Date.now() / 1000 + 86400),
+      "formats": {
+        "new": {
+          "availabilityNote": "Despatched in 1 business day.",
+          "price": 25.55,
+          "shipping": 0,
+          "shippingNote": "Free second class delivery in the UK for orders over £10",
+          "total": 25.55
+        }
+      },
       "isbn": "9780340831496",
-      "shipping": 0,
-      "shippingComment": "Free second class delivery in the UK for orders over £10",
-      "total": 25.55,
-      "ttl": 86400,
       "url": "http://www.foyles.co.uk/witem/food-drink/mcgee-on-food-and-cooking-an,harold-mcgee-9780340831496",
-      "validUntil": Math.floor(Date.now() / 1000 + 86400),
       "vendor": "foyles"
     },
   },
