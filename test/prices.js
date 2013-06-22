@@ -252,7 +252,14 @@ describe("/prices", function () {
 
     });
 
-    it.skip("should set the expiry headers correctly");
+    it("should set the expiry headers correctly", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP/foyles")
+        .expect(200)
+        .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
+        .expect("Cache-Control", "max-age=86400")
+        .end(done);
+    });
 
     it("should retrieve from the cache on subsequent requests", function (done) {
       var runTests = function (cb) {
