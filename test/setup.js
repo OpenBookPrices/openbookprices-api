@@ -2,7 +2,8 @@
 
 var sinon   = require("sinon"),
     getter = require("../src/getter"),
-    client = require("../src/redis-client");
+    client = require("../src/redis-client"),
+    samples = require("./samples");
 
 
 // Put the getter into test mode. This means using a nonstandard redis database
@@ -14,6 +15,7 @@ beforeEach(function (done) {
 // Create a fresh Sinon sandbox before every test
 beforeEach(function () {
   var sandbox = this.sandbox = sinon.sandbox.create({ useFakeTimers: true });
+  sandbox.clock.tick(samples.zeroTime);
 
   this.waitForCache = function (cb) {
     var commandQueue = "command_queue";

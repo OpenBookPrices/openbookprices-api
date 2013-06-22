@@ -1,4 +1,8 @@
+var zeroTime = 1000000000 * 1000;
+
 module.exports = {
+
+  zeroTime: zeroTime,
 
   fetch: {
     "9780340831496": {
@@ -19,7 +23,7 @@ module.exports = {
             "GB"
           ],
           "currency": "GBP",
-          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "expires": zeroTime/1000 + 86400,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -40,7 +44,7 @@ module.exports = {
             "PT", "ES", "SE", "CH"
           ],
           "currency": "GBP",
-          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "expires": zeroTime/1000 + 86400,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -60,7 +64,7 @@ module.exports = {
             "US", "CA"
           ],
           "currency": "GBP",
-          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "expires": zeroTime/1000 + 86400,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -100,7 +104,7 @@ module.exports = {
             "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"
           ],
           "currency": "GBP",
-          "expires": Math.floor(Date.now() / 1000 + 86400),
+          "expires": zeroTime/1000 + 86400,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -131,7 +135,7 @@ module.exports = {
     "9780340831496": {
       "country": "GB",
       "currency": "GBP",
-      "expires": Math.floor(Date.now() / 1000 + 86400),
+      "expires": zeroTime/1000 + 86400,
       "formats": {
         "new": {
           "availabilityNote": "Despatched in 1 business day.",
@@ -148,3 +152,5 @@ module.exports = {
   },
 
 };
+
+
