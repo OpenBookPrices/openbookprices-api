@@ -115,13 +115,6 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it("should 200 for good values", function (done) {
-      request
-        .get("/prices/9780340831496/GB/GBP")
-        .expect(200)
-        .end(done);
-    });
-
     it("should not initiate any scrape requests", function (done) {
 
       var fetchStub = this.sandbox
@@ -141,13 +134,15 @@ describe("/prices", function () {
 
     it("should return values after vendor request", function (done) {
 
-      this.sandbox
+      var fetchStub = this.sandbox
         .stub(fetcher, "fetch")
         .yields(null, samples.fetch["9780340831496"]);
 
       async.series(
         [
           function (cb) {
+            // Get the list of prices, should be empty. Should not call the
+            // fetch command.
             request
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
@@ -158,16 +153,24 @@ describe("/prices", function () {
                 currency: "GBP",
                 expires: samples.zeroTime/1000,
               }])
-              .end(cb);
+              .end(function (err) {
+                assert.ifError(err);
+                assert.equal(fetchStub.callCount, 0);
+                cb();
+              });
           },
           function (cb) {
+            // hit the vendor endpoint to store the results in cache.
             request
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(samples.getBookPricesForVendor["9780340831496"])
               .end(cb);
           },
+          this.waitForCache,
           function (cb) {
+            // Get the currency endpoint and check that cached values are now
+            // included.
             request
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
