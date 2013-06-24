@@ -240,32 +240,23 @@ describe("/prices", function () {
 
     it.skip("should return a try-again response if the scraper times out");
 
-    it("should return an accurate response", function (done) {
-
-      request
-        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
-        .expect(200)
-        .expect(samples.getBookPricesForVendor["9780340831496"])
-        .end(done);
-
-    });
-
-    it("should set the expiry headers correctly", function (done) {
+    it("should return a correctly scraped response", function (done) {
 
       // tick ahead a fraction of a second to test that the max-age is rounded
       // down to an integer.
-      this.sandbox.clock.tick(300);
-
-      // Work out what we expect the max age to be
-      var maxAge = Math.floor(86400 - 0.3);
+      var tickAmount = 300;
+      this.sandbox.clock.tick(tickAmount);
 
       request
         .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
         .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
-        .expect("Cache-Control", "max-age=" + maxAge)
+        .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
+        .expect(samples.getBookPricesForVendor["9780340831496"])
         .end(done);
+
     });
+
 
     it("should retrieve from the cache on subsequent requests", function (done) {
       var runTests = function (cb) {
