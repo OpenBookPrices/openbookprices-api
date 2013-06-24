@@ -80,7 +80,7 @@ describe("/prices", function () {
     });
 
     it("should cope with country that has no currency", function (done) {
-      // AQ in Antartica, which has no currency
+      // AQ is Antartica, which has no currency
       request
         .get("/prices/9780340831496/AQ")
         .expect(301)
