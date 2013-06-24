@@ -216,13 +216,6 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it("should 200 for good values", function (done) {
-      request
-        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
-        .expect(200)
-        .end(done);
-    });
-
     it("should 400 if the vendor does not sell to that country", function (done) {
 
       // stub the country so that GB is not accepted
