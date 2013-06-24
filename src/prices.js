@@ -113,7 +113,7 @@ app.get(
         res.header("Expires", expires.toString());
 
         // Set the max age header
-        var maxAge = details.expires - Date.now() / 1000;
+        var maxAge = Math.floor(details.expires - Date.now() / 1000);
         res.header(
           "Cache-Control",
           maxAge > 0 ? "max-age=" + maxAge : "no-cache"

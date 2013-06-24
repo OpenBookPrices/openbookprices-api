@@ -251,11 +251,19 @@ describe("/prices", function () {
     });
 
     it("should set the expiry headers correctly", function (done) {
+
+      // tick ahead a fraction of a second to test that the max-age is rounded
+      // down to an integer.
+      this.sandbox.clock.tick(300);
+
+      // Work out what we expect the max age to be
+      var maxAge = Math.floor(86400 - 0.3);
+
       request
         .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
         .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
-        .expect("Cache-Control", "max-age=86400")
+        .expect("Cache-Control", "max-age=" + maxAge)
         .end(done);
     });
 
