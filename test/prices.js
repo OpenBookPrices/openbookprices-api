@@ -274,7 +274,6 @@ describe("/prices", function () {
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(expectedData)
-              // .expect("Expires", (new Date(Date.now() + tickAmountSeconds*1000)).toString())
               // .expect("Cache-Control", "max-age=2")
               .end(cb);
           },
@@ -285,7 +284,6 @@ describe("/prices", function () {
             request
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
-              // .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
               // .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
               .expect(samples.getBookPricesForVendor["9780340831496"])
               .end(cb);
@@ -307,7 +305,6 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
-        .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
         .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
         .expect(samples.getBookPricesForVendor["9780340831496"])
         .end(done);

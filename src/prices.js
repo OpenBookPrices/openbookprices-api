@@ -125,8 +125,7 @@ app.get(
           return next(err);
         }
 
-        // Set the expiry header. Make it the same as the scrape expires.
-        var expires = new Date(details.expires * 1000);
+        // Set the cache header. Make it the same as the scrape expires.
         var maxAge = Math.floor(details.expires - Date.now() / 1000);
 
         if (!res.headerSent) {
@@ -134,7 +133,6 @@ app.get(
             "Cache-Control",
             maxAge > 0 ? "max-age=" + maxAge : "no-cache"
           );
-          res.header("Expires", expires.toString());
           res.json(details);
         }
       }
