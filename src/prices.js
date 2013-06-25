@@ -84,7 +84,6 @@ app.get(
   }
 );
 
-
 app.get(
   "/:isbn/:countryCode/:currencyCode/:vendorCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode", "vendorCode"]),
@@ -96,13 +95,31 @@ app.get(
     next();
   },
   function (req, res, next) {
-    getter.getBookPricesForVendor(
-      {
-        isbn: req.isbn,
-        vendor: req.vendor,
-        country: req.country.alpha2,
-        currency: req.currency.code,
+
+    var getterArgs = {
+      isbn: req.isbn,
+      vendor: req.vendor,
+      country: req.country.alpha2,
+      currency: req.currency.code,
+    };
+
+    // The scrape may take too long, so set a timeout. If it triggers send a pending
+    // response to the client and let the scrape continue in the background.
+    setTimeout(
+      function () {
+        // Set the max age header
+        var maxAge = 2 * 1000; // FIXME - set in config
+        var content = getter.createPendingResponse(getterArgs);
+        if (!res.headerSent) {
+          res.header("Cache-Control", "max-age=" + maxAge);
+          res.json(content);
+        }
       },
+      4000 // FIXME - should be in config
+    );
+
+    getter.getBookPricesForVendor(
+      getterArgs,
       function (err, details) {
         if (err) {
           return next(err);
@@ -110,16 +127,16 @@ app.get(
 
         // Set the expiry header. Make it the same as the scrape expires.
         var expires = new Date(details.expires * 1000);
-        res.header("Expires", expires.toString());
-
-        // Set the max age header
         var maxAge = Math.floor(details.expires - Date.now() / 1000);
-        res.header(
-          "Cache-Control",
-          maxAge > 0 ? "max-age=" + maxAge : "no-cache"
-        );
 
-        res.json(details);
+        if (!res.headerSent) {
+          res.header(
+            "Cache-Control",
+            maxAge > 0 ? "max-age=" + maxAge : "no-cache"
+          );
+          res.header("Expires", expires.toString());
+          res.json(details);
+        }
       }
     );
   }

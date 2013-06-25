@@ -231,7 +231,71 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it.skip("should return a try-again response if the scraper times out");
+    it("should return a try-again response if the scraper times out", function (done) {
+
+      var clock = this.sandbox.clock;
+      var tickAmountSeconds = 6;
+
+      fetcher.fetch.restore();
+      this.fetchStub = this.sandbox
+        .stub(fetcher, "fetch", function (args, cb) {
+          setTimeout(
+            function () {
+              cb(null, samples.fetch["9780340831496"]);
+            },
+            (tickAmountSeconds - 1 ) * 1000
+          );
+
+          // advance the clock
+          clock.tick(tickAmountSeconds*1000);
+        });
+
+
+        //samples.getBookPricesForVendor["9780340831496"];
+      var expectedData = {
+        status: "pending",
+        retryDelay: 2,
+        country: "GB",
+        currency: "GBP",
+        expires: samples.zeroTime/1000 + tickAmountSeconds,
+        formats: {},
+        isbn: "9780340831496",
+        url: null,
+        vendor: "test-vendor-1",
+      };
+
+      // console.dir(expectedData);
+
+      async.series(
+        [
+          function (cb) {
+            // send the request that should timeout and give us a pending response
+            request
+              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+              .expect(200)
+              .expect(expectedData)
+              // .expect("Expires", (new Date(Date.now() + tickAmountSeconds*1000)).toString())
+              // .expect("Cache-Control", "max-age=2")
+              .end(cb);
+          },
+          this.delay(2000),     // wait a little more for the scraper to return
+          this.waitForCache,    // let results get saved to cache
+          function (cb) {
+            // Fire off another request that should get a completed scrape
+            request
+              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+              .expect(200)
+              // .expect("Expires", (new Date( samples.zeroTime + 86400*1000)).toString())
+              // .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
+              .expect(samples.getBookPricesForVendor["9780340831496"])
+              .end(cb);
+          }
+        ],
+        done
+      );
+
+
+    });
 
     it("should return a correctly scraped response", function (done) {
 
