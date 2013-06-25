@@ -100,7 +100,9 @@ describe("Getter", function () {
                     country: "GB",
                     currency: "GBP",
                     vendor: "test-vendor-1",
-                    expires: Math.floor( new Date() / 1000 ),
+                    ttl: 0,
+                    updated: null,
+                    status: "FIXME",
                   }
                 ]
               );

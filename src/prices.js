@@ -125,8 +125,8 @@ app.get(
           return next(err);
         }
 
-        // Set the cache header. Make it the same as the scrape expires.
-        var maxAge = Math.floor(details.expires - Date.now() / 1000);
+        // Set the cache header. Make it the same as the scrape ttl.
+        var maxAge = Math.floor(details.updated + details.ttl - Date.now() / 1000);
 
         if (!res.headerSent) {
           res.header(

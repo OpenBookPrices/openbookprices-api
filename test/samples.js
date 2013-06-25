@@ -23,7 +23,7 @@ module.exports = {
             "GB"
           ],
           "currency": "GBP",
-          "expires": zeroTime/1000 + 86400,
+          "updated": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -44,7 +44,7 @@ module.exports = {
             "PT", "ES", "SE", "CH"
           ],
           "currency": "GBP",
-          "expires": zeroTime/1000 + 86400,
+          "updated": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -64,7 +64,7 @@ module.exports = {
             "US", "CA"
           ],
           "currency": "GBP",
-          "expires": zeroTime/1000 + 86400,
+          "updated": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -104,7 +104,7 @@ module.exports = {
             "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"
           ],
           "currency": "GBP",
-          "expires": zeroTime/1000 + 86400,
+          "updated": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -135,7 +135,8 @@ module.exports = {
     "9780340831496": {
       "country": "GB",
       "currency": "GBP",
-      "expires": zeroTime/1000 + 86400,
+      "updated": zeroTime/1000,
+      "ttl": 86400,
       "formats": {
         "new": {
           "availabilityNote": "Despatched in 1 business day.",

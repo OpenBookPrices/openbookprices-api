@@ -110,7 +110,10 @@ function getBookPricesForVendor (args, cb) {
     } else if (args.fromCacheOnly) {
 
       var emptyResponse = _.omit(args, "fromCacheOnly");
-      emptyResponse.expires = Math.floor( new Date() / 1000 );
+      emptyResponse.ttl = 0;
+      emptyResponse.updated = null;
+      emptyResponse.status = "FIXME";
+
 
       return cb( null, emptyResponse);
 
@@ -136,7 +139,7 @@ function extractBookPrices (results) {
     _.each( entry.countries, function (country) {
 
       var countryPrice = _.chain(entry)
-        .omit("countries", "ttl")
+        .omit("countries")
         .defaults({country: country})
         .value();
 
@@ -158,7 +161,7 @@ function cacheBookPrices (bookPrices) {
   _.each(bookPrices, function (entry) {
     var cacheKey = bookPricesCacheKey(entry);
 
-    var ttl = Math.floor(entry.expires - Date.now()/1000);
+    var ttl = Math.floor(entry.updated + entry.ttl - Date.now()/1000);
 
     client.setex(
       cacheKey,
@@ -187,7 +190,8 @@ function createPendingResponse (args) {
       formats: {},
       url: null,
       retryDelay: 2, // FIXME
-      expires: Math.floor(Date.now()/1000) + 2,
+      updated: null,
+      ttl: 0,
     },
     args
   );

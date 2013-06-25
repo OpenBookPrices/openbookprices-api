@@ -151,7 +151,9 @@ describe("/prices", function () {
                 isbn: "9780340831496",
                 country: "GB",
                 currency: "GBP",
-                expires: samples.zeroTime/1000,
+                ttl: 0,
+                updated: null,
+                status: "FIXME"
               }])
               .end(function (err) {
                 assert.ifError(err);
@@ -257,7 +259,8 @@ describe("/prices", function () {
         retryDelay: 2,
         country: "GB",
         currency: "GBP",
-        expires: samples.zeroTime/1000 + tickAmountSeconds,
+        updated: null,
+        ttl: 0,
         formats: {},
         isbn: "9780340831496",
         url: null,

@@ -54,7 +54,7 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
   "url": "http://www.test-vendor-1.co.uk/9780340831496",
 
   "updated": 123456789,
-  "expires": 123456789,
+  "ttl":     86400,
   "status": "ok",
   "retryDelay": null,
 
@@ -119,9 +119,9 @@ Text. A bit of text describing the exact availability. This will vary from vendo
 
 Integer. When the information was last updated. Seconds since epoch.
 
-### expires
+### ttl
 
-Integer. When the information expires and should no longer be considered fresh. Seconds since epoch. This value is generally also used for the HTTP Expires header.
+Integer. How many seconds from `updated` this information should be considered fresh for.
 
 ### status
 
@@ -134,4 +134,4 @@ Text. A description of the status of this response. Possible values are:
 
 ### retryDelay
 
-The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `expires` value should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again).
+The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `updated` and `ttl` values should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again).
