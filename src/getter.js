@@ -180,9 +180,22 @@ function isVendorCodeKnown (vendor) {
 }
 
 
+function createPendingResponse (args) {
+  return _.extend(
+    {
+      status: "pending",
+      formats: {},
+      url: null,
+      retryDelay: 2, // FIXME
+      expires: Math.floor(Date.now()/1000) + 2,
+    },
+    args
+  );
+}
 
 
 module.exports = {
+  createPendingResponse: createPendingResponse,
   getBookDetails: getBookDetails,
   getBookPrices: getBookPrices,
   getBookPricesForVendor: getBookPricesForVendor,
