@@ -133,6 +133,8 @@ module.exports = {
 
   getBookPricesForVendor: {
     "9780340831496": {
+      "status": "ok",
+      "retryDelay": null,
       "country": "GB",
       "currency": "GBP",
       "updated": zeroTime/1000,
@@ -162,6 +164,27 @@ module.exports = {
       isbn: "9780340831496",
       url: null,
       vendor: "test-vendor-1",
+    },
+
+    "9780340831496-stale": {
+      "status": "stale",
+      "retryDelay": 2,
+      "country": "GB",
+      "currency": "GBP",
+      "updated": zeroTime/1000,
+      "ttl": 86400,
+      "formats": {
+        "new": {
+          "availabilityNote": "Despatched in 1 business day.",
+          "price": 25.55,
+          "shipping": 0,
+          "shippingNote": "Free second class delivery in the UK for orders over £10",
+          "total": 25.55
+        }
+      },
+      "isbn": "9780340831496",
+      "url": "http://www.test-vendor-1.co.uk/9780340831496",
+      "vendor": "test-vendor-1"
     },
 
   },

@@ -101,6 +101,36 @@ function getBookPrices (args, done) {
 
 function getBookPricesForVendor (args, cb) {
 
+  // Wrap the callback so that we can tidy up the
+  cb = _.wrap(cb, function (func, err, rawResult) {
+
+    // Let us alter the top level attributes without affecting that which is
+    // being stored in the cache.
+    var result = _.clone(rawResult);
+
+    if ( result.updated ) {
+      result.status = Date.now()/1000 < result.updated + result.ttl ? "ok" : "stale";
+    } else {
+      result.status = args.fromCacheOnly ? "unfetched" : "pending";
+    }
+
+    switch (result.status) {
+    case "unfetched":
+      result.retryDelay = config.retryDelayForUnfetched;
+      break;
+    case "pending":
+      result.retryDelay = config.retryDelayForPending;
+      break;
+    case "stale":
+      result.retryDelay = config.retryDelayForStale;
+      break;
+    default:
+      result.retryDelay = null;
+    }
+
+    func(err, result);
+  });
+
   var cacheKey = bookPricesCacheKey(args);
 
   client.get(cacheKey, function (err, reply) {
@@ -111,9 +141,6 @@ function getBookPricesForVendor (args, cb) {
       var emptyResponse = _.omit(args, "fromCacheOnly");
       emptyResponse.ttl = 0;
       emptyResponse.updated = null;
-      emptyResponse.status = "FIXME";
-
-
       return cb( null, emptyResponse);
 
     } else {
@@ -129,6 +156,7 @@ function getBookPricesForVendor (args, cb) {
     }
   });
 }
+
 
 
 function extractBookPrices (results) {

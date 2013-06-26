@@ -6,7 +6,8 @@ var assert = require("assert"),
     async = require("async"),
     fetcher = require("l2b-price-fetchers"),
     getter = require("../src/getter"),
-    samples = require("./samples");
+    samples = require("./samples"),
+    config = require("../src/config");
 
 
 describe("Getter", function () {
@@ -102,7 +103,8 @@ describe("Getter", function () {
                     vendor: "test-vendor-1",
                     ttl: 0,
                     updated: null,
-                    status: "FIXME",
+                    status: "unfetched",
+                    retryDelay: config.retryDelayForUnfetched,
                   }
                 ]
               );

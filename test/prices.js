@@ -154,7 +154,8 @@ describe("/prices", function () {
                 currency: "GBP",
                 ttl: 0,
                 updated: null,
-                status: "FIXME"
+                status: "unfetched",
+                retryDelay: config.retryDelayForUnfetched,
               }])
               .end(function (err) {
                 assert.ifError(err);
@@ -234,9 +235,14 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it("should return a try-again response if the scraper times out", function (done) {
 
-      var clock = this.sandbox.clock;
+    it("should retrieve, scrape, store and serve correctly", function (done) {
+
+      // var log = require("util").log;
+      var clock        = this.sandbox.clock;
+      // var delay        = this.delay;
+      // var waitForCache = this.waitForCache;
+
 
       fetcher.fetch.restore();
       this.fetchStub = this.sandbox
@@ -248,40 +254,65 @@ describe("/prices", function () {
             (config.getBookPricesForVendorTimeout + 1 ) * 1000
           );
 
-          // advance the clock
-          clock.tick( config.getBookPricesForVendorTimeout * 1000 );
+          clock.tick(config.getBookPricesForVendorTimeout * 1000);
         });
 
+      async.series([
+
+        // cache is empty, run a scrape that times out
+        function (cb) {
+          request
+            .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+            .expect(200)
+            .expect(samples.getBookPricesForVendor["9780340831496-pending"])
+            // .expect("Cache-Control", "max-age=2") // FIXME
+            .end(cb);
+        },
+
+        // fetch again, should get a response at once
+        this.delay(2000),     // wait a little more for the scraper to return
+        this.waitForCache,    // let results get saved to cache
+        function (cb) {
+
+          var expectedContent = samples.getBookPricesForVendor["9780340831496"];
+
+          var expectedMaxAge = Math.floor(expectedContent.updated + expectedContent.ttl - Date.now()/1000);
+
+          // Fire off another request that should get a completed scrape
+          request
+            .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+            .expect(200)
+            .expect("Cache-Control", "max-age=" + expectedMaxAge)
+            .expect(expectedContent)
+            .end(cb);
+        },
+
+        // wait for ttl to pass
+        function (cb) {
+          var expectedContent = samples.getBookPricesForVendor["9780340831496"];
+          var expectedMaxAge = Math.floor(expectedContent.updated + expectedContent.ttl - Date.now()/1000);
+          clock.tick(expectedMaxAge * 1000);
+          cb();
+        },
+
+        // should get a pending response with stale data
+        function (cb) {
+          request
+            .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+            .expect(200)
+            .expect(samples.getBookPricesForVendor["9780340831496-stale"])
+            // .expect("Cache-Control", "max-age=2") // FIXME
+            .end(cb);
+        },
+
+        // let scrape complete, should have fresh data
 
 
-      async.series(
-        [
-          function (cb) {
-            // send the request that should timeout and give us a pending response
-            request
-              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
-              .expect(200)
-              .expect(samples.getBookPricesForVendor["9780340831496-pending"])
-              // .expect("Cache-Control", "max-age=2") // FIXME
-              .end(cb);
-          },
-          this.delay(2000),     // wait a little more for the scraper to return
-          this.waitForCache,    // let results get saved to cache
-          function (cb) {
-            // Fire off another request that should get a completed scrape
-            request
-              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
-              .expect(200)
-              // .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000)) // FIXME
-              .expect(samples.getBookPricesForVendor["9780340831496"])
-              .end(cb);
-          }
-        ],
-        done
-      );
+      ], done);
 
 
     });
+
 
     it("should return a correctly scraped response", function (done) {
 
@@ -356,8 +387,6 @@ describe("/prices", function () {
     it.skip("should convert currency correctly");
 
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
-
-    it.skip("should not block for longer than 6 seconds if scrape is slow (perhaps 302?)");
 
   });
 
