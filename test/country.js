@@ -65,8 +65,4 @@ describe("/country", function () {
 
 
   });
-
-  describe("/:slug", function () {
-    // FIXME
-  });
 });

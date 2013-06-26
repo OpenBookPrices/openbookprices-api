@@ -4,7 +4,8 @@ var express         = require("express"),
     getter          = require("./getter"),
     _               = require("underscore"),
     middleware      = require("./middleware"),
-    geolocateFromIP = require("./geolocate").geolocateFromIP;
+    geolocateFromIP = require("./geolocate").geolocateFromIP,
+    config          = require("./config");
 
 var FALLBACK_COUNTRY  = "US";
 var FALLBACK_CURRENCY = "USD";
@@ -108,14 +109,14 @@ app.get(
     setTimeout(
       function () {
         // Set the max age header
-        var maxAge = 2 * 1000; // FIXME - set in config
         var content = getter.createPendingResponse(getterArgs);
+        var maxAge = content.retryDelay;
         if (!res.headerSent) {
           res.header("Cache-Control", "max-age=" + maxAge);
           res.json(content);
         }
       },
-      4000 // FIXME - should be in config
+      config.getBookPricesForVendorTimeout * 1000
     );
 
     getter.getBookPricesForVendor(

@@ -7,7 +7,8 @@ var assert = require("assert"),
     request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../"),
-    samples = require("./samples");
+    samples = require("./samples"),
+    config  = require("../src/config");
 
 request = request(apiApp());
 
@@ -236,7 +237,6 @@ describe("/prices", function () {
     it("should return a try-again response if the scraper times out", function (done) {
 
       var clock = this.sandbox.clock;
-      var tickAmountSeconds = 6;
 
       fetcher.fetch.restore();
       this.fetchStub = this.sandbox
@@ -245,11 +245,11 @@ describe("/prices", function () {
             function () {
               cb(null, samples.fetch["9780340831496"]);
             },
-            (tickAmountSeconds - 1 ) * 1000
+            (config.getBookPricesForVendorTimeout + 1 ) * 1000
           );
 
           // advance the clock
-          clock.tick(tickAmountSeconds*1000);
+          clock.tick( config.getBookPricesForVendorTimeout * 1000 );
         });
 
 
@@ -277,7 +277,7 @@ describe("/prices", function () {
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(expectedData)
-              // .expect("Cache-Control", "max-age=2")
+              // .expect("Cache-Control", "max-age=2") // FIXME
               .end(cb);
           },
           this.delay(2000),     // wait a little more for the scraper to return
@@ -287,7 +287,7 @@ describe("/prices", function () {
             request
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
-              // .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
+              // .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000)) // FIXME
               .expect(samples.getBookPricesForVendor["9780340831496"])
               .end(cb);
           }

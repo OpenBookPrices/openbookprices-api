@@ -3,9 +3,8 @@
 var _       = require("underscore"),
     async   = require("async"),
     client  = require("./redis-client"),
-    fetcher = require("l2b-price-fetchers");
-
-
+    fetcher = require("l2b-price-fetchers"),
+    config  = require("./config");
 
 
 
@@ -189,7 +188,7 @@ function createPendingResponse (args) {
       status: "pending",
       formats: {},
       url: null,
-      retryDelay: 2, // FIXME
+      retryDelay: config.retryDelayForPending,
       updated: null,
       ttl: 0,
     },
