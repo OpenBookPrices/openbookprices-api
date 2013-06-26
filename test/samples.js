@@ -150,6 +150,20 @@ module.exports = {
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
       "vendor": "test-vendor-1"
     },
+
+    "9780340831496-pending": {
+      status: "pending",
+      retryDelay: 2,
+      country: "GB",
+      currency: "GBP",
+      updated: null,
+      ttl: 0,
+      formats: {},
+      isbn: "9780340831496",
+      url: null,
+      vendor: "test-vendor-1",
+    },
+
   },
 
 };

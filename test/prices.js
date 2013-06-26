@@ -253,21 +253,6 @@ describe("/prices", function () {
         });
 
 
-        //samples.getBookPricesForVendor["9780340831496"];
-      var expectedData = {
-        status: "pending",
-        retryDelay: 2,
-        country: "GB",
-        currency: "GBP",
-        updated: null,
-        ttl: 0,
-        formats: {},
-        isbn: "9780340831496",
-        url: null,
-        vendor: "test-vendor-1",
-      };
-
-      // console.dir(expectedData);
 
       async.series(
         [
@@ -276,7 +261,7 @@ describe("/prices", function () {
             request
               .get("/prices/9780340831496/GB/GBP/test-vendor-1")
               .expect(200)
-              .expect(expectedData)
+              .expect(samples.getBookPricesForVendor["9780340831496-pending"])
               // .expect("Cache-Control", "max-age=2") // FIXME
               .end(cb);
           },
