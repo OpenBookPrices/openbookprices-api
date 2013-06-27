@@ -8,6 +8,7 @@ var assert = require("assert"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../"),
     samples = require("./samples"),
+    helpers = require("../src/helpers"),
     config  = require("../src/config");
 
 request = request(apiApp());
@@ -285,7 +286,7 @@ describe("/prices", function () {
           request
             .get("/prices/9780340831496/GB/GBP/test-vendor-1")
             .expect(200)
-            .expect("Cache-Control", "max-age=" + expectedMaxAge)
+            .expect("Cache-Control", helpers.cacheControl(expectedMaxAge))
             .expect(expectedContent)
             .end(cb);
         },
@@ -327,7 +328,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/test-vendor-1")
         .expect(200)
-        .expect("Cache-Control", "max-age=" + Math.floor(86400 - tickAmount/1000))
+        .expect("Cache-Control", helpers.cacheControl(86400 - tickAmount/1000))
         .expect(samples.getBookPricesForVendor["9780340831496"])
         .end(done);
 

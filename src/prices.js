@@ -5,6 +5,7 @@ var express         = require("express"),
     _               = require("underscore"),
     middleware      = require("./middleware"),
     geolocateFromIP = require("./geolocate").geolocateFromIP,
+    helpers         = require("./helpers"),
     config          = require("./config");
 
 var app = module.exports = express();
@@ -108,7 +109,7 @@ app.get(
         var content = getter.createPendingResponse(getterArgs);
         var maxAge = content.retryDelay;
         if (!res.headerSent) {
-          res.header("Cache-Control", "max-age=" + maxAge);
+          res.header("Cache-Control", helpers.cacheControl(maxAge));
           res.json(content);
         }
       },
@@ -126,10 +127,7 @@ app.get(
         var maxAge = Math.floor(details.updated + details.ttl - Date.now() / 1000);
 
         if (!res.headerSent) {
-          res.header(
-            "Cache-Control",
-            maxAge > 0 ? "max-age=" + maxAge : "no-cache"
-          );
+          res.header( "Cache-Control", helpers.cacheControl(maxAge) );
           res.json(details);
         }
       }
