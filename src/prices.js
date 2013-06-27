@@ -22,7 +22,6 @@ app.get(
   middleware.redirectToCanonicalURL(["isbn"]),
   geolocateFromIP,
   function (req,res) {
-    res.header("Cache-Control", "private, max-age=600");
 
     var countryCode  = req.geolocatedData.code || config.fallbackCountry;
     var currencyCode =

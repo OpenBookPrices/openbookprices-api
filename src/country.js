@@ -12,9 +12,6 @@ app.get(
   "/determineFromIPAddress",
   geolocateFromIP,
   function (req, res) {
-    // This result is specific to the IP address of the request, so should
-    // not be cached.
-    res.header("Cache-Control", "private, max-age=600");
     res.json(req.geolocatedData);
   }
 );
