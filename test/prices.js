@@ -269,7 +269,7 @@ describe("/prices", function () {
             .get("/prices/9780340831496/GB/GBP/test-vendor-1")
             .expect(200)
             .expect(samples.getBookPricesForVendor["9780340831496-pending"])
-            // .expect("Cache-Control", "max-age=2") // FIXME
+            .expect("Cache-Control", helpers.cacheControl(config.retryDelayForPending))
             .end(cb);
         },
 
@@ -305,7 +305,7 @@ describe("/prices", function () {
             .get("/prices/9780340831496/GB/GBP/test-vendor-1")
             .expect(200)
             .expect(samples.getBookPricesForVendor["9780340831496-stale"])
-            // .expect("Cache-Control", "max-age=2") // FIXME
+            .expect("Cache-Control", helpers.cacheControl(0))
             .end(cb);
         },
 
