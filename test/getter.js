@@ -7,7 +7,7 @@ var assert = require("assert"),
     fetcher = require("l2b-price-fetchers"),
     getter = require("../src/getter"),
     samples = require("./samples"),
-    config = require("../src/config");
+    config = require("../config");
 
 
 describe("Getter", function () {

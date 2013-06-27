@@ -6,7 +6,7 @@ var express         = require("express"),
     middleware      = require("./middleware"),
     geolocateFromIP = require("./geolocate").geolocateFromIP,
     helpers         = require("./helpers"),
-    config          = require("./config");
+    config          = require("../config");
 
 var app = module.exports = express();
 

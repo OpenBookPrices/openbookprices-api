@@ -4,7 +4,7 @@ var _       = require("underscore"),
     async   = require("async"),
     client  = require("./redis-client"),
     fetcher = require("l2b-price-fetchers"),
-    config  = require("./config");
+    config  = require("../config");
 
 
 
