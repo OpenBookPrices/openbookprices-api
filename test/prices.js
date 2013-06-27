@@ -49,7 +49,10 @@ describe("/prices", function () {
         .set("X-Forwarded-For", "127.0.0.1")
         .expect(302)
         .expect("Cache-Control", "private, max-age=600")
-        .expect("Location", "/prices/9780340831496/US/USD")
+        .expect(
+          "Location",
+          "/prices/9780340831496/" + config.fallbackCountry + "/" + config.fallbackCurrency
+        )
         .end(done);
     });
 

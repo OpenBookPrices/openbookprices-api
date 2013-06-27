@@ -7,9 +7,6 @@ var express         = require("express"),
     geolocateFromIP = require("./geolocate").geolocateFromIP,
     config          = require("./config");
 
-var FALLBACK_COUNTRY  = "US";
-var FALLBACK_CURRENCY = "USD";
-
 var app = module.exports = express();
 
 app.set("trust proxy", true);
@@ -27,11 +24,11 @@ app.get(
   function (req,res) {
     res.header("Cache-Control", "private, max-age=600");
 
-    var countryCode  = req.geolocatedData.code || FALLBACK_COUNTRY;
+    var countryCode  = req.geolocatedData.code || config.fallbackCountry;
     var currencyCode =
       req.geolocatedData.currencies.length  ?
       req.geolocatedData.currencies[0].code :
-      FALLBACK_CURRENCY;
+      config.fallbackCurrency;
 
     var path =   [
       req.param("isbn"),
@@ -54,7 +51,7 @@ app.get(
   "/:isbn/:countryCode",
   middleware.redirectToCanonicalURL(["isbn", "countryCode"]),
   function (req, res, next) {
-    req.params.currencyCode = req.country.currencies[0] || FALLBACK_CURRENCY;
+    req.params.currencyCode = req.country.currencies[0] || config.fallbackCurrency;
     next();
   },
   middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"])

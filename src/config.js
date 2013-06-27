@@ -5,6 +5,11 @@ module.exports = {
   retryDelayForStale: 2,
   retryDelayForError: 2,
   retryDelayForUnfetched: 0,
+
   getBookPricesForVendorTimeout: 4,
+
+  fallbackCountry:  "US",
+  fallbackCurrency: "USD",
+
 };
 
