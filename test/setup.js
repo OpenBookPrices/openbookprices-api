@@ -56,6 +56,9 @@ beforeEach(function () {
     .stub(exchange, "pathToLatestJSON")
     .returns(relativeJSON);
 
+  // load the rates
+  exchange.loadLatestJSONSync();
+
 
 });
 

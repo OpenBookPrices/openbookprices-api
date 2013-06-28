@@ -16,7 +16,11 @@ describe("Exchange", function () {
       assert.notEqual( exchange.pathToLatestJSON(), stubbedPath);
     });
 
-    it("load exchange rate from disk");
+    it("fx object should have rates and base loaded", function () {
+      var fx = exchange.fx;
+
+      assert.equal(fx(100).from("GBP").to("USD"), 153.84615384615384);
+    });
 
   });
 });
