@@ -198,6 +198,8 @@ describe("/prices", function () {
 
     it.skip("should convert currency correctly");
 
+    it.skip("should serve etags");
+
   });
 
 
@@ -391,6 +393,8 @@ describe("/prices", function () {
     it.skip("should convert currency correctly");
 
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
+
+    it.skip("should serve etags");
 
   });
 
