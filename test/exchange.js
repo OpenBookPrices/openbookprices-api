@@ -17,9 +17,12 @@ describe("Exchange", function () {
     });
 
     it("fx object should have rates and base loaded", function () {
-      var fx = exchange.fx;
 
-      assert.equal(fx(100).from("GBP").to("USD"), 153.84615384615384);
+      assert.equal(exchange.convert(100, "GBP", "USD"), 153.85  );  // 2 dp
+      assert.equal(exchange.convert(100, "GBP", "JPY"), 15083   );  // 0 dp
+      assert.equal(exchange.convert(100, "GBP", "LYD"), 195.385 );  // 3 dp
+      assert.equal(exchange.convert(100, "GBP", "XAG"), 6.15    );  // null dp
+
     });
 
   });
