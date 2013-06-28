@@ -14,5 +14,7 @@ module.exports = {
   fallbackCurrency: "USD",
 
   pathToConfigFiles: path.resolve(__dirname),
+
+  exchangeReloadIntervalSeconds: 600, // 10 mins
 };
 

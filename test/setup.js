@@ -57,7 +57,7 @@ beforeEach(function () {
     .returns(relativeJSON);
 
   // load the rates
-  exchange.loadLatestJSONSync();
+  exchange.loadLatestJSON();
 
 
 });
