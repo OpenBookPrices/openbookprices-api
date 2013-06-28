@@ -1,5 +1,7 @@
 "use strict";
 
+var path = require("path");
+
 module.exports = {
   retryDelayForPending: 2,
   retryDelayForStale: 2,
@@ -11,5 +13,6 @@ module.exports = {
   fallbackCountry:  "US",
   fallbackCurrency: "USD",
 
+  pathToConfigFiles: path.resolve(__dirname),
 };
 

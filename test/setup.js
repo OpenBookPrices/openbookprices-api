@@ -1,10 +1,13 @@
 "use strict";
 
 var sinon   = require("sinon"),
+    config = require("../config"),
+    path = require("path"),
     getter = require("../src/getter"),
     client = require("../src/redis-client"),
     samples = require("./samples"),
-    fetcher = require("l2b-price-fetchers");
+    fetcher = require("l2b-price-fetchers"),
+    exchange = require("../src/exchange");
 
 
 // Put the getter into test mode. This means using a nonstandard redis database
@@ -45,6 +48,13 @@ beforeEach(function () {
     .stub(fetcher, "vendorsForCountry");
   vendorsForCountry.withArgs("GB").returns(["test-vendor-1"]);
   vendorsForCountry.withArgs("US").returns(["test-vendor-1"]);
+
+  // stubs the exchange rates pathToLatestJSON to use the test file
+  var initialJSON = path.join(config.pathToConfigFiles, "initial_exchange_rates.json");
+  var relativeJSON = path.relative(process.cwd(), initialJSON);
+  this.sandbox
+    .stub(exchange, "pathToLatestJSON")
+    .returns(relativeJSON);
 
 
 });
