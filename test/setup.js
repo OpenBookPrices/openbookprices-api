@@ -49,6 +49,11 @@ beforeEach(function () {
   vendorsForCountry.withArgs("GB").returns(["test-vendor-1"]);
   vendorsForCountry.withArgs("US").returns(["test-vendor-1"]);
 
+  // stub the currencies
+  this.sandbox
+    .stub(fetcher, "currencyForVendor")
+    .withArgs("test-vendor-1").returns(["GBP"]);
+
   // stubs the exchange rates pathToLatestJSON to use the test file
   var initialJSON = path.join(config.pathToConfigFiles, "initial_exchange_rates.json");
   var relativeJSON = path.relative(process.cwd(), initialJSON);

@@ -137,6 +137,7 @@ module.exports = {
       "retryDelay": null,
       "country": "GB",
       "currency": "GBP",
+      "preConversionCurrency": null,
       "updated": zeroTime/1000,
       "ttl": 86400,
       "formats": {
@@ -158,6 +159,7 @@ module.exports = {
       retryDelay: 2,
       country: "GB",
       currency: "GBP",
+      preConversionCurrency: null,
       updated: null,
       ttl: 0,
       formats: {},
@@ -171,6 +173,7 @@ module.exports = {
       "retryDelay": 2,
       "country": "GB",
       "currency": "GBP",
+      "preConversionCurrency": null,
       "updated": zeroTime/1000,
       "ttl": 86400,
       "formats": {

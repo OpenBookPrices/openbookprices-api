@@ -2,8 +2,9 @@
 
 require("./setup");
 
-var assert = require("assert"),
-    async = require("async"),
+var assert  = require("assert"),
+    async   = require("async"),
+    _       = require("underscore"),
     request = require("supertest"),
     fetcher = require("l2b-price-fetchers"),
     apiApp  = require("../"),
@@ -156,6 +157,7 @@ describe("/prices", function () {
                 isbn: "9780340831496",
                 country: "GB",
                 currency: "GBP",
+                preConversionCurrency: null,
                 ttl: 0,
                 updated: null,
                 status: "unfetched",
@@ -395,7 +397,28 @@ describe("/prices", function () {
 
     });
 
-    it.skip("should convert currency correctly");
+    it("should convert currency correctly", function (done) {
+
+      // Copy the expected results and change to USD
+      var expected = _.clone(samples.getBookPricesForVendor["9780340831496"]);
+      expected.currency = "USD";
+      expected.preConversionCurrency = "GBP";
+      expected.formats = {
+        new: _.extend(
+          {},
+          expected.formats.new,
+          { price: 39.31, total: 39.31 }
+        )
+      };
+
+      request
+        .get("/prices/9780340831496/GB/USD/test-vendor-1")
+        .expect(200)
+        .expect("Cache-Control", helpers.cacheControl(86400))
+        .expect(expected)
+        .end(done);
+
+    });
 
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
 

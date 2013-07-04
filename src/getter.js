@@ -4,7 +4,8 @@ var _       = require("underscore"),
     async   = require("async"),
     client  = require("./redis-client"),
     fetcher = require("l2b-price-fetchers"),
-    config  = require("../config");
+    config  = require("../config"),
+    exchange = require("../src/exchange");
 
 
 
@@ -101,7 +102,11 @@ function getBookPrices (args, done) {
 
 function getBookPricesForVendor (args, cb) {
 
-  // Wrap the callback so that we can tidy up the
+  // Check if the vendor supports the currency we are asking for.
+  var scrapeArgs = _.clone(args);
+  scrapeArgs.currency = fetcher.currencyForVendor(args.vendor, args.currency);
+
+  // Wrap the callback so that we can tidy up the response
   cb = _.wrap(cb, function (func, err, rawResult) {
 
     // Let us alter the top level attributes without affecting that which is
@@ -128,10 +133,13 @@ function getBookPricesForVendor (args, cb) {
       result.retryDelay = null;
     }
 
+    // convert the price if needed
+    result = convertCurrencyInBookPrices(result, args.currency);
+
     func(err, result);
   });
 
-  var cacheKey = bookPricesCacheKey(args);
+  var cacheKey = bookPricesCacheKey(scrapeArgs);
 
   client.get(cacheKey, function (err, reply) {
     if ( reply ) {
@@ -145,16 +153,39 @@ function getBookPricesForVendor (args, cb) {
 
     } else {
       fetchFromScrapers(
-        args,
+        scrapeArgs,
         function (err, results) {
           if (err) { return cb(err); }
           var bookPrices = extractBookPrices(results);
           cacheBookPrices(bookPrices);
-          return cb(null, bookPrices[args.country]);
+          return cb(null, bookPrices[scrapeArgs.country]);
         }
       );
     }
   });
+}
+
+
+function convertCurrencyInBookPrices (result, currency) {
+  var from = result.preConversionCurrency = result.currency;
+  var to = result.currency = currency;
+
+  if (from == to) {
+    result.preConversionCurrency = null;
+    return result;
+  }
+
+  _.each( result.formats, function (entry) {
+    entry.price    = exchange.convert(entry.price, from, to);
+    entry.shipping = exchange.convert(entry.shipping, from, to);
+
+    // Add together to get total, rather than convert, to avoid odd instances
+    // where price + shipping != total due to rounding errors
+    entry.total = entry.price + entry.shipping;
+  });
+
+
+  return result;
 }
 
 
@@ -214,6 +245,7 @@ function createPendingResponse (args) {
   return _.extend(
     {
       status: "pending",
+      preConversionCurrency: null,
       formats: {},
       url: null,
       retryDelay: config.retryDelayForPending,

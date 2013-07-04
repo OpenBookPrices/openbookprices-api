@@ -100,6 +100,7 @@ describe("Getter", function () {
                     isbn: "9780340831496",
                     country: "GB",
                     currency: "GBP",
+                    preConversionCurrency: null,                    
                     vendor: "test-vendor-1",
                     ttl: 0,
                     updated: null,
