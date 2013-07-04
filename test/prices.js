@@ -200,7 +200,7 @@ describe("/prices", function () {
 
     it("should convert currency correctly", function (done) {
 
-      var fetchStub = this.sandbox
+      this.sandbox
         .stub(fetcher, "fetch")
         .yields(null, samples.fetch["9780340831496"]);
 
@@ -245,7 +245,7 @@ describe("/prices", function () {
 
     it.skip("should serve etags");
 
-    it.skip("should serve JSON");
+    it.skip("should serve JSONP");
 
     it.skip("should compress");
 
@@ -467,7 +467,7 @@ describe("/prices", function () {
 
     it.skip("should serve etags");
 
-    it.skip("should serve JSON");
+    it.skip("should serve JSONP");
 
     it.skip("should compress");
 

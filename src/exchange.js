@@ -86,7 +86,7 @@ exchange.initiateDelayAndReload = function () {
 
 // run this straight away as it is something we want running all the time.
 if (fs.existsSync(exchange.pathToLatestJSON())) {
-  exchange.loadLatestJSON(true);  
+  exchange.loadLatestJSON(true);
   exchange.initiateDelayAndReload();
 }
 
