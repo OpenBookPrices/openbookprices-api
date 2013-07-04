@@ -198,7 +198,50 @@ describe("/prices", function () {
 
     it.skip("should set the expiry headers correctly when all responses");
 
-    it.skip("should convert currency correctly");
+    it("should convert currency correctly", function (done) {
+
+      var fetchStub = this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(null, samples.fetch["9780340831496"]);
+
+      async.series(
+        [
+          function (cb) {
+            // hit the vendor endpoint to store the results in cache.
+            request
+              .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+              .expect(200)
+              .expect(samples.getBookPricesForVendor["9780340831496"])
+              .end(cb);
+          },
+          this.waitForCache,
+          function (cb) {
+
+            // Copy the expected results and change to USD
+            var expected = _.clone(samples.getBookPricesForVendor["9780340831496"]);
+            expected.currency = "USD";
+            expected.preConversionCurrency = "GBP";
+            expected.formats = {
+              new: _.extend(
+                {},
+                expected.formats.new,
+                { price: 39.31, total: 39.31 }
+              )
+            };
+
+            // Get the currency endpoint and check that cached values are now
+            // included.
+            request
+              .get("/prices/9780340831496/GB/USD")
+              .expect(200)
+              .expect([expected])
+              .end(cb);
+          }
+        ],
+        done
+      );
+
+    });
 
     it.skip("should serve etags");
 
