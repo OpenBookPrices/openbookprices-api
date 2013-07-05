@@ -40,7 +40,7 @@ describe("/books", function () {
       request
         .get("/books/123456789")
         .expect(404)
-        .expect("Content-Type", "application/json; charset=utf-8")
+        .expect("Content-Type", "application/json")
         .expect({ error: "isbn '123456789' is not valid" })
         .end(function (err) {
           assert(!fetchStub.called);
@@ -56,7 +56,7 @@ describe("/books", function () {
         request
           .get("/books/9780340831496")
           .expect(200)
-          .expect("Content-Type", "application/json; charset=utf-8")
+          .expect("Content-Type", "application/json")
           .expect("Cache-Control", helpers.cacheControl(86400))
           .expect(samples.getBookDetails["9780340831496"])
           .end(cb);

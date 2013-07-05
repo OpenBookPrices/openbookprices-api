@@ -30,7 +30,7 @@ describe("/prices", function () {
       request
         .get("/prices/123456789")
         .expect(404)
-        .expect("Content-Type", "application/json; charset=utf-8")
+        .expect("Content-Type", "application/json")
         .expect({ error: "isbn '123456789' is not valid" })
         .end(done);
     });
