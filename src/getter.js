@@ -22,7 +22,7 @@ function getBookDetails (isbn, cb) {
       cb( null, JSON.parse(reply) );
     } else {
       fetchFromScrapers(
-        {vendor: "test-vendor-1", isbn: isbn, country: "GB", currency: "GBP"},
+        {vendor: "foyles", isbn: isbn, country: "GB", currency: "GBP"},
         function (err, results) {
           if (err) { return cb(err); }
           var bookDetails = extractBookDetails(results);
