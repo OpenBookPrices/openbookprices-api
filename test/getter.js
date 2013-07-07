@@ -103,7 +103,7 @@ describe("Getter", function () {
                     preConversionCurrency: null,
                     vendor: "test-vendor-1",
                     ttl: 0,
-                    updated: null,
+                    updated: Date.now()/1000,
                     status: "unfetched",
                     retryDelay: config.retryDelayForUnfetched,
                   }

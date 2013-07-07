@@ -160,7 +160,7 @@ module.exports = {
       country: "GB",
       currency: "GBP",
       preConversionCurrency: null,
-      updated: null,
+      updated: zeroTime/1000,
       ttl: 0,
       formats: {},
       isbn: "9780340831496",

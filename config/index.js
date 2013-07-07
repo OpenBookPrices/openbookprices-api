@@ -8,6 +8,8 @@ module.exports = {
   retryDelayForError: 2,
   retryDelayForUnfetched: 0,
 
+  minimumMaxAgeForPrices: 30,
+
   getBookPricesForVendorTimeout: 4,
 
   fallbackCountry:  "US",

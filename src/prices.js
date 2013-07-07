@@ -74,7 +74,20 @@ app.get(
           return next(err);
         }
 
-        res.json( _.chain(results).values().value() );
+        var vendorEntries = _.values(results);
+
+        // Set the cache header. Make it the same as the scrape ttl.
+        var maxAge = _.chain(vendorEntries)
+          .map(function (vendorEntry) {
+            return Math.floor(vendorEntry.updated + vendorEntry.ttl - Date.now() / 1000);
+          })
+          .min()
+          .value();
+
+        maxAge = _.max([maxAge, config.minimumMaxAgeForPrices]);
+
+        res.header( "Cache-Control", helpers.cacheControl(maxAge) );
+        res.json( vendorEntries );
 
       }
     );

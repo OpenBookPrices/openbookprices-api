@@ -117,6 +117,7 @@ function getBookPricesForVendor (args, cb) {
       result.status = Date.now()/1000 < result.updated + result.ttl ? "ok" : "stale";
     } else {
       result.status = args.fromCacheOnly ? "unfetched" : "pending";
+      result.updated = Date.now() / 1000;
     }
 
     switch (result.status) {
@@ -249,7 +250,7 @@ function createPendingResponse (args) {
       formats: {},
       url: null,
       retryDelay: config.retryDelayForPending,
-      updated: null,
+      updated: Math.floor(Date.now()/1000),
       ttl: 0,
     },
     args

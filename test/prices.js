@@ -152,6 +152,7 @@ describe("/prices", function () {
             request
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
+              .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
               .expect([{
                 vendor: "test-vendor-1",
                 isbn: "9780340831496",
@@ -159,7 +160,7 @@ describe("/prices", function () {
                 currency: "GBP",
                 preConversionCurrency: null,
                 ttl: 0,
-                updated: null,
+                updated: Math.floor(Date.now()/1000),
                 status: "unfetched",
                 retryDelay: config.retryDelayForUnfetched,
               }])
@@ -181,22 +182,18 @@ describe("/prices", function () {
           function (cb) {
             // Get the currency endpoint and check that cached values are now
             // included.
+            var expected = samples.getBookPricesForVendor["9780340831496"];
             request
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
-              .expect([samples.getBookPricesForVendor["9780340831496"]])
+              .expect("Cache-Control", helpers.cacheControl(expected.ttl))
+              .expect([expected])
               .end(cb);
           }
         ],
         done
       );
     });
-
-    it.skip("should set the expiry headers correctly when no responses");
-
-    it.skip("should set the expiry headers correctly when some responses");
-
-    it.skip("should set the expiry headers correctly when all responses");
 
     it("should convert currency correctly", function (done) {
 
@@ -317,10 +314,15 @@ describe("/prices", function () {
 
         // cache is empty, run a scrape that times out
         function (cb) {
+          var expected = _.extend(
+            {},
+            samples.getBookPricesForVendor["9780340831496-pending"],
+            {updated: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
+          );
           request
             .get("/prices/9780340831496/GB/GBP/test-vendor-1")
             .expect(200)
-            .expect(samples.getBookPricesForVendor["9780340831496-pending"])
+            .expect(expected)
             .expect("Cache-Control", helpers.cacheControl(config.retryDelayForPending))
             .end(cb);
         },
