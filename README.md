@@ -53,7 +53,7 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
 
   "url": "http://www.test-vendor-1.co.uk/9780340831496",
 
-  "updated": 123456789,
+  "timestamp": 123456789,
   "ttl":     86400,
   "status": "ok",
   "retryDelay": null,
@@ -115,13 +115,13 @@ Text. Possible further details about the shipping - eg "Orders over $20 shipped 
 
 Text. A bit of text describing the exact availability. This will vary from vendor to vendor as it is taken from their site.
 
-### updated
+### timestamp
 
-Integer. When the information was last updated. Seconds since epoch.
+Integer. When the information was last generated. Seconds since epoch.
 
 ### ttl
 
-Integer. How many seconds from `updated` this information should be considered fresh for.
+Integer. How many seconds from `timestamp` this information should be considered fresh for.
 
 ### status
 
@@ -134,4 +134,4 @@ Text. A description of the status of this response. Possible values are:
 
 ### retryDelay
 
-The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `updated` and `ttl` values should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again).
+The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `timestamp` and `ttl` values should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again).

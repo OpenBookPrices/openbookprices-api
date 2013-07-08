@@ -23,7 +23,7 @@ module.exports = {
             "GB"
           ],
           "currency": "GBP",
-          "updated": zeroTime/1000,
+          "timestamp": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -44,7 +44,7 @@ module.exports = {
             "PT", "ES", "SE", "CH"
           ],
           "currency": "GBP",
-          "updated": zeroTime/1000,
+          "timestamp": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -64,7 +64,7 @@ module.exports = {
             "US", "CA"
           ],
           "currency": "GBP",
-          "updated": zeroTime/1000,
+          "timestamp": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -104,7 +104,7 @@ module.exports = {
             "VN", "VU", "WF", "WS", "YE", "YT", "ZA", "ZM", "ZW"
           ],
           "currency": "GBP",
-          "updated": zeroTime/1000,
+          "timestamp": zeroTime/1000,
           "formats": {
             "new": {
               "availabilityNote": "Despatched in 1 business day.",
@@ -138,7 +138,7 @@ module.exports = {
       "country": "GB",
       "currency": "GBP",
       "preConversionCurrency": null,
-      "updated": zeroTime/1000,
+      "timestamp": zeroTime/1000,
       "ttl": 86400,
       "formats": {
         "new": {
@@ -160,7 +160,7 @@ module.exports = {
       country: "GB",
       currency: "GBP",
       preConversionCurrency: null,
-      updated: zeroTime/1000,
+      timestamp: zeroTime/1000,
       ttl: 0,
       formats: {},
       isbn: "9780340831496",
@@ -174,7 +174,7 @@ module.exports = {
       "country": "GB",
       "currency": "GBP",
       "preConversionCurrency": null,
-      "updated": zeroTime/1000,
+      "timestamp": zeroTime/1000,
       "ttl": 86400,
       "formats": {
         "new": {

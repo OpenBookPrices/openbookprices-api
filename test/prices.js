@@ -160,7 +160,7 @@ describe("/prices", function () {
                 currency: "GBP",
                 preConversionCurrency: null,
                 ttl: 0,
-                updated: Math.floor(Date.now()/1000),
+                timestamp: Math.floor(Date.now()/1000),
                 status: "unfetched",
                 retryDelay: config.retryDelayForUnfetched,
               }])
@@ -317,7 +317,7 @@ describe("/prices", function () {
           var expected = _.extend(
             {},
             samples.getBookPricesForVendor["9780340831496-pending"],
-            {updated: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
+            {timestamp: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
           );
           request
             .get("/prices/9780340831496/GB/GBP/test-vendor-1")
@@ -334,7 +334,7 @@ describe("/prices", function () {
 
           var expectedContent = samples.getBookPricesForVendor["9780340831496"];
 
-          var expectedMaxAge = Math.floor(expectedContent.updated + expectedContent.ttl - Date.now()/1000);
+          var expectedMaxAge = Math.floor(expectedContent.timestamp + expectedContent.ttl - Date.now()/1000);
 
           // Fire off another request that should get a completed scrape
           request
@@ -348,7 +348,7 @@ describe("/prices", function () {
         // wait for ttl to pass
         function (cb) {
           var expectedContent = samples.getBookPricesForVendor["9780340831496"];
-          var expectedMaxAge = Math.floor(expectedContent.updated + expectedContent.ttl - Date.now()/1000);
+          var expectedMaxAge = Math.floor(expectedContent.timestamp + expectedContent.ttl - Date.now()/1000);
           clock.tick(expectedMaxAge * 1000);
           cb();
         },

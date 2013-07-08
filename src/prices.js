@@ -79,7 +79,7 @@ app.get(
         // Set the cache header. Make it the same as the scrape ttl.
         var maxAge = _.chain(vendorEntries)
           .map(function (vendorEntry) {
-            return Math.floor(vendorEntry.updated + vendorEntry.ttl - Date.now() / 1000);
+            return Math.floor(vendorEntry.timestamp + vendorEntry.ttl - Date.now() / 1000);
           })
           .min()
           .value();
@@ -137,7 +137,7 @@ app.get(
         }
 
         // Set the cache header. Make it the same as the scrape ttl.
-        var maxAge = Math.floor(details.updated + details.ttl - Date.now() / 1000);
+        var maxAge = Math.floor(details.timestamp + details.ttl - Date.now() / 1000);
 
         if (!res.headerSent) {
           res.header( "Cache-Control", helpers.cacheControl(maxAge) );

@@ -113,11 +113,11 @@ function getBookPricesForVendor (args, cb) {
     // being stored in the cache.
     var result = _.clone(rawResult);
 
-    if ( result.updated ) {
-      result.status = Date.now()/1000 < result.updated + result.ttl ? "ok" : "stale";
+    if ( result.timestamp ) {
+      result.status = Date.now()/1000 < result.timestamp + result.ttl ? "ok" : "stale";
     } else {
       result.status = args.fromCacheOnly ? "unfetched" : "pending";
-      result.updated = Date.now() / 1000;
+      result.timestamp = Date.now() / 1000;
     }
 
     switch (result.status) {
@@ -149,7 +149,7 @@ function getBookPricesForVendor (args, cb) {
 
       var emptyResponse = _.omit(args, "fromCacheOnly");
       emptyResponse.ttl = 0;
-      emptyResponse.updated = null;
+      emptyResponse.timestamp = null;
       return cb( null, emptyResponse);
 
     } else {
@@ -220,7 +220,7 @@ function cacheBookPrices (bookPrices) {
   _.each(bookPrices, function (entry) {
     var cacheKey = bookPricesCacheKey(entry);
 
-    var ttl = Math.floor(entry.updated + entry.ttl - Date.now()/1000);
+    var ttl = Math.floor(entry.timestamp + entry.ttl - Date.now()/1000);
 
     client.setex(
       cacheKey,
@@ -250,7 +250,7 @@ function createPendingResponse (args) {
       formats: {},
       url: null,
       retryDelay: config.retryDelayForPending,
-      updated: Math.floor(Date.now()/1000),
+      timestamp: Math.floor(Date.now()/1000),
       ttl: 0,
     },
     args
