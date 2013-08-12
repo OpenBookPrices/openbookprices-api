@@ -242,6 +242,16 @@ describe("/prices", function () {
 
     it.skip("should serve etags");
 
+    it("should serve content-length", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP")
+        .expect(200)
+        .end(function (err, res) {
+          assert.equal(res.headers["content-length"], res.text.length);
+          done();
+        });
+    });
+
     it.skip("should serve JSONP");
 
     it.skip("should compress");
@@ -468,6 +478,16 @@ describe("/prices", function () {
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
 
     it.skip("should serve etags");
+
+    it("should serve content-length", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP/foyles")
+        .expect(200)
+        .end(function (err, res) {
+          assert.equal(res.headers["content-length"], res.text.length);
+          done();
+        });
+    });
 
     it.skip("should serve JSONP");
 
