@@ -18,7 +18,7 @@ exports.isbn = function (req, res, next) {
   }
 
   if (!clean || !ean.isValid(clean)) {
-    return res.json(
+    return res.jsonp(
       { error: "isbn '" + dirty + "' is not valid" },
       404
     );
@@ -37,7 +37,7 @@ exports.countryCode = function (req, res, next) {
 
   // if not valid, or not found then 404
   if (!country) {
-    return res.json(
+    return res.jsonp(
       { error: format("country code '%s' is not a valid ISO 3166 alpha2 identifier", code) },
       404
     );
@@ -57,7 +57,7 @@ exports.currencyCode = function (req, res, next) {
 
   // if not valid, or not found then 404
   if (!currency) {
-    return res.json(
+    return res.jsonp(
       { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
       404
     );
@@ -76,7 +76,7 @@ exports.vendorCode = function (req, res, next) {
 
   // if not valid, or not found then 404
   if (!getter.isVendorCodeKnown(code)) {
-    return res.json(
+    return res.jsonp(
       { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
       404
     );

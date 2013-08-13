@@ -12,7 +12,7 @@ app.get(
   "/determineFromIPAddress",
   geolocateFromIP,
   function (req, res) {
-    res.json(req.geolocatedData);
+    res.jsonp(req.geolocatedData);
   }
 );
 

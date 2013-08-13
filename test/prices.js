@@ -30,7 +30,7 @@ describe("/prices", function () {
       request
         .get("/prices/123456789")
         .expect(404)
-        .expect("Content-Type", "application/json")
+        .expect("Content-Type", "application/json; charset=utf-8")
         .expect({ error: "isbn '123456789' is not valid" })
         .end(done);
     });
@@ -250,7 +250,13 @@ describe("/prices", function () {
         });
     });
 
-    it.skip("should serve JSONP");
+    it("should serve JSONP", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP?callback=foo")
+        .expect(200)
+        .expect("Content-Type", "text/javascript; charset=utf-8")
+        .end(done);
+    });
 
   });
 
@@ -482,7 +488,13 @@ describe("/prices", function () {
         });
     });
 
-    it.skip("should serve JSONP");
+    it("should serve JSONP", function (done) {
+      request
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1?callback=foo")
+        .expect(200)
+        .expect("Content-Type", "text/javascript; charset=utf-8")
+        .end(done);
+    });
 
   });
 

@@ -87,7 +87,7 @@ app.get(
         maxAge = _.max([maxAge, config.minimumMaxAgeForPrices]);
 
         res.header( "Cache-Control", helpers.cacheControl(maxAge) );
-        res.json( vendorEntries );
+        res.jsonp( vendorEntries );
 
       }
     );
@@ -101,7 +101,7 @@ app.get(
   function (req, res, next) {
     // check that the vendor sells to this country
     if (!getter.doesVendorServeCountry(req.vendor, req.country.alpha2)) {
-      return res.json(400, {error: "Vendor does not sell to that country"});
+      return res.jsonp(400, {error: "Vendor does not sell to that country"});
     }
     next();
   },
@@ -123,7 +123,7 @@ app.get(
         var maxAge = content.retryDelay;
         if (!res.headerSent) {
           res.header("Cache-Control", helpers.cacheControl(maxAge));
-          res.json(content);
+          res.jsonp(content);
         }
       },
       config.getBookPricesForVendorTimeout * 1000
@@ -141,7 +141,7 @@ app.get(
 
         if (!res.headerSent) {
           res.header( "Cache-Control", helpers.cacheControl(maxAge) );
-          res.json(details);
+          res.jsonp(details);
         }
       }
     );

@@ -20,7 +20,7 @@ app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, re
     function (err, data) {
       if (err) { return next(err); }
       res.set("Cache-Control", helpers.cacheControl(86400));
-      res.json(data);
+      res.jsonp(data);
     }
   );
 });
