@@ -240,8 +240,6 @@ describe("/prices", function () {
 
     });
 
-    it.skip("should serve etags");
-
     it("should serve content-length", function (done) {
       request
         .get("/prices/9780340831496/GB/GBP")
@@ -253,9 +251,6 @@ describe("/prices", function () {
     });
 
     it.skip("should serve JSONP");
-
-    it.skip("should compress");
-
 
   });
 
@@ -477,8 +472,6 @@ describe("/prices", function () {
 
     it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
 
-    it.skip("should serve etags");
-
     it("should serve content-length", function (done) {
       request
         .get("/prices/9780340831496/GB/GBP/foyles")
@@ -490,8 +483,6 @@ describe("/prices", function () {
     });
 
     it.skip("should serve JSONP");
-
-    it.skip("should compress");
 
   });
 
