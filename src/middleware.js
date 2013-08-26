@@ -77,7 +77,7 @@ exports.vendorCode = function (req, res, next) {
   // if not valid, or not found then 404
   if (!getter.isVendorCodeKnown(code)) {
     return res.jsonp(
-      { error: format("currency code '%s' is not a valid ISO 4217 identifier", code) },
+      { error: format("vendor code '%s' is not recognised", code) },
       404
     );
   }

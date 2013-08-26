@@ -273,6 +273,9 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/GBP/not-a-vendor")
         .expect(404)
+        .expect({
+          "error": "vendor code 'not-a-vendor' is not recognised"
+        })
         .end(done);
     });
 
