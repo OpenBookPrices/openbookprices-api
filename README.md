@@ -1,8 +1,8 @@
 # l2b-api
 
-[![Build Status](https://secure.travis-ci.org/LinkToBooks/l2b-api.png)](http://travis-ci.org/LinkToBooks/l2b-api)
+[![Build Status](https://secure.travis-ci.org/OpenBookPrices/l2b-api.png)](http://travis-ci.org/OpenBookPrices/l2b-api)
 
-LinkToBooks API for book and price data
+OpenBookPrices API for book and price data
 
 
 
@@ -84,7 +84,7 @@ The three letter ISO currency code that represents the currency that the `price`
 
 ### vendor
 
-The LinkToBooks code for the vendor. This is lowercase and is made up of letters, numbers and dashes (`-`).
+The OpenBookPrices code for the vendor. This is lowercase and is made up of letters, numbers and dashes (`-`).
 
 ### preConversionCurrency
 
