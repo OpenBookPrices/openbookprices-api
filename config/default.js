@@ -20,7 +20,8 @@ module.exports = {
   exchangeReloadIntervalSeconds: 600, // 10 mins
 
   api: {
-    urlBase: "http://api.openbookprices.com",
+    protocol: "http",
+    hostport: "api.127.0.0.1.xip.io:3000",
   }
 };
 

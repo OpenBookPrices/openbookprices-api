@@ -105,7 +105,7 @@ exports.redirectToCanonicalURL = function (pathParts, statusCode) {
       return next();
     }
 
-    var urlBase = config.api.urlBase;
+    var urlBase = config.api.protocol + "://" + config.api.hostport;
 
     var redirectToUrl = urlBase + req.app.path() + "/" + canonicalPath;
 

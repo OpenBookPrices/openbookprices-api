@@ -11,6 +11,8 @@ var assert = require("assert"),
     helpers = require("../src/helpers"),
     samples = require("./samples");
 
+var testBaseUrl = config.api.protocol + "://" + config.api.hostport;
+
 request = request(apiApp());
 
 describe("/books", function () {
@@ -30,7 +32,7 @@ describe("/books", function () {
       request
         .get("/books/0340831499")
         .expect(301)
-        .expect("Location", config.api.urlBase + "/books/9780340831496")
+        .expect("Location", testBaseUrl + "/books/9780340831496")
         .end(function (err) {
           assert(!fetchStub.called);
           done(err);
