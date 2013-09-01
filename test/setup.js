@@ -9,6 +9,9 @@ var sinon   = require("sinon"),
     fetcher = require("l2b-price-fetchers"),
     exchange = require("../src/exchange");
 
+// set the environment to testing
+var envKey = "NODE_ENV";
+process.env[envKey] = "testing";
 
 // Put the getter into test mode. This means using a nonstandard redis database
 // and flushing it.
