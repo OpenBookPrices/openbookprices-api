@@ -1,6 +1,7 @@
 "use strict";
 
-var express = require("express");
+var express = require("express"),
+    helpers = require("./helpers");
 
 var app = module.exports = express();
 
@@ -10,7 +11,13 @@ app.use(app.router);
 app.all(
   "*",
   function (req, res) {
+
+    // Don't cache this
+    res.header( "Cache-Control", helpers.cacheControl(0) );
+
+    // send it back as data
     res.jsonp({
+      timestamp: Date.now()/1000,
       request: {
         method: req.method,
         secure: req.secure,
