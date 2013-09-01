@@ -1,2 +1,4 @@
 node_modules
 config/exchange_rates.json
+config/development.js
+config/production.js

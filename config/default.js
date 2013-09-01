@@ -21,7 +21,7 @@ module.exports = {
 
   api: {
     protocol: "http",
-    hostport: "api.127.0.0.1.xip.io:3000",
+    hostport: "api.openbookprices.com",
   }
 };
 
