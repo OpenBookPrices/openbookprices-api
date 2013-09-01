@@ -1,5 +1,7 @@
 "use strict";
 
+require("./setup");
+
 var exchange = require("../src/exchange"),
     assert = require("assert"),
     config = require("config"),

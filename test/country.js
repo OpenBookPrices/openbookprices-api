@@ -1,5 +1,7 @@
 "use strict";
 
+require("./setup");
+
 // var assert = require("assert");
 var request = require("supertest"),
     apiApp  = require("../");
