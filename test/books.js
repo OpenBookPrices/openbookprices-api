@@ -4,6 +4,7 @@ require("./setup");
 
 var assert = require("assert"),
     request = require("supertest"),
+    config = require("config"),
     fetcher = require("l2b-price-fetchers"),
     async = require("async"),
     apiApp  = require("../"),
@@ -29,7 +30,7 @@ describe("/books", function () {
       request
         .get("/books/0340831499")
         .expect(301)
-        .expect("Location", "/books/9780340831496")
+        .expect("Location", config.api.urlBase + "/books/9780340831496")
         .end(function (err) {
           assert(!fetchStub.called);
           done(err);

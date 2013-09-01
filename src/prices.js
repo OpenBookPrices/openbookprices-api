@@ -22,7 +22,7 @@ app.get(
   "/:isbn",
   middleware.redirectToCanonicalURL(["isbn"]),
   geolocateFromIP,
-  function (req,res) {
+  function (req, res, next) {
 
     var countryCode  = req.geolocatedData.code || config.fallbackCountry;
     var currencyCode =
@@ -30,21 +30,12 @@ app.get(
       req.geolocatedData.currencies[0].code :
       config.fallbackCurrency;
 
-    var path =   [
-      req.param("isbn"),
-      countryCode,
-      currencyCode
-    ].join("/");
+    req.params.countryCode = countryCode;
+    req.params.currencyCode = currencyCode;
 
-    var url = path;
-
-    var callback = req.param("callback");
-    if (callback) {
-      url += "?callback=" + callback;
-    }
-
-    res.redirect(url);
-  }
+    next();
+  },
+  middleware.redirectToCanonicalURL(["isbn", "countryCode", "currencyCode"], 302)
 );
 
 app.get(

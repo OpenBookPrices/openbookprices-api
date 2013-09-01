@@ -18,5 +18,9 @@ module.exports = {
   pathToConfigFiles: path.resolve(__dirname),
 
   exchangeReloadIntervalSeconds: 600, // 10 mins
+
+  api: {
+    urlBase: "http://api.openbookprices.com",
+  }
 };
 

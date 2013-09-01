@@ -4,6 +4,7 @@ var ean             = require("ean"),
     _               = require("underscore"),
     countryData     = require("country-data"),
     getter          = require("./getter"),
+    config          = require("config"),
     format          = require("util").format;
 
 exports.isbn = function (req, res, next) {
@@ -89,7 +90,7 @@ exports.vendorCode = function (req, res, next) {
 };
 
 
-exports.redirectToCanonicalURL = function (pathParts) {
+exports.redirectToCanonicalURL = function (pathParts, statusCode) {
 
   return function (req, res, next) {
 
@@ -104,7 +105,16 @@ exports.redirectToCanonicalURL = function (pathParts) {
       return next();
     }
 
-    res.redirect( canonicalPath, 301 );
+    var urlBase = config.api.urlBase;
+
+    var redirectToUrl = urlBase + req.app.path() + "/" + canonicalPath;
+
+    var callback = req.param("callback");
+    if (callback) {
+      redirectToUrl += "?callback=" + callback;
+    }
+
+    res.redirect( redirectToUrl, statusCode || 301 );
 
   };
 };

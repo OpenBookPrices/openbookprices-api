@@ -22,7 +22,7 @@ describe("/prices", function () {
       request
         .get("/prices/0340831499")
         .expect(301)
-        .expect("Location", "/prices/9780340831496")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496")
         .end(done);
     });
 
@@ -41,7 +41,7 @@ describe("/prices", function () {
         .set("X-Forwarded-For", "217.64.234.65, 127.0.0.1") // nhs.uk
         .expect(302)
         .expect("Cache-Control", "private, max-age=600")
-        .expect("Location", "/prices/9780340831496/GB/GBP")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP")
         .end(done);
     });
 
@@ -53,7 +53,7 @@ describe("/prices", function () {
         .expect("Cache-Control", "private, max-age=600")
         .expect(
           "Location",
-          "/prices/9780340831496/" + config.fallbackCountry + "/" + config.fallbackCurrency
+          config.api.urlBase + "/prices/9780340831496/" + config.fallbackCountry + "/" + config.fallbackCurrency
         )
         .end(done);
     });
@@ -73,7 +73,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/gb")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB")
         .end(done);
     });
 
@@ -81,7 +81,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB/GBP")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP")
         .end(done);
     });
 
@@ -90,7 +90,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/AQ")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/AQ/USD")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/AQ/USD")
         .end(done);
     });
 
@@ -109,7 +109,7 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/GB/gBp")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB/GBP")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP")
         .end(done);
     });
 
@@ -117,7 +117,15 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/gb/gBp")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB/GBP")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP")
+        .end(done);
+    });
+
+    it("should redirect for fixable country and currency", function (done) {
+      request
+        .get("/prices/9780340831496/gb/gBp?callback=foo")
+        .expect(301)
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP?callback=foo")
         .end(done);
     });
 
@@ -283,7 +291,15 @@ describe("/prices", function () {
       request
         .get("/prices/9780340831496/gb/gBp/TEST-veNDor-1")
         .expect(301)
-        .expect("Location", "/prices/9780340831496/GB/GBP/test-vendor-1")
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP/test-vendor-1")
+        .end(done);
+    });
+
+    it("should redirect for fixable country, currency and vendor", function (done) {
+      request
+        .get("/prices/9780340831496/gb/gBp/TEST-veNDor-1?callback=foo")
+        .expect(301)
+        .expect("Location", config.api.urlBase + "/prices/9780340831496/GB/GBP/test-vendor-1?callback=foo")
         .end(done);
     });
 
