@@ -2,7 +2,7 @@
 
 var exchange = require("../src/exchange"),
     assert = require("assert"),
-    config = require("../config"),
+    config = require("config"),
     async = require("async");
 
 describe("Exchange", function () {

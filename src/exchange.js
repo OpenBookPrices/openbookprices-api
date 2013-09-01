@@ -1,7 +1,7 @@
 "use strict";
 
 var path = require("path"),
-    config = require("../config"),
+    config = require("config"),
     fs = require("fs"),
     fx = require("money"),
     currencies = require("country-data").currencies,

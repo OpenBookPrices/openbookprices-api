@@ -10,7 +10,7 @@ var assert  = require("assert"),
     apiApp  = require("../"),
     samples = require("./samples"),
     helpers = require("../src/helpers"),
-    config  = require("../config");
+    config  = require("config");
 
 request = request(apiApp());
 

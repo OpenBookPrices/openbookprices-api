@@ -1,7 +1,7 @@
 "use strict";
 
 var sinon   = require("sinon"),
-    config = require("../config"),
+    config = require("config"),
     path = require("path"),
     getter = require("../src/getter"),
     client = require("../src/redis-client"),
