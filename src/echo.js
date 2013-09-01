@@ -1,7 +1,6 @@
 "use strict";
 
-var express = require("express"),
-    helpers = require("./helpers");
+var express = require("express");
 
 var app = module.exports = express();
 
@@ -11,9 +10,6 @@ app.use(app.router);
 app.all(
   "*",
   function (req, res) {
-
-    // Don't cache this
-    res.header( "Cache-Control", helpers.cacheControl(0) );
 
     // send it back as data
     res.jsonp({
@@ -35,6 +31,7 @@ app.all(
       },
       headers: req.headers,
     });
+
   }
 );
 
