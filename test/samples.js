@@ -10,7 +10,11 @@ module.exports = {
         "country": "GB",
         "currency": "GBP",
         "isbn": "9780340831496",
-        "vendor": "test-vendor-1"
+        "vendor": {
+          code: "test-vendor-1",
+          name: "Test Vendor 1",
+          homepage: "http://www.test-vendor-1.co.uk/",
+        }
       },
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
       "title": "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
@@ -151,7 +155,11 @@ module.exports = {
       },
       "isbn": "9780340831496",
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
-      "vendor": "test-vendor-1"
+      "vendor": {
+        "code": "test-vendor-1",
+        "name": "Test Vendor 1",
+        "homepage": "http://www.test-vendor-1.co.uk/",
+      }
     },
 
     "9780340831496-pending": {
@@ -165,7 +173,11 @@ module.exports = {
       formats: {},
       isbn: "9780340831496",
       url: null,
-      vendor: "test-vendor-1",
+      vendor: {
+        code: "test-vendor-1",
+        name: "Test Vendor 1",
+        homepage: "http://www.test-vendor-1.co.uk/",
+      },
     },
 
     "9780340831496-stale": {
@@ -187,7 +199,11 @@ module.exports = {
       },
       "isbn": "9780340831496",
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
-      "vendor": "test-vendor-1"
+      "vendor": {
+        "code": "test-vendor-1",
+        "name": "Test Vendor 1",
+        "homepage": "http://www.test-vendor-1.co.uk/",
+      }
     },
 
   },

@@ -46,6 +46,15 @@ beforeEach(function () {
     .stub(fetcher, "allVendorCodes")
     .returns(["test-vendor-1", "test-vendor-2"]);
 
+  // Stub the vendorDetails for our fake vendors.
+  sandbox
+    .stub(fetcher, "vendorDetails")
+    .withArgs("test-vendor-1").returns({
+      code: "test-vendor-1",
+      name: "Test Vendor 1",
+      homepage: "http://www.test-vendor-1.co.uk/",
+    });
+
   // stub the country so that only test-vendor-1 is returned
   var vendorsForCountry = this.sandbox
     .stub(fetcher, "vendorsForCountry");

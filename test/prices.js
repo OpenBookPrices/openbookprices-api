@@ -164,7 +164,11 @@ describe("/prices", function () {
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
               .expect([{
-                vendor: "test-vendor-1",
+                vendor: {
+                  code: "test-vendor-1",
+                  name: "Test Vendor 1",
+                  homepage: "http://www.test-vendor-1.co.uk/",
+                },
                 isbn: "9780340831496",
                 country: "GB",
                 currency: "GBP",

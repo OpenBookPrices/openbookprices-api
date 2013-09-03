@@ -137,6 +137,9 @@ function getBookPricesForVendor (args, cb) {
     // convert the price if needed
     result = convertCurrencyInBookPrices(result, args.currency);
 
+    // Expand vendor into fuller details
+    result = expandVendorDetails(result);
+
     func(err, result);
   });
 
@@ -191,6 +194,13 @@ function convertCurrencyInBookPrices (result, currency) {
 
 
 
+function expandVendorDetails (entry) {
+  // expand vendor into fuller details
+  var vendorDetails = fetcher.vendorDetails(entry.vendor);
+  entry.vendor = vendorDetails;
+  return entry;
+}
+
 function extractBookPrices (results) {
   var pricesByCountry = {};
 
@@ -243,7 +253,7 @@ function isVendorCodeKnown (vendor) {
 
 
 function createPendingResponse (args) {
-  return _.extend(
+  var response = _.extend(
     {
       status: "pending",
       preConversionCurrency: null,
@@ -255,6 +265,10 @@ function createPendingResponse (args) {
     },
     args
   );
+
+  response = expandVendorDetails(response);
+
+  return response;
 }
 
 

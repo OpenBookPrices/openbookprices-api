@@ -47,7 +47,11 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
   "isbn": "9780340831496",
   "country": "GB",
   "currency": "USD",
-  "vendor": "test-vendor-1",
+  "vendor": {
+    "code": "test-vendor-1",
+    "name": "Test Vendor 1",
+    "homepage": "http://www.test-vendor-1.co.uk/",
+  },
 
   "preConversionCurrency": "GBP",
 
@@ -84,7 +88,7 @@ The three letter ISO currency code that represents the currency that the `price`
 
 ### vendor
 
-The OpenBookPrices code for the vendor. This is lowercase and is made up of letters, numbers and dashes (`-`).
+Details about the vendor, including their OpenBookPrices code (which is lowercase and is made up of letters, numbers and dashes (`-`)), the name and their main homepage address.
 
 ### preConversionCurrency
 

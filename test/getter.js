@@ -101,7 +101,11 @@ describe("Getter", function () {
                     country: "GB",
                     currency: "GBP",
                     preConversionCurrency: null,
-                    vendor: "test-vendor-1",
+                    vendor: {
+                      code: "test-vendor-1",
+                      name: "Test Vendor 1",
+                      homepage: "http://www.test-vendor-1.co.uk/",
+                    },
                     ttl: 0,
                     timestamp: Date.now()/1000,
                     status: "unfetched",

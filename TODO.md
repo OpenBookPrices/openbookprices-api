@@ -2,8 +2,6 @@
 
 - should include a url to the vendor specific price result in list of results
 
-- Need to include more details about the vendor (name, base url, logo?) in response
-
 - should 'formats' be renamed 'offers'?
 
 - should retryDelay be changed to something that can be truth tested to see if it should be applied, rather than "is defined"?
