@@ -1,10 +1,17 @@
 # TODO
 
-* test that country responder works as expected
-* test that /book/123/prices redirects to .../country/currency
-* test that /book/123/prices/country redirects to .../country/currency
+- should include a url to the vendor specific price result in list of results
 
-* price fetcher should give a list of countries it is available for
-* price fetcher should give list of approved currencies (first should be default)
+- Need to include more details about the vendor (name, base url, logo?) in response
 
-* price fetcher code should return list of vendors for a given country
+- should 'formats' be renamed 'offers'?
+
+- should retryDelay be changed to something that can be truth tested to see if it should be applied, rather than "is defined"?
+
+- create cron jobs (update geoip db, update exchange rates)
+
+- create a sample development config
+
+- document how to set up project for local dev
+
+- list packages needed on the server (redis, geoip)
