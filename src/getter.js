@@ -117,7 +117,7 @@ function getBookPricesForVendor (args, cb) {
       result.status = Date.now()/1000 < result.timestamp + result.ttl ? "ok" : "stale";
     } else {
       result.status = args.fromCacheOnly ? "unfetched" : "pending";
-      result.timestamp = Date.now() / 1000;
+      result.timestamp = Math.floor(Date.now() / 1000);
     }
 
     switch (result.status) {
