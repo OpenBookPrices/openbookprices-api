@@ -182,7 +182,7 @@ function convertCurrencyInBookPrices (result, currency) {
 
     // Add together to get total, rather than convert, to avoid odd instances
     // where price + shipping != total due to rounding errors
-    entry.total = entry.price + entry.shipping;
+    entry.total = exchange.round( to, entry.price + entry.shipping );
   });
 
 

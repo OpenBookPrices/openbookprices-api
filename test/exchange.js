@@ -8,6 +8,13 @@ var exchange = require("../src/exchange"),
     async = require("async");
 
 describe("Exchange", function () {
+
+  describe("rounding", function () {
+    it("should round as expected", function() {
+      assert.equal( exchange.round("USD", 33.38 + 10.74), 44.12);
+    });
+  });
+
   describe("Load and keep fresh the exchange rates", function () {
 
     it("should be using test path", function () {

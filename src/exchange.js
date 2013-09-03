@@ -20,15 +20,19 @@ exchange.convert = function convert (val, fromCurrency, toCurrency) {
   var converted = fx(val).from(fromCurrency).to(toCurrency);
 
   // round to the required number of decimal places
-  var currency = currencies[toCurrency];
-  var dps = currency && !_.isNull(currency.decimals) ? currency.decimals : 2;
-  var multiplier = Math.pow(10, dps);
-  var rounded = Math.round( converted * multiplier ) / multiplier;
+  var rounded = exchange.round(toCurrency, converted);
 
   return rounded;
 };
 
 
+exchange.round = function (currencyCode, amount) {
+  var currency = currencies[currencyCode];
+  var dps = currency && !_.isNull(currency.decimals) ? currency.decimals : 2;
+  var multiplier = Math.pow(10, dps);
+  var rounded = Math.round( amount * multiplier ) / multiplier;
+  return rounded;
+};
 
 
 
