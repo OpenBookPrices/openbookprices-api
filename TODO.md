@@ -1,7 +1,5 @@
 # TODO
 
-- should include a url to the vendor specific price result in list of results
-
 - should 'formats' be renamed 'offers'?
 
 - should retryDelay be changed to something that can be truth tested to see if it should be applied, rather than "is defined"?

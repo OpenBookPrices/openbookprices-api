@@ -159,6 +159,7 @@ module.exports = {
       },
       "isbn": "9780340831496",
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
+      "apiURL": config.api.protocol + "://" + config.api.hostport + "/prices/9780340831496/GB/GBP/test-vendor-1",
       "vendor": {
         "code": "test-vendor-1",
         "name": "Test Vendor 1",
@@ -177,6 +178,7 @@ module.exports = {
       formats: {},
       isbn: "9780340831496",
       url: null,
+      apiURL: config.api.protocol + "://" + config.api.hostport + "/prices/9780340831496/GB/GBP/test-vendor-1",
       vendor: {
         code: "test-vendor-1",
         name: "Test Vendor 1",
@@ -203,6 +205,7 @@ module.exports = {
       },
       "isbn": "9780340831496",
       "url": "http://www.test-vendor-1.co.uk/9780340831496",
+      "apiURL": config.api.protocol + "://" + config.api.hostport + "/prices/9780340831496/GB/GBP/test-vendor-1",
       "vendor": {
         "code": "test-vendor-1",
         "name": "Test Vendor 1",
@@ -225,6 +228,7 @@ module.exports = {
       retryDelay: config.retryDelayForUnfetched,
       "timestamp": zeroTime/1000,
       url: null,
+      apiURL: config.api.protocol + "://" + config.api.hostport + "/prices/9780340831496/GB/GBP/test-vendor-1",
     },
 
     "9780340831496-error": {
@@ -232,6 +236,7 @@ module.exports = {
       preConversionCurrency: null,
       formats: {},
       url: null,
+      apiURL: config.api.protocol + "://" + config.api.hostport + "/prices/9780340831496/GB/GBP/test-vendor-1",
       retryDelay: null,
       timestamp: 1000000000,
       ttl: 300,

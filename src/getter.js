@@ -153,6 +153,9 @@ function getBookPricesForVendor (args, cb) {
     // convert the price if needed
     result = convertCurrencyInBookPrices(result, args.currency);
 
+    // add the vendor specific endpoint
+    result = addVendorPriceEndPointUrl(result);
+
     // Expand vendor into fuller details
     result = expandVendorDetails(result);
 
@@ -210,6 +213,20 @@ function convertCurrencyInBookPrices (result, currency) {
 }
 
 
+function addVendorPriceEndPointUrl (entry) {
+  var base = config.api.protocol + "://" + config.api.hostport;
+  var path= [
+    "",
+    "prices",
+    entry.isbn,
+    entry.country,
+    entry.preConversionCurrency || entry.currency,
+    entry.vendor
+  ].join("/");
+  entry.apiURL =  base + path;
+  return entry;
+}
+
 
 function expandVendorDetails (entry) {
   // expand vendor into fuller details
@@ -217,6 +234,7 @@ function expandVendorDetails (entry) {
   entry.vendor = vendorDetails;
   return entry;
 }
+
 
 function extractBookPrices (results) {
   var pricesByCountry = {};
@@ -283,6 +301,7 @@ function createPendingResponse (args) {
     args
   );
 
+  response = addVendorPriceEndPointUrl(response);
   response = expandVendorDetails(response);
 
   return response;
