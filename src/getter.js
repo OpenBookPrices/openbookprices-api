@@ -73,7 +73,9 @@ function fetchFromScrapers (options, cb) {
   fetcher.fetch(
     options,
     function (err, data) {
-      if (err) { return cb(err); }
+      if (err) {
+        return cb(err);
+      }
       cacheBookDetails(data);
       // cacheBookPrices(data);
       cb(null, data);
@@ -109,15 +111,24 @@ function getBookPricesForVendor (args, cb) {
   // Wrap the callback so that we can tidy up the response
   cb = _.wrap(cb, function (func, err, rawResult) {
 
+    if (err) {
+      // something went wrong with the scraper. Store an error in cache to back
+      // off for a little while.
+      // console.log(args, err);
+      rawResult = createErrorResponse(args);
+    }
+
     // Let us alter the top level attributes without affecting that which is
     // being stored in the cache.
     var result = _.clone(rawResult);
 
-    if ( result.timestamp ) {
-      result.status = Date.now()/1000 < result.timestamp + result.ttl ? "ok" : "stale";
-    } else {
-      result.status = args.fromCacheOnly ? "unfetched" : "pending";
-      result.timestamp = Math.floor(Date.now() / 1000);
+    if (!result.status) {
+      if ( result.timestamp ) {
+        result.status = Date.now()/1000 < result.timestamp + result.ttl ? "ok" : "stale";
+      } else {
+        result.status = args.fromCacheOnly ? "unfetched" : "pending";
+        result.timestamp = Math.floor(Date.now() / 1000);
+      }
     }
 
     switch (result.status) {
@@ -140,7 +151,7 @@ function getBookPricesForVendor (args, cb) {
     // Expand vendor into fuller details
     result = expandVendorDetails(result);
 
-    func(err, result);
+    func(null, result);
   });
 
   var cacheKey = bookPricesCacheKey(scrapeArgs);
@@ -267,6 +278,23 @@ function createPendingResponse (args) {
   );
 
   response = expandVendorDetails(response);
+
+  return response;
+}
+
+function createErrorResponse (args) {
+  var response = _.extend(
+    {
+      status: "error",
+      preConversionCurrency: null,
+      formats: {},
+      url: null,
+      retryDelay: null,
+      timestamp: Math.floor(Date.now()/1000),
+      ttl: config.ttlForError,
+    },
+    args
+  );
 
   return response;
 }

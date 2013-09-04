@@ -309,9 +309,40 @@ describe("/prices", function () {
         .end(done);
     });
 
-    it("should 400 if the vendor does not sell to that country", function (done) {
+    it("should 200 if the scraper has an error", function (done) {
 
       // stub the country so that GB is not accepted
+      fetcher.fetch.restore();
+      this.fetchStub = this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(new Error("some error"), {});
+
+      request
+        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+        .expect(200)
+        .expect({
+          status: "error",
+          preConversionCurrency: null,
+          formats: {},
+          url: null,
+          retryDelay: null,
+          timestamp: 1000000000,
+          ttl: 300,
+          isbn: "9780340831496",
+          vendor: {
+            code: "test-vendor-1",
+            name: "Test Vendor 1",
+            homepage: "http://www.test-vendor-1.co.uk/"
+          },
+          country: "GB",
+          currency: "GBP",
+        })
+        .end(done);
+    });
+
+    it("should 400 if the vendor does not sell to that country", function (done) {
+
+      // return an error
       fetcher.vendorsForCountry.restore();
       this.sandbox
         .stub(fetcher, "vendorsForCountry")
