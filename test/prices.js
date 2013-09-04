@@ -163,21 +163,7 @@ describe("/prices", function () {
               .get("/prices/9780340831496/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
-              .expect([{
-                vendor: {
-                  code: "test-vendor-1",
-                  name: "Test Vendor 1",
-                  homepage: "http://www.test-vendor-1.co.uk/",
-                },
-                isbn: "9780340831496",
-                country: "GB",
-                currency: "GBP",
-                preConversionCurrency: null,
-                ttl: 0,
-                timestamp: Math.floor(Date.now()/1000),
-                status: "unfetched",
-                retryDelay: config.retryDelayForUnfetched,
-              }])
+              .expect([samples.getBookPricesForVendor["9780340831496-unfetched"]])
               .end(function (err) {
                 assert.ifError(err);
                 assert.equal(fetchStub.callCount, 0);
@@ -306,37 +292,6 @@ describe("/prices", function () {
         .get("/prices/9780340831496/gb/gBp/TEST-veNDor-1?callback=foo")
         .expect(301)
         .expect("Location", testBaseUrl + "/prices/9780340831496/GB/GBP/test-vendor-1?callback=foo")
-        .end(done);
-    });
-
-    it("should 200 if the scraper has an error", function (done) {
-
-      // stub the country so that GB is not accepted
-      fetcher.fetch.restore();
-      this.fetchStub = this.sandbox
-        .stub(fetcher, "fetch")
-        .yields(new Error("some error"), {});
-
-      request
-        .get("/prices/9780340831496/GB/GBP/test-vendor-1")
-        .expect(200)
-        .expect({
-          status: "error",
-          preConversionCurrency: null,
-          formats: {},
-          url: null,
-          retryDelay: null,
-          timestamp: 1000000000,
-          ttl: 300,
-          isbn: "9780340831496",
-          vendor: {
-            code: "test-vendor-1",
-            name: "Test Vendor 1",
-            homepage: "http://www.test-vendor-1.co.uk/"
-          },
-          country: "GB",
-          currency: "GBP",
-        })
         .end(done);
     });
 
@@ -551,6 +506,45 @@ describe("/prices", function () {
         .expect("Content-Type", "text/javascript; charset=utf-8")
         .end(done);
     });
+
+    it("should 200 if the scraper has an error", function (done) {
+
+      // stub the country so that GB is not accepted
+      fetcher.fetch.restore();
+      this.fetchStub = this.sandbox
+        .stub(fetcher, "fetch")
+        .yields(new Error("some error"), {});
+
+      async.series([
+
+        // initial request should return unfetched, as it is not in db
+        function (cb) {
+          request
+            .get("/prices/9780340831496/GB/GBP")
+            .expect(200)
+            .expect([samples.getBookPricesForVendor["9780340831496-unfetched"]])
+            .end(cb);
+        },
+        // request to scrape should return error response
+        function (cb) {
+          request
+            .get("/prices/9780340831496/GB/GBP/test-vendor-1")
+            .expect(200)
+            .expect(samples.getBookPricesForVendor["9780340831496-error"])
+            .end(cb);
+        },
+        // subsequent list request should return cached error response
+        function (cb) {
+          request
+            .get("/prices/9780340831496/GB/GBP")
+            .expect(200)
+            .expect([samples.getBookPricesForVendor["9780340831496-error"]])
+            .end(cb);
+        },
+
+      ], done);
+    });
+
 
   });
 

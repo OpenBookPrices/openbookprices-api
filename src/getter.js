@@ -116,6 +116,11 @@ function getBookPricesForVendor (args, cb) {
       // off for a little while.
       // console.log(args, err);
       rawResult = createErrorResponse(args);
+
+      // This is hacky, but because of the error the caching did not happen earlier.
+      // The flow of this port of the process needs to be looked at to see if it could
+      // be made clearer.
+      cacheBookPrices([rawResult]);
     }
 
     // Let us alter the top level attributes without affecting that which is

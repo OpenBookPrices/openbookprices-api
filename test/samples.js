@@ -1,4 +1,8 @@
+"use strict";
+
 var zeroTime = 1000000000 * 1000;
+
+var config = require("config");
 
 module.exports = {
 
@@ -204,6 +208,40 @@ module.exports = {
         "name": "Test Vendor 1",
         "homepage": "http://www.test-vendor-1.co.uk/",
       }
+    },
+
+    "9780340831496-unfetched": {
+      vendor: {
+        code: "test-vendor-1",
+        name: "Test Vendor 1",
+        homepage: "http://www.test-vendor-1.co.uk/",
+      },
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      preConversionCurrency: null,
+      ttl: 0,
+      status: "unfetched",
+      retryDelay: config.retryDelayForUnfetched,
+      "timestamp": zeroTime/1000,
+    },
+
+    "9780340831496-error": {
+      status: "error",
+      preConversionCurrency: null,
+      formats: {},
+      url: null,
+      retryDelay: null,
+      timestamp: 1000000000,
+      ttl: 300,
+      isbn: "9780340831496",
+      vendor: {
+        code: "test-vendor-1",
+        name: "Test Vendor 1",
+        homepage: "http://www.test-vendor-1.co.uk/"
+      },
+      country: "GB",
+      currency: "GBP",
     },
 
   },
