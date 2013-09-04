@@ -224,6 +224,7 @@ module.exports = {
       status: "unfetched",
       retryDelay: config.retryDelayForUnfetched,
       "timestamp": zeroTime/1000,
+      url: null,
     },
 
     "9780340831496-error": {

@@ -106,6 +106,7 @@ describe("Getter", function () {
                       name: "Test Vendor 1",
                       homepage: "http://www.test-vendor-1.co.uk/",
                     },
+                    url: null,
                     ttl: 0,
                     timestamp: Date.now()/1000,
                     status: "unfetched",

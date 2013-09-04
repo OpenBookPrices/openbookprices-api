@@ -169,6 +169,7 @@ function getBookPricesForVendor (args, cb) {
       var emptyResponse = _.omit(args, "fromCacheOnly");
       emptyResponse.ttl = 0;
       emptyResponse.timestamp = null;
+      emptyResponse.url = null;
       return cb( null, emptyResponse);
 
     } else {
