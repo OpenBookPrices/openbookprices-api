@@ -13,3 +13,5 @@
 - document how to set up project for local dev
 
 - list packages needed on the server (redis, geoip)
+
+- compression
