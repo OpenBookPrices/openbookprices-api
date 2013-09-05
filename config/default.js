@@ -5,7 +5,7 @@ var path = require("path");
 module.exports = {
   retryDelayForPending: 2,
   retryDelayForStale: 2,
-  retryDelayForUnfetched: 0,
+  retryDelayForUnfetched: 0.1,
 
   ttlForError: 300,
 
