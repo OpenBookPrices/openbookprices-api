@@ -3,7 +3,7 @@
 var _       = require("underscore"),
     async   = require("async"),
     client  = require("./redis-client"),
-    fetcher = require("l2b-price-fetchers"),
+    fetcher = require("openbookprices-fetchers"),
     config  = require("config"),
     exchange = require("../src/exchange");
 

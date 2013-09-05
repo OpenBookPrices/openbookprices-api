@@ -5,7 +5,7 @@ require("./setup");
 var assert = require("assert"),
     request = require("supertest"),
     config = require("config"),
-    fetcher = require("l2b-price-fetchers"),
+    fetcher = require("openbookprices-fetchers"),
     async = require("async"),
     apiApp  = require("../"),
     helpers = require("../src/helpers"),

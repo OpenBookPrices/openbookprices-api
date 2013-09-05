@@ -6,7 +6,7 @@ var sinon   = require("sinon"),
     getter = require("../src/getter"),
     client = require("../src/redis-client"),
     samples = require("./samples"),
-    fetcher = require("l2b-price-fetchers"),
+    fetcher = require("openbookprices-fetchers"),
     exchange = require("../src/exchange");
 
 // set the environment to testing
