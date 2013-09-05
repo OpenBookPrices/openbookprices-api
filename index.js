@@ -7,6 +7,8 @@ module.exports = function () {
 
   var app = express();
 
+  app.use( express.compress() );
+
   // development only
   if ("development" == app.get("env")) {
     app.use(express.logger("dev"));
