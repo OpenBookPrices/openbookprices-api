@@ -96,7 +96,7 @@ exports.redirectToCanonicalURL = function (pathParts, statusCode) {
 
     var components = [];
     _.each(pathParts, function (key) {
-      components.push( req.params[key]);
+      components.push( req.params[key] || key );
     });
 
     var canonicalPath = components.join("/");

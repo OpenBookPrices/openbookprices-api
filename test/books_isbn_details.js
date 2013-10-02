@@ -12,7 +12,7 @@ var assert = require("assert"),
 
 request = request(apiApp());
 
-describe.skip("/books/:isbn/details", function () {
+describe("/books/:isbn/details", function () {
 
   var fetchStub;
 

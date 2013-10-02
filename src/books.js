@@ -12,8 +12,16 @@ app.use(app.router);
 
 app.param("isbn", middleware.isbn);
 
-// fake handler for the books endpoints
-app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, res, next) {
+app.get("/", function (req, res) {
+  res.jsonp({FIXME: "Add example links here"});
+});
+
+app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, res) {
+  var isbn = req.param("isbn");
+  res.jsonp({isbn: isbn, FIXME: "add more example urls here"});
+});
+
+app.get("/:isbn/details", middleware.redirectToCanonicalURL(["isbn", "details"]), function (req, res, next) {
   var isbn = req.param("isbn");
   getter.getBookDetails(
     isbn,
