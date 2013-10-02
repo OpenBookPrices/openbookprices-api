@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "l2b-api",
+  "name": "openbookprices-api",
   "version": "0.0.0",
   "description": "API for the OpenBookPrices components",
   "main": "index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/OpenBookPrices/l2b-api.git"
+    "url": "git://github.com/OpenBookPrices/openbookprices-api.git"
   },
   "dependencies": {
     "express": "~3.3.3",
