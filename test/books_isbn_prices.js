@@ -16,7 +16,7 @@ var testBaseUrl = config.api.protocol + "://" + config.api.hostport;
 
 request = request(apiApp());
 
-describe.skip("/books/:isbn/prices", function () {
+describe("/books/:isbn/prices", function () {
 
   describe("/", function () {
 

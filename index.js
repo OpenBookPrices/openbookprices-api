@@ -29,7 +29,6 @@ module.exports = function () {
   // Load the sub-apps
   app.use("/country", require("./src/country"));
   app.use("/books",   require("./src/books"));
-  app.use("/prices",  require("./src/prices"));
   app.use("/echo",    require("./src/echo"));
 
   // 404 everything that was not caught above

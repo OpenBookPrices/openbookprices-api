@@ -217,8 +217,9 @@ function addVendorPriceEndPointUrl (entry) {
   var base = config.api.protocol + "://" + config.api.hostport;
   var path= [
     "",
-    "prices",
+    "books",
     entry.isbn,
+    "prices",
     entry.country,
     entry.preConversionCurrency || entry.currency,
     entry.vendor
