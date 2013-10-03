@@ -21,7 +21,7 @@ describe("/books/:isbn", function () {
     // stub the fetch so that it does not do a scrape
     fetchStub = this.sandbox
       .stub(fetcher, "fetch")
-      .yields(null, samples.fetch["9780340831496"]);
+      .yields(null, samples("fetch-9780340831496"));
   });
 
   it("should redirect to normalised isbn13", function (done) {

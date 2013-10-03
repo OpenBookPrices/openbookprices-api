@@ -20,7 +20,7 @@ describe("/books/:isbn/details", function () {
     // stub the fetch so that it does not do a scrape
     fetchStub = this.sandbox
       .stub(fetcher, "fetch")
-      .yields(null, samples.fetch["9780340831496"]);
+      .yields(null, samples("fetch-9780340831496"));
   });
 
   it("should return correct details for valid isbn", function (done) {
@@ -33,7 +33,7 @@ describe("/books/:isbn/details", function () {
         .expect(200)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect("Cache-Control", helpers.cacheControl(86400))
-        .expect(samples.getBookDetails["9780340831496"])
+        .expect(samples("getBookDetails-9780340831496"))
         .end(cb);
     };
 

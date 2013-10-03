@@ -22,7 +22,7 @@ beforeEach(function (done) {
 // Create a fresh Sinon sandbox before every test
 beforeEach(function () {
   var sandbox = this.sandbox = sinon.sandbox.create({ useFakeTimers: true });
-  sandbox.clock.tick(samples.zeroTime);
+  sandbox.clock.tick(samples("zeroTime"));
 
   this.waitForCache = function (cb) {
     var commandQueue = "command_queue";

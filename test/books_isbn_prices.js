@@ -135,7 +135,7 @@ describe.skip("/books/:isbn/prices", function () {
 
       var fetchStub = this.sandbox
         .stub(fetcher, "fetch")
-        .yields(null, samples.fetch["9780340831496"]);
+        .yields(null, samples("fetch-9780340831496"));
 
       request
         .get("/books/9780340831496/prices/GB/GBP")
@@ -152,7 +152,7 @@ describe.skip("/books/:isbn/prices", function () {
 
       var fetchStub = this.sandbox
         .stub(fetcher, "fetch")
-        .yields(null, samples.fetch["9780340831496"]);
+        .yields(null, samples("fetch-9780340831496"));
 
       async.series(
         [
@@ -163,7 +163,7 @@ describe.skip("/books/:isbn/prices", function () {
               .get("/books/9780340831496/prices/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
-              .expect([samples.getBookPricesForVendor["9780340831496-unfetched"]])
+              .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
               .end(function (err) {
                 assert.ifError(err);
                 assert.equal(fetchStub.callCount, 0);
@@ -175,14 +175,14 @@ describe.skip("/books/:isbn/prices", function () {
             request
               .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
               .expect(200)
-              .expect(samples.getBookPricesForVendor["9780340831496"])
+              .expect(samples("getBookPricesForVendor-9780340831496"))
               .end(cb);
           },
           this.waitForCache,
           function (cb) {
             // Get the currency endpoint and check that cached values are now
             // included.
-            var expected = samples.getBookPricesForVendor["9780340831496"];
+            var expected = samples("getBookPricesForVendor-9780340831496");
             request
               .get("/books/9780340831496/prices/GB/GBP")
               .expect(200)
@@ -199,7 +199,7 @@ describe.skip("/books/:isbn/prices", function () {
 
       this.sandbox
         .stub(fetcher, "fetch")
-        .yields(null, samples.fetch["9780340831496"]);
+        .yields(null, samples("fetch-9780340831496"));
 
       async.series(
         [
@@ -208,14 +208,14 @@ describe.skip("/books/:isbn/prices", function () {
             request
               .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
               .expect(200)
-              .expect(samples.getBookPricesForVendor["9780340831496"])
+              .expect(samples("getBookPricesForVendor-9780340831496"))
               .end(cb);
           },
           this.waitForCache,
           function (cb) {
 
             // Copy the expected results and change to USD
-            var expected = _.clone(samples.getBookPricesForVendor["9780340831496"]);
+            var expected = samples("getBookPricesForVendor-9780340831496");
             expected.currency = "USD";
             expected.preConversionCurrency = "GBP";
             expected.formats = {
@@ -266,7 +266,7 @@ describe.skip("/books/:isbn/prices", function () {
     beforeEach(function () {
       this.fetchStub = this.sandbox
         .stub(fetcher, "fetch")
-        .yields(null, samples.fetch["9780340831496"]);
+        .yields(null, samples("fetch-9780340831496"));
     });
 
     it("should 404 for bad vendor", function (done) {
@@ -324,7 +324,7 @@ describe.skip("/books/:isbn/prices", function () {
         .stub(fetcher, "fetch", function (args, cb) {
           setTimeout(
             function () {
-              cb(null, samples.fetch["9780340831496"]);
+              cb(null, samples("fetch-9780340831496"));
             },
             (config.getBookPricesForVendorTimeout + 1 ) * 1000
           );
@@ -338,7 +338,7 @@ describe.skip("/books/:isbn/prices", function () {
         function (cb) {
           var expected = _.extend(
             {},
-            samples.getBookPricesForVendor["9780340831496-pending"],
+            samples("getBookPricesForVendor-9780340831496-pending"),
             {timestamp: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
           );
           request
@@ -354,7 +354,7 @@ describe.skip("/books/:isbn/prices", function () {
         this.waitForCache,    // let results get saved to cache
         function (cb) {
 
-          var expectedContent = samples.getBookPricesForVendor["9780340831496"];
+          var expectedContent = samples("getBookPricesForVendor-9780340831496");
 
           var expectedMaxAge = Math.floor(expectedContent.timestamp + expectedContent.ttl - Date.now()/1000);
 
@@ -369,7 +369,7 @@ describe.skip("/books/:isbn/prices", function () {
 
         // wait for ttl to pass
         function (cb) {
-          var expectedContent = samples.getBookPricesForVendor["9780340831496"];
+          var expectedContent = samples("getBookPricesForVendor-9780340831496");
           var expectedMaxAge = Math.floor(expectedContent.timestamp + expectedContent.ttl - Date.now()/1000);
           clock.tick(expectedMaxAge * 1000);
           cb();
@@ -380,7 +380,7 @@ describe.skip("/books/:isbn/prices", function () {
           request
             .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
-            .expect(samples.getBookPricesForVendor["9780340831496-stale"])
+            .expect(samples("getBookPricesForVendor-9780340831496-stale"))
             .expect("Cache-Control", helpers.cacheControl(0))
             .end(cb);
         },
@@ -405,7 +405,7 @@ describe.skip("/books/:isbn/prices", function () {
         .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
         .expect(200)
         .expect("Cache-Control", helpers.cacheControl(86400 - tickAmount/1000))
-        .expect(samples.getBookPricesForVendor["9780340831496"])
+        .expect(samples("getBookPricesForVendor-9780340831496"))
         .end(done);
 
     });
@@ -416,7 +416,7 @@ describe.skip("/books/:isbn/prices", function () {
         request
           .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
           .expect(200)
-          .expect(samples.getBookPricesForVendor["9780340831496"])
+          .expect(samples("getBookPricesForVendor-9780340831496"))
           .end(cb);
       };
 
@@ -467,7 +467,7 @@ describe.skip("/books/:isbn/prices", function () {
     it("should convert currency correctly", function (done) {
 
       // Copy the expected results and change to USD
-      var expected = _.clone(samples.getBookPricesForVendor["9780340831496"]);
+      var expected = _.clone(samples("getBookPricesForVendor-9780340831496"));
       expected.currency = "USD";
       expected.preConversionCurrency = "GBP";
       expected.formats = {
@@ -522,7 +522,7 @@ describe.skip("/books/:isbn/prices", function () {
           request
             .get("/books/9780340831496/prices/GB/GBP")
             .expect(200)
-            .expect([samples.getBookPricesForVendor["9780340831496-unfetched"]])
+            .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
             .end(cb);
         },
         // request to scrape should return error response
@@ -530,7 +530,7 @@ describe.skip("/books/:isbn/prices", function () {
           request
             .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
-            .expect(samples.getBookPricesForVendor["9780340831496-error"])
+            .expect(samples("getBookPricesForVendor-9780340831496-error"))
             .end(cb);
         },
         // subsequent list request should return cached error response
@@ -538,7 +538,7 @@ describe.skip("/books/:isbn/prices", function () {
           request
             .get("/books/9780340831496/prices/GB/GBP")
             .expect(200)
-            .expect([samples.getBookPricesForVendor["9780340831496-error"]])
+            .expect([samples("getBookPricesForVendor-9780340831496-error")])
             .end(cb);
         },
 

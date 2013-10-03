@@ -16,7 +16,7 @@ describe("Getter", function () {
     // stub the fetch so that it does not do a scrape
     this.fetchStub = this.sandbox.stub(fetcher, "fetch").yields(
       null,
-      samples.fetch["9780340831496"]
+      samples("fetch-9780340831496")
     );
   });
 
@@ -26,7 +26,7 @@ describe("Getter", function () {
     var runTests = function (cb) {
       getter.getBookDetails("9780340831496", function (err, details) {
         assert.ifError(err);
-        assert.deepEqual(details, samples.getBookDetails["9780340831496"]);
+        assert.deepEqual(details, samples("getBookDetails-9780340831496"));
         cb();
       });
     };
@@ -59,7 +59,7 @@ describe("Getter", function () {
           assert.ifError(err);
           assert.deepEqual(
             details,
-            samples.getBookPricesForVendor["9780340831496"]
+            samples("getBookPricesForVendor-9780340831496")
           );
           cb();
         }
@@ -126,7 +126,7 @@ describe("Getter", function () {
               assert.ifError(err);
               assert.deepEqual(
                 details,
-                samples.getBookPricesForVendor["9780340831496"]
+                samples("getBookPricesForVendor-9780340831496")
               );
               cb();
             }
@@ -139,7 +139,7 @@ describe("Getter", function () {
               assert.ifError(err);
               assert.deepEqual(
                 prices,
-                [samples.getBookPricesForVendor["9780340831496"]]
+                [samples("getBookPricesForVendor-9780340831496")]
               );
               cb();
             }
