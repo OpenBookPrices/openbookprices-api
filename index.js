@@ -16,6 +16,9 @@ module.exports = function () {
     app.use(express.logger("default"));
   }
 
+  // Configure some settings
+  app.set("json spaces", 2);  // in production as well as in dev
+
   // Set up the default response
   app.use(function (req, res, next) {
 
