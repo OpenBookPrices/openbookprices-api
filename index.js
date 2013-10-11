@@ -12,6 +12,8 @@ module.exports = function () {
   // development only
   if ("development" == app.get("env")) {
     app.use(express.logger("dev"));
+  } else {
+    app.use(express.logger("default"));
   }
 
   // Set up the default response
