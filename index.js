@@ -9,10 +9,10 @@ module.exports = function () {
 
   app.use( express.compress() );
 
-  // development only
+  // configure logging
   if ("development" == app.get("env")) {
     app.use(express.logger("dev"));
-  } else {
+  } else if ("production" == app.get("env")) {
     app.use(express.logger("default"));
   }
 
