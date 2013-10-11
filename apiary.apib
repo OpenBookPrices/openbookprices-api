@@ -3,47 +3,157 @@ HOST: http://api.openbookprices.com/
 --- OpenBookPrices ---
 
 ---
-Welcome to the our sample API documentation. All comments can be written in (support [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax)
+The OpenBookPrices API lets you get current prices from book vendors around the
+world, including shipping costs to your country and all converted into your
+currency.
 ---
 
---
-Shopping Cart Resources
-The following is a section of resources related to the shopping cart
---
+-- Books and prices --
 
-Echo back your own request
+Determine the country (and hence currency) of the person making the request and then redirect to the specific url.
+GET /books/{isbn}/prices
+< 302
+< Content-Type: text/plain
+Redirecting to http://api.openbookprices.com/books/9780340831496/prices/US/USD
+
+
+Determine the primary currency of the `country` and redirect to the specific url.
+GET /books/{isbn}/prices/{country}
+< 302
+< Content-Type: text/plain
+Redirecting to http://api.openbookprices.com/books/9780340831496/prices/US/USD
+
+
+Return immediately a list of all the venders who ship to `country` and the pricing details that are currently known.
+GET /books/{isbn}/prices/{country}/{currency}
+< 200
+< Content-Type: application/json
+[
+  {
+    "vendor": {
+      "code": "amazon_uk",
+      "name": "Amazon UK",
+      "homepage": "http://www.amazon.co.uk/"
+    },
+    "isbn": "9780340831496",
+    "country": "US",
+    "currency": "USD",
+    "ttl": 0,
+    "timestamp": 1381517829,
+    "url": null,
+    "status": "unfetched",
+    "retryDelay": 0.1,
+    "preConversionCurrency": null,
+    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_uk"
+  },
+  {
+    "vendor": {
+      "code": "amazon_us",
+      "name": "Amazon USA",
+      "homepage": "http://www.amazon.com/"
+    },
+    "isbn": "9780340831496",
+    "country": "US",
+    "currency": "USD",
+    "ttl": 0,
+    "timestamp": 1381517829,
+    "url": null,
+    "status": "unfetched",
+    "retryDelay": 0.1,
+    "preConversionCurrency": null,
+    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_us"
+  },
+  {
+    "vendor": {
+      "code": "foyles",
+      "name": "Foyles",
+      "homepage": "http://www.foyles.co.uk/"
+    },
+    "isbn": "9780340831496",
+    "country": "US",
+    "currency": "USD",
+    "ttl": 0,
+    "timestamp": 1381517829,
+    "url": null,
+    "status": "unfetched",
+    "retryDelay": 0.1,
+    "preConversionCurrency": null,
+    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/foyles"
+  }
+]
+
+
+Return fresh details for the vendor. If needed this will initiate a fetch of the details so the response may block whilst this is happening.
+GET /books/{isbn}/prices/{country}/{currency}/{vendor}
+< 200
+< Content-Type: application/json
+{
+  "currency": "USD",
+  "url": "http://www.amazon.co.uk/dp/0340831499",
+  "offers": {
+    "new": {
+      "price": 21.7,
+      "availabilityNote": "Usually dispatched within 24 hours",
+      "shippingNote": "5 to 7 business days",
+      "shipping": 6.98,
+      "total": 28.68
+    }
+  },
+  "ttl": 3600,
+  "timestamp": 1381518231,
+  "isbn": "9780340831496",
+  "vendor": {
+    "code": "amazon_uk",
+    "name": "Amazon UK",
+    "homepage": "http://www.amazon.co.uk/"
+  },
+  "country": "US",
+  "status": "ok",
+  "retryDelay": null,
+  "preConversionCurrency": "GBP",
+  "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_uk"
+}
+
+
+
+-- Miscellaneous endpoints --
+
+---
+Echo back your own request - useful for checking what has reached the server. Should never be cached.
+---
+
 GET /echo
 < 200
 < Content-Type: application/json
 {
   "timestamp": 1381509290.302,
-   "request": {
-     "method": "GET",
-     "secure": false,
-     "protocol": "http",
-     "host": "app.openbookprices.com",
-       "subdomains": [
-     "app"
-     ],
-     "url": "/",
-     "originalUrl": "/echo",
-     "path": "/",
-     "query": {}
-   },
-   "network": {
-     "ip": "91.235.56.121",
-     "ips": [
-       "91.235.56.121"
-     ]
-   },
-   "headers": {
-     "host": "app.openbookprices.com",
-     "user-agent": "Amazon CloudFront",
-     "via": "1.0 678cdeea3c67419b8e71d6490af123a1.cloudfront.net (CloudFront)",
-     "connection": "Keep-Alive",
-     "x-amz-cf-id": "z034Ur0Ub-101_73fuPLKM9wHp-8-ni3qjtRCcA0DdGHpYPtV5Yl0A==",
-     "x-forwarded-for": "91.235.56.121",
-     "accept-encoding": "gzip",
-     "cache-control": ""
-   }
+  "request": {
+    "method": "GET",
+    "secure": false,
+    "protocol": "http",
+    "host": "app.openbookprices.com",
+    "subdomains": [
+      "app"
+    ],
+    "url": "/",
+    "originalUrl": "/echo",
+    "path": "/",
+    "query": {}
+  },
+  "network": {
+    "ip": "12.34.56.78",
+    "ips": [
+      "12.34.56.78"
+    ]
+  },
+  "headers": {
+    "host": "app.openbookprices.com",
+    "user-agent": "Amazon CloudFront",
+    "via": "1.0 678cdeea3c67419b8e71d6490af123a1.cloudfront.net (CloudFront)",
+    "connection": "Keep-Alive",
+    "x-amz-cf-id": "z034Ur0Ub-101_73fuPLKM9wHp-8-ni3qjtRCcA0DdGHpYPtV5Yl0A==",
+    "x-forwarded-for": "91.235.56.121",
+    "accept-encoding": "gzip",
+    "cache-control": ""
+  }
 }
