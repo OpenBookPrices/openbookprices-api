@@ -225,6 +225,8 @@ describe("/books/:isbn/prices", function () {
                 { price: 39.31, total: 39.31 }
               )
             };
+            expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/USD/test-vendor-1";
+
 
             // Get the currency endpoint and check that cached values are now
             // included.
@@ -467,7 +469,7 @@ describe("/books/:isbn/prices", function () {
     it("should convert currency correctly", function (done) {
 
       // Copy the expected results and change to USD
-      var expected = _.clone(samples("getBookPricesForVendor-9780340831496"));
+      var expected = samples("getBookPricesForVendor-9780340831496");
       expected.currency = "USD";
       expected.preConversionCurrency = "GBP";
       expected.formats = {
@@ -477,6 +479,8 @@ describe("/books/:isbn/prices", function () {
           { price: 39.31, total: 39.31 }
         )
       };
+      expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/USD/test-vendor-1";
+
 
       request
         .get("/books/9780340831496/prices/GB/USD/test-vendor-1")

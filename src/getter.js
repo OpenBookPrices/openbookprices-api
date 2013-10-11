@@ -215,13 +215,14 @@ function convertCurrencyInBookPrices (result, currency) {
 
 function addVendorPriceEndPointUrl (entry) {
   var base = config.api.protocol + "://" + config.api.hostport;
+
   var path= [
     "",
     "books",
     entry.isbn,
     "prices",
     entry.country,
-    entry.preConversionCurrency || entry.currency,
+    entry.currency,
     entry.vendor
   ].join("/");
   entry.apiURL =  base + path;
