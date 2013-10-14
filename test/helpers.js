@@ -20,11 +20,11 @@ describe("Helpers", function () {
     });
 
     it("should handle greater than 1", function () {
-      assert.equal(cacheControl(1),         "max-age=1");
-      assert.equal(cacheControl(123456),    "max-age=123456");
-      assert.equal(cacheControl("123456"),  "max-age=123456");
-      assert.equal(cacheControl(123.456),   "max-age=123");
-      assert.equal(cacheControl("123.456"), "max-age=123");
+      assert.equal(cacheControl(1),         "public, max-age=1");
+      assert.equal(cacheControl(123456),    "public, max-age=123456");
+      assert.equal(cacheControl("123456"),  "public, max-age=123456");
+      assert.equal(cacheControl(123.456),   "public, max-age=123");
+      assert.equal(cacheControl("123.456"), "public, max-age=123");
     });
 
   });

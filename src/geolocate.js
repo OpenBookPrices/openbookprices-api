@@ -39,7 +39,7 @@ exports.geolocateFromIP = function (req, res, next) {
 
   // This result is specific to the IP address of the request, so should
   // not be cached.
-  res.header("Cache-Control", "private, " + helpers.cacheControl(600));
+  res.header("Cache-Control", helpers.cacheControl(600, true));
 
   next();
 };
