@@ -10,7 +10,7 @@ var ean             = require("ean"),
 exports.isbn = function (req, res, next) {
 
   var dirty = req.params.isbn;
-  var clean = dirty.replace(/\D/g, "");
+  var clean = dirty.replace(/[^\dx]/ig, "");
 
   // isbn10 to isbn13 - see http://www.isbn-13.info/ for algorithm
   if (clean.length == 10) {

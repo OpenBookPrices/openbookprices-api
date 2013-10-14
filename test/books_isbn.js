@@ -35,6 +35,17 @@ describe("/books/:isbn", function () {
       });
   });
 
+  it("should redirect to normalised isbn13 (isbn10 includes 'X')", function (done) {
+    request
+      .get("/books/020161622X")
+      .expect(301)
+      .expect("Location", testBaseUrl + "/books/9780201616224")
+      .end(function (err) {
+        assert(!fetchStub.called);
+        done(err);
+      });
+  });
+
   it("should return 404 when the isbn is not valid", function (done) {
     request
       .get("/books/123456789")
