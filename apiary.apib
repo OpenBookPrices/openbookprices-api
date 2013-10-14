@@ -10,7 +10,7 @@ currency.
 
 -- Books and prices --
 
-Determine the country (and hence currency) of the person making the request and then redirect to the specific url.
+Determine the country (and hence currency) of the IP address making the request and then redirect to the specific url.
 GET /books/{isbn}/prices
 < 302
 < Content-Type: text/plain
@@ -116,12 +116,9 @@ GET /books/{isbn}/prices/{country}/{currency}/{vendor}
 
 
 
--- Miscellaneous endpoints --
+-- Echo --
 
----
 Echo back your own request - useful for checking what has reached the server. Should never be cached.
----
-
 GET /echo
 < 200
 < Content-Type: application/json
