@@ -38,7 +38,7 @@ var samples = {
         ],
         "currency": "GBP",
         "timestamp": zeroTime/1000,
-        "formats": {
+        "offers": {
           "new": {
             "availabilityNote": "Despatched in 1 business day.",
             "price": 25.55,
@@ -59,7 +59,7 @@ var samples = {
         ],
         "currency": "GBP",
         "timestamp": zeroTime/1000,
-        "formats": {
+        "offers": {
           "new": {
             "availabilityNote": "Despatched in 1 business day.",
             "price": 25.55,
@@ -79,7 +79,7 @@ var samples = {
         ],
         "currency": "GBP",
         "timestamp": zeroTime/1000,
-        "formats": {
+        "offers": {
           "new": {
             "availabilityNote": "Despatched in 1 business day.",
             "price": 25.55,
@@ -119,7 +119,7 @@ var samples = {
         ],
         "currency": "GBP",
         "timestamp": zeroTime/1000,
-        "formats": {
+        "offers": {
           "new": {
             "availabilityNote": "Despatched in 1 business day.",
             "price": 25.55,
@@ -151,7 +151,7 @@ var samples = {
     "preConversionCurrency": null,
     "timestamp": zeroTime/1000,
     "ttl": 86400,
-    "formats": {
+    "offers": {
       "new": {
         "availabilityNote": "Despatched in 1 business day.",
         "price": 25.55,
@@ -178,7 +178,7 @@ var samples = {
     preConversionCurrency: null,
     timestamp: zeroTime/1000,
     ttl: 0,
-    formats: {},
+    offers: {},
     isbn: "9780340831496",
     url: null,
     apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
@@ -197,7 +197,7 @@ var samples = {
     "preConversionCurrency": null,
     "timestamp": zeroTime/1000,
     "ttl": 86400,
-    "formats": {
+    "offers": {
       "new": {
         "availabilityNote": "Despatched in 1 business day.",
         "price": 25.55,
@@ -237,7 +237,7 @@ var samples = {
   "getBookPricesForVendor-9780340831496-error": {
     status: "error",
     preConversionCurrency: null,
-    formats: {},
+    offers: {},
     url: null,
     apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
     retryDelay: null,

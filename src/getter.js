@@ -199,7 +199,7 @@ function convertCurrencyInBookPrices (result, currency) {
     return result;
   }
 
-  _.each( result.formats, function (entry) {
+  _.each( result.offers, function (entry) {
     entry.price    = exchange.convert(entry.price, from, to);
     entry.shipping = exchange.convert(entry.shipping, from, to);
 
@@ -294,7 +294,7 @@ function createPendingResponse (args) {
     {
       status: "pending",
       preConversionCurrency: null,
-      formats: {},
+      offers: {},
       url: null,
       retryDelay: config.retryDelayForPending,
       timestamp: Math.floor(Date.now()/1000),
@@ -314,7 +314,7 @@ function createErrorResponse (args) {
     {
       status: "error",
       preConversionCurrency: null,
-      formats: {},
+      offers: {},
       url: null,
       retryDelay: null,
       timestamp: Math.floor(Date.now()/1000),

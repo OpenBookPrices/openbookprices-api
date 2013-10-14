@@ -218,10 +218,10 @@ describe("/books/:isbn/prices", function () {
             var expected = samples("getBookPricesForVendor-9780340831496");
             expected.currency = "USD";
             expected.preConversionCurrency = "GBP";
-            expected.formats = {
+            expected.offers = {
               new: _.extend(
                 {},
-                expected.formats.new,
+                expected.offers.new,
                 { price: 39.31, total: 39.31 }
               )
             };
@@ -472,10 +472,10 @@ describe("/books/:isbn/prices", function () {
       var expected = samples("getBookPricesForVendor-9780340831496");
       expected.currency = "USD";
       expected.preConversionCurrency = "GBP";
-      expected.formats = {
+      expected.offers = {
         new: _.extend(
           {},
-          expected.formats.new,
+          expected.offers.new,
           { price: 39.31, total: 39.31 }
         )
       };
