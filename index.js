@@ -19,6 +19,9 @@ module.exports = function () {
   // Configure some settings
   app.set("json spaces", 2);  // in production as well as in dev
 
+  // Intercept the static content
+  app.use("/", express.static(__dirname + '/static', { maxAge: 5 * 60 * 60 * 1000 }));
+
   // Set up the default response
   app.use(function (req, res, next) {
 
