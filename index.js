@@ -46,7 +46,16 @@ module.exports = function () {
   });
 
   // Default error handling - TODO change to JSON
-  app.use(express.errorHandler());
+  app.use(function (error, req, res, next) {
+    if (error.status != 403) {
+      return next();
+    }
+    res.status(403);
+    res.jsonp({ error: "403 - forbidden"});
+  });
+  if ("development" == app.get("env")) {
+    app.use(express.errorHandler());
+  }
 
   return app;
 };

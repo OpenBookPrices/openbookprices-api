@@ -28,4 +28,12 @@ describe("static pages", function () {
       .end(done);
   });
 
+  it("/../config/default.js", function (done) {
+
+    request
+      .get("/../config/default.js")
+      .expect(403)
+      .end(done);
+  });
+
 });
