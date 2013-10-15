@@ -39,6 +39,10 @@ module.exports = function () {
   app.use("/v1/books",   require("./src/books"));
   app.use("/v1/echo",    require("./src/echo"));
 
+  app.get("/", function (req, res) {
+    res.redirect("/v1");
+  });
+
   // 404 everything that was not caught above
   app.all("*", function (req, res) {
     res.status(404);
