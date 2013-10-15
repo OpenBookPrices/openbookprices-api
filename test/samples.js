@@ -162,7 +162,7 @@ var samples = {
     },
     "isbn": "9780340831496",
     "url": "http://www.test-vendor-1.co.uk/9780340831496",
-    "apiURL": config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+    "apiURL": config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
     "vendor": {
       "code": "test-vendor-1",
       "name": "Test Vendor 1",
@@ -181,7 +181,7 @@ var samples = {
     offers: {},
     isbn: "9780340831496",
     url: null,
-    apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+    apiURL: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
@@ -208,7 +208,7 @@ var samples = {
     },
     "isbn": "9780340831496",
     "url": "http://www.test-vendor-1.co.uk/9780340831496",
-    "apiURL": config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+    "apiURL": config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
     "vendor": {
       "code": "test-vendor-1",
       "name": "Test Vendor 1",
@@ -231,7 +231,7 @@ var samples = {
     retryDelay: config.retryDelayForUnfetched,
     "timestamp": zeroTime/1000,
     url: null,
-    apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+    apiURL: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
   },
 
   "getBookPricesForVendor-9780340831496-error": {
@@ -239,7 +239,7 @@ var samples = {
     preConversionCurrency: null,
     offers: {},
     url: null,
-    apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+    apiURL: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
     retryDelay: null,
     timestamp: 1000000000,
     ttl: 300,

@@ -16,21 +16,21 @@ var testBaseUrl = config.api.protocol + "://" + config.api.hostport;
 
 request = request(apiApp());
 
-describe("/books/:isbn/prices", function () {
+describe("/v1/books/:isbn/prices", function () {
 
   describe("/", function () {
 
     it("should redirect to normalised isbn13", function (done) {
       request
-        .get("/books/0340831499/prices")
+        .get("/v1/books/0340831499/prices")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices")
         .end(done);
     });
 
     it("should return 404 when the isbn is not valid", function (done) {
       request
-        .get("/books/123456789/prices")
+        .get("/v1/books/123456789/prices")
         .expect(404)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect({ error: "isbn '123456789' is not valid" })
@@ -39,23 +39,23 @@ describe("/books/:isbn/prices", function () {
 
     it("should redirect to .../GB/GBP", function (done) {
       request
-        .get("/books/9780340831496/prices")
+        .get("/v1/books/9780340831496/prices")
         .set("X-Forwarded-For", "217.64.234.65, 127.0.0.1") // nhs.uk
         .expect(302)
         .expect("Cache-Control", "private, max-age=600")
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP")
         .end(done);
     });
 
     it("should use fallbacks when not able to geolocate", function (done) {
       request
-        .get("/books/9780340831496/prices")
+        .get("/v1/books/9780340831496/prices")
         .set("X-Forwarded-For", "127.0.0.1")
         .expect(302)
         .expect("Cache-Control", "private, max-age=600")
         .expect(
           "Location",
-          testBaseUrl + "/books/9780340831496/prices/" + config.fallbackCountry + "/" + config.fallbackCurrency
+          testBaseUrl + "/v1/books/9780340831496/prices/" + config.fallbackCountry + "/" + config.fallbackCurrency
         )
         .end(done);
     });
@@ -66,33 +66,33 @@ describe("/books/:isbn/prices", function () {
   describe("/:country", function () {
     it("should 404 for bad country", function (done) {
       request
-        .get("/books/9780340831496/prices/XX")
+        .get("/v1/books/9780340831496/prices/XX")
         .expect(404)
         .end(done);
     });
 
     it("should redirect for fixable country", function (done) {
       request
-        .get("/books/9780340831496/prices/gb")
+        .get("/v1/books/9780340831496/prices/gb")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB")
         .end(done);
     });
 
     it("should redirect to primary currency", function (done) {
       request
-        .get("/books/9780340831496/prices/GB")
+        .get("/v1/books/9780340831496/prices/GB")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP")
         .end(done);
     });
 
     it("should cope with country that has no currency", function (done) {
       // AQ is Antartica, which has no currency
       request
-        .get("/books/9780340831496/prices/AQ")
+        .get("/v1/books/9780340831496/prices/AQ")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/AQ/USD")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/AQ/USD")
         .end(done);
     });
 
@@ -102,32 +102,32 @@ describe("/books/:isbn/prices", function () {
   describe("/:country/:currency", function () {
     it("should 404 for bad currency", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/ABC")
+        .get("/v1/books/9780340831496/prices/GB/ABC")
         .expect(404)
         .end(done);
     });
 
     it("should redirect for fixable currency", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/gBp")
+        .get("/v1/books/9780340831496/prices/GB/gBp")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP")
         .end(done);
     });
 
     it("should redirect for fixable country and currency", function (done) {
       request
-        .get("/books/9780340831496/prices/gb/gBp")
+        .get("/v1/books/9780340831496/prices/gb/gBp")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP")
         .end(done);
     });
 
     it("should redirect for fixable country and currency", function (done) {
       request
-        .get("/books/9780340831496/prices/gb/gBp?callback=foo")
+        .get("/v1/books/9780340831496/prices/gb/gBp?callback=foo")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP?callback=foo")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP?callback=foo")
         .end(done);
     });
 
@@ -138,7 +138,7 @@ describe("/books/:isbn/prices", function () {
         .yields(null, samples("fetch-9780340831496"));
 
       request
-        .get("/books/9780340831496/prices/GB/GBP")
+        .get("/v1/books/9780340831496/prices/GB/GBP")
         .expect(200)
         .end(function (err) {
           assert.ifError(err);
@@ -160,7 +160,7 @@ describe("/books/:isbn/prices", function () {
             // Get the list of prices, should be empty. Should not call the
             // fetch command.
             request
-              .get("/books/9780340831496/prices/GB/GBP")
+              .get("/v1/books/9780340831496/prices/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
               .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
@@ -173,7 +173,7 @@ describe("/books/:isbn/prices", function () {
           function (cb) {
             // hit the vendor endpoint to store the results in cache.
             request
-              .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+              .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(samples("getBookPricesForVendor-9780340831496"))
               .end(cb);
@@ -184,7 +184,7 @@ describe("/books/:isbn/prices", function () {
             // included.
             var expected = samples("getBookPricesForVendor-9780340831496");
             request
-              .get("/books/9780340831496/prices/GB/GBP")
+              .get("/v1/books/9780340831496/prices/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(expected.ttl))
               .expect([expected])
@@ -206,7 +206,7 @@ describe("/books/:isbn/prices", function () {
           function (cb) {
             // hit the vendor endpoint to store the results in cache.
             request
-              .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+              .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
               .expect(200)
               .expect(samples("getBookPricesForVendor-9780340831496"))
               .end(cb);
@@ -225,13 +225,13 @@ describe("/books/:isbn/prices", function () {
                 { price: 39.31, total: 39.31 }
               )
             };
-            expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/USD/test-vendor-1";
+            expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
 
 
             // Get the currency endpoint and check that cached values are now
             // included.
             request
-              .get("/books/9780340831496/prices/GB/USD")
+              .get("/v1/books/9780340831496/prices/GB/USD")
               .expect(200)
               .expect([expected])
               .end(cb);
@@ -244,7 +244,7 @@ describe("/books/:isbn/prices", function () {
 
     it("should serve content-length", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/GBP")
+        .get("/v1/books/9780340831496/prices/GB/GBP")
         .expect(200)
         .end(function (err, res) {
           assert(res.headers["content-length"]);
@@ -254,7 +254,7 @@ describe("/books/:isbn/prices", function () {
 
     it("should serve JSONP", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/GBP?callback=foo")
+        .get("/v1/books/9780340831496/prices/GB/GBP?callback=foo")
         .expect(200)
         .expect("Content-Type", "text/javascript; charset=utf-8")
         .end(done);
@@ -273,7 +273,7 @@ describe("/books/:isbn/prices", function () {
 
     it("should 404 for bad vendor", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/GBP/not-a-vendor")
+        .get("/v1/books/9780340831496/prices/GB/GBP/not-a-vendor")
         .expect(404)
         .expect({
           "error": "vendor code 'not-a-vendor' is not recognised"
@@ -283,17 +283,17 @@ describe("/books/:isbn/prices", function () {
 
     it("should redirect for fixable country, currency and vendor", function (done) {
       request
-        .get("/books/9780340831496/prices/gb/gBp/TEST-veNDor-1")
+        .get("/v1/books/9780340831496/prices/gb/gBp/TEST-veNDor-1")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP/test-vendor-1")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
         .end(done);
     });
 
     it("should redirect for fixable country, currency and vendor", function (done) {
       request
-        .get("/books/9780340831496/prices/gb/gBp/TEST-veNDor-1?callback=foo")
+        .get("/v1/books/9780340831496/prices/gb/gBp/TEST-veNDor-1?callback=foo")
         .expect(301)
-        .expect("Location", testBaseUrl + "/books/9780340831496/prices/GB/GBP/test-vendor-1?callback=foo")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1?callback=foo")
         .end(done);
     });
 
@@ -307,7 +307,7 @@ describe("/books/:isbn/prices", function () {
         .returns([]);
 
       request
-        .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+        .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
         .expect(400)
         .end(done);
     });
@@ -344,7 +344,7 @@ describe("/books/:isbn/prices", function () {
             {timestamp: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
           );
           request
-            .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+            .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
             .expect(expected)
             .expect("Cache-Control", helpers.cacheControl(config.retryDelayForPending))
@@ -362,7 +362,7 @@ describe("/books/:isbn/prices", function () {
 
           // Fire off another request that should get a completed scrape
           request
-            .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+            .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
             .expect("Cache-Control", helpers.cacheControl(expectedMaxAge))
             .expect(expectedContent)
@@ -380,7 +380,7 @@ describe("/books/:isbn/prices", function () {
         // should get a pending response with stale data
         function (cb) {
           request
-            .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+            .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
             .expect(samples("getBookPricesForVendor-9780340831496-stale"))
             .expect("Cache-Control", helpers.cacheControl(0))
@@ -404,7 +404,7 @@ describe("/books/:isbn/prices", function () {
       this.sandbox.clock.tick(tickAmount);
 
       request
-        .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+        .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
         .expect(200)
         .expect("Cache-Control", helpers.cacheControl(86400 - tickAmount/1000))
         .expect(samples("getBookPricesForVendor-9780340831496"))
@@ -416,7 +416,7 @@ describe("/books/:isbn/prices", function () {
     it("should retrieve from the cache on subsequent requests", function (done) {
       var runTests = function (cb) {
         request
-          .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+          .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
           .expect(200)
           .expect(samples("getBookPricesForVendor-9780340831496"))
           .end(cb);
@@ -443,7 +443,7 @@ describe("/books/:isbn/prices", function () {
       var runTests = function (country) {
         return function (cb) {
           request
-            .get("/books/9780340831496/prices/" + country + "/GBP/test-vendor-1")
+            .get("/v1/books/9780340831496/prices/" + country + "/GBP/test-vendor-1")
             .expect(200)
             .end(cb);
         };
@@ -479,11 +479,11 @@ describe("/books/:isbn/prices", function () {
           { price: 39.31, total: 39.31 }
         )
       };
-      expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/USD/test-vendor-1";
+      expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
 
 
       request
-        .get("/books/9780340831496/prices/GB/USD/test-vendor-1")
+        .get("/v1/books/9780340831496/prices/GB/USD/test-vendor-1")
         .expect(200)
         .expect("Cache-Control", helpers.cacheControl(86400))
         .expect(expected)
@@ -495,7 +495,7 @@ describe("/books/:isbn/prices", function () {
 
     it("should serve content-length", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+        .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
         .expect(200)
         .end(function (err, res) {
           assert(res.headers["content-length"]);
@@ -505,7 +505,7 @@ describe("/books/:isbn/prices", function () {
 
     it("should serve JSONP", function (done) {
       request
-        .get("/books/9780340831496/prices/GB/GBP/test-vendor-1?callback=foo")
+        .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1?callback=foo")
         .expect(200)
         .expect("Content-Type", "text/javascript; charset=utf-8")
         .end(done);
@@ -524,7 +524,7 @@ describe("/books/:isbn/prices", function () {
         // initial request should return unfetched, as it is not in db
         function (cb) {
           request
-            .get("/books/9780340831496/prices/GB/GBP")
+            .get("/v1/books/9780340831496/prices/GB/GBP")
             .expect(200)
             .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
             .end(cb);
@@ -532,7 +532,7 @@ describe("/books/:isbn/prices", function () {
         // request to scrape should return error response
         function (cb) {
           request
-            .get("/books/9780340831496/prices/GB/GBP/test-vendor-1")
+            .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
             .expect(samples("getBookPricesForVendor-9780340831496-error"))
             .end(cb);
@@ -540,7 +540,7 @@ describe("/books/:isbn/prices", function () {
         // subsequent list request should return cached error response
         function (cb) {
           request
-            .get("/books/9780340831496/prices/GB/GBP")
+            .get("/v1/books/9780340831496/prices/GB/GBP")
             .expect(200)
             .expect([samples("getBookPricesForVendor-9780340831496-error")])
             .end(cb);

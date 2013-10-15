@@ -100,7 +100,7 @@ describe("Getter", function () {
                     isbn: "9780340831496",
                     country: "GB",
                     currency: "GBP",
-                    apiURL: config.api.protocol + "://" + config.api.hostport + "/books/9780340831496/prices/GB/GBP/test-vendor-1",
+                    apiURL: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
                     preConversionCurrency: null,
                     vendor: {
                       code: "test-vendor-1",

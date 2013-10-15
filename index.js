@@ -35,9 +35,9 @@ module.exports = function () {
   });
 
   // Load the sub-apps
-  app.use("/country", require("./src/country"));
-  app.use("/books",   require("./src/books"));
-  app.use("/echo",    require("./src/echo"));
+  app.use("/v1/country", require("./src/country"));
+  app.use("/v1/books",   require("./src/books"));
+  app.use("/v1/echo",    require("./src/echo"));
 
   // 404 everything that was not caught above
   app.all("*", function (req, res) {

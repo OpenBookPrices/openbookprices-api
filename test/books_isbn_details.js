@@ -12,7 +12,7 @@ var assert = require("assert"),
 
 request = request(apiApp());
 
-describe("/books/:isbn/details", function () {
+describe("/v1/books/:isbn/details", function () {
 
   var fetchStub;
 
@@ -29,7 +29,7 @@ describe("/books/:isbn/details", function () {
 
     var testRequest = function (cb) {
       request
-        .get("/books/9780340831496/details")
+        .get("/v1/books/9780340831496/details")
         .expect(200)
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect("Cache-Control", helpers.cacheControl(86400))

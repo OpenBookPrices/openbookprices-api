@@ -10,11 +10,11 @@ OpenBookPrices API for book and price data
 
 ## URLs
 
-### /books
+### /v1/books
 
 Not defined yet
 
-### /books/:isbn
+### /v1/books/:isbn
 
 Book details for this isbn - such as title, author, etc.
 

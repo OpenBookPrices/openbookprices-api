@@ -218,6 +218,7 @@ function addVendorPriceEndPointUrl (entry) {
 
   var path= [
     "",
+    "v1",
     "books",
     entry.isbn,
     "prices",

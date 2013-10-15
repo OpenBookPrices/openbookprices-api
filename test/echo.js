@@ -8,11 +8,11 @@ var request = require("supertest"),
 
 request = request(apiApp());
 
-describe("/echo", function () {
+describe("/v1/echo", function () {
 
   it("should return correct details for valid isbn", function (done) {
     request
-      .get("/echo/foo/bar")
+      .get("/v1/echo/foo/bar")
       .expect(200)
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect("Cache-Control", helpers.cacheControl(0))

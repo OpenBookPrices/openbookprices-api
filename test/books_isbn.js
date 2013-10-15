@@ -13,7 +13,7 @@ var testBaseUrl = config.api.protocol + "://" + config.api.hostport;
 
 request = request(apiApp());
 
-describe("/books/:isbn", function () {
+describe("/v1/books/:isbn", function () {
 
   var fetchStub;
 
@@ -26,9 +26,9 @@ describe("/books/:isbn", function () {
 
   it("should redirect to normalised isbn13", function (done) {
     request
-      .get("/books/0340831499")
+      .get("/v1/books/0340831499")
       .expect(301)
-      .expect("Location", testBaseUrl + "/books/9780340831496")
+      .expect("Location", testBaseUrl + "/v1/books/9780340831496")
       .end(function (err) {
         assert(!fetchStub.called);
         done(err);
@@ -37,9 +37,9 @@ describe("/books/:isbn", function () {
 
   it("should redirect to normalised isbn13 (isbn10 includes 'X')", function (done) {
     request
-      .get("/books/020161622X")
+      .get("/v1/books/020161622X")
       .expect(301)
-      .expect("Location", testBaseUrl + "/books/9780201616224")
+      .expect("Location", testBaseUrl + "/v1/books/9780201616224")
       .end(function (err) {
         assert(!fetchStub.called);
         done(err);
@@ -48,7 +48,7 @@ describe("/books/:isbn", function () {
 
   it("should return 404 when the isbn is not valid", function (done) {
     request
-      .get("/books/123456789")
+      .get("/v1/books/123456789")
       .expect(404)
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect({ error: "isbn '123456789' is not valid" })

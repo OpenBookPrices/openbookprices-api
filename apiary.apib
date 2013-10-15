@@ -11,21 +11,21 @@ currency.
 -- Books and prices --
 
 Determine the country (and hence currency) of the IP address making the request and then redirect to the specific url.
-GET /books/{isbn}/prices
+GET /v1/books/{isbn}/prices
 < 302
 < Content-Type: text/plain
-Redirecting to http://api.openbookprices.com/books/9780340831496/prices/US/USD
+Redirecting to http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD
 
 
 Determine the primary currency of the `country` and redirect to the specific url.
-GET /books/{isbn}/prices/{country}
+GET /v1/books/{isbn}/prices/{country}
 < 302
 < Content-Type: text/plain
-Redirecting to http://api.openbookprices.com/books/9780340831496/prices/US/USD
+Redirecting to http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD
 
 
 Return immediately a list of all the venders who ship to `country` and the pricing details that are currently known.
-GET /books/{isbn}/prices/{country}/{currency}
+GET /v1/books/{isbn}/prices/{country}/{currency}
 < 200
 < Content-Type: application/json
 [
@@ -44,7 +44,7 @@ GET /books/{isbn}/prices/{country}/{currency}
     "status": "unfetched",
     "retryDelay": 0.1,
     "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_uk"
+    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
   },
   {
     "vendor": {
@@ -61,7 +61,7 @@ GET /books/{isbn}/prices/{country}/{currency}
     "status": "unfetched",
     "retryDelay": 0.1,
     "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_us"
+    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_us"
   },
   {
     "vendor": {
@@ -78,13 +78,13 @@ GET /books/{isbn}/prices/{country}/{currency}
     "status": "unfetched",
     "retryDelay": 0.1,
     "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/foyles"
+    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/foyles"
   }
 ]
 
 
 Return fresh details for the vendor. If needed this will initiate a fetch of the details so the response may block whilst this is happening.
-GET /books/{isbn}/prices/{country}/{currency}/{vendor}
+GET /v1/books/{isbn}/prices/{country}/{currency}/{vendor}
 < 200
 < Content-Type: application/json
 {
@@ -111,7 +111,7 @@ GET /books/{isbn}/prices/{country}/{currency}/{vendor}
   "status": "ok",
   "retryDelay": null,
   "preConversionCurrency": "GBP",
-  "apiURL": "http://api.openbookprices.com/books/9780340831496/prices/US/USD/amazon_uk"
+  "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
 }
 
 
