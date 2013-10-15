@@ -38,7 +38,7 @@ module.exports = function () {
   // Load the sub-apps
   app.use("/v1/country", require("./src/country"));
   app.use("/v1/books",   require("./src/books"));
-  app.use("/v1/echo",    require("./src/echo"));
+  app.use("/v1/ping",    require("./src/ping"));
 
   app.get("/", function (req, res) {
     res.header( "Cache-Control", helpers.cacheControl(3600) );
@@ -50,7 +50,7 @@ module.exports = function () {
     res.header( "Cache-Control", helpers.cacheControl(3600) );
     res.jsonp({
       books: urlBase + "books",
-      echo:  urlBase + "echo",
+      ping:  urlBase + "ping",
     });
   });
 

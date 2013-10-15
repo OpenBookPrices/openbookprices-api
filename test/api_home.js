@@ -27,7 +27,7 @@ describe("/v1", function () {
       .expect(200)
       .expect({
         books: "http://api.127.0.0.1.xip.io:3000/v1/books",
-        echo: "http://api.127.0.0.1.xip.io:3000/v1/echo",
+        ping: "http://api.127.0.0.1.xip.io:3000/v1/ping",
       })
       .end(done);
   });

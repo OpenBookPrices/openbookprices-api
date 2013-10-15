@@ -8,15 +8,21 @@ var request = require("supertest"),
 
 request = request(apiApp());
 
-describe("/v1/echo", function () {
+describe("/v1/ping", function () {
 
-  it("should return correct details for valid isbn", function (done) {
+  it("should pong back as expected", function (done) {
     request
-      .get("/v1/echo/foo/bar")
+      .get("/v1/ping/foo/bar")
       .expect(200)
       .expect("Content-Type", "application/json; charset=utf-8")
       .expect("Cache-Control", helpers.cacheControl(0))
-      // .expect({ ... })
+      .expect({
+        timestamp: 1000000000,
+        network: {
+          ip: "127.0.0.1",
+          ips: []
+        }
+      })
       .end(done);
   });
 
