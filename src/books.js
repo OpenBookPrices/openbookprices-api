@@ -21,12 +21,26 @@ app.param("vendorCode",   middleware.vendorCode);
 
 
 app.get("/", function (req, res) {
-  res.jsonp({FIXME: "Add example links here"});
+  var baseUrl = config.api.protocol + "://" + config.api.hostport + "/v1/books/";
+  res.header( "Cache-Control", helpers.cacheControl(3600) );
+  res.jsonp({
+    examples: {
+      // Note that these examples should be widely available in all countries
+      "Code Complete by Steve McConnell": baseUrl + "9780735619678",
+      "Walden by Henry David Thoreau": baseUrl + "9781619493919",
+    },
+  });
 });
 
 app.get("/:isbn", middleware.redirectToCanonicalURL(["isbn"]), function (req, res) {
   var isbn = req.param("isbn");
-  res.jsonp({isbn: isbn, FIXME: "add more example urls here"});
+  var baseUrl = config.api.protocol + "://" + config.api.hostport + "/v1/books/" + isbn + "/";
+  res.header( "Cache-Control", helpers.cacheControl(3600) );
+  res.jsonp({
+    isbn: isbn,
+    details: baseUrl + "details",
+    prices: baseUrl + "prices",
+  });
 });
 
 app.get("/:isbn/details", middleware.redirectToCanonicalURL(["isbn", "details"]), function (req, res, next) {
