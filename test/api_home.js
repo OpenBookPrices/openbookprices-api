@@ -18,3 +18,30 @@ describe("/", function () {
   });
 
 });
+
+describe("/v1", function () {
+
+  it("should list endpoints that can be reached", function (done) {
+    request
+      .get("/v1")
+      .expect(200)
+      .expect({
+        books: "http://api.127.0.0.1.xip.io:3000/v1/books",
+        echo: "http://api.127.0.0.1.xip.io:3000/v1/echo",
+      })
+      .end(done);
+  });
+
+});
+
+describe("/does/not/exist", function () {
+
+  it("should 404", function (done) {
+    request
+      .get("/does/not/exist")
+      .expect(404)
+      .expect({ error: "404 - page not found" })
+      .end(done);
+  });
+
+});

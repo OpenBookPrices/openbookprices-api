@@ -1,6 +1,7 @@
 "use strict";
 
 var express = require("express"),
+    config  = require("config"),
     helpers = require("./src/helpers");
 
 module.exports = function () {
@@ -40,7 +41,17 @@ module.exports = function () {
   app.use("/v1/echo",    require("./src/echo"));
 
   app.get("/", function (req, res) {
+    res.header( "Cache-Control", helpers.cacheControl(3600) );
     res.redirect("/v1");
+  });
+
+  app.get("/v1", function (req, res) {
+    var urlBase = config.api.protocol + "://" + config.api.hostport + "/v1/";
+    res.header( "Cache-Control", helpers.cacheControl(3600) );
+    res.jsonp({
+      books: urlBase + "books",
+      echo:  urlBase + "echo",
+    });
   });
 
   // 404 everything that was not caught above
