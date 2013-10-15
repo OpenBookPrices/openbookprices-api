@@ -118,39 +118,16 @@ GET /books/{isbn}/prices/{country}/{currency}/{vendor}
 
 -- Echo --
 
-Echo back your own request - useful for checking what has reached the server. Should never be cached.
+Echo back your own request - useful for checking what the server thinks the time is and what IP address you appear to have. Response is not cached.
 GET /echo
 < 200
 < Content-Type: application/json
 {
   "timestamp": 1381509290.302,
-  "request": {
-    "method": "GET",
-    "secure": false,
-    "protocol": "http",
-    "host": "app.openbookprices.com",
-    "subdomains": [
-      "app"
-    ],
-    "url": "/",
-    "originalUrl": "/echo",
-    "path": "/",
-    "query": {}
-  },
   "network": {
     "ip": "12.34.56.78",
     "ips": [
       "12.34.56.78"
     ]
-  },
-  "headers": {
-    "host": "app.openbookprices.com",
-    "user-agent": "Amazon CloudFront",
-    "via": "1.0 678cdeea3c67419b8e71d6490af123a1.cloudfront.net (CloudFront)",
-    "connection": "Keep-Alive",
-    "x-amz-cf-id": "z034Ur0Ub-101_73fuPLKM9wHp-8-ni3qjtRCcA0DdGHpYPtV5Yl0A==",
-    "x-forwarded-for": "91.235.56.121",
-    "accept-encoding": "gzip",
-    "cache-control": ""
   }
 }
