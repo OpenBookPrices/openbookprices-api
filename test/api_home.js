@@ -3,6 +3,7 @@
 require("./setup");
 
 var request = require("supertest"),
+    config  = require("config"),
     apiApp  = require("../");
 
 request = request(apiApp());
@@ -22,12 +23,15 @@ describe("/", function () {
 describe("/v1", function () {
 
   it("should list endpoints that can be reached", function (done) {
+
+    var testBaseUrl = config.api.protocol + "://" + config.api.hostport + "/v1/";
+
     request
       .get("/v1")
       .expect(200)
       .expect({
-        books: "http://api.127.0.0.1.xip.io:3000/v1/books",
-        ping: "http://api.127.0.0.1.xip.io:3000/v1/ping",
+        books: testBaseUrl + "books",
+        ping:  testBaseUrl + "ping",
       })
       .end(done);
   });
