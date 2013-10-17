@@ -30,55 +30,73 @@ GET /v1/books/{isbn}/prices/{country}/{currency}
 < Content-Type: application/json
 [
   {
+    "status": "unfetched",
+    "request": {
+      "isbn": "9780340831496",
+      "country": "US",
+      "currency": "USD",
+      "vendor": "amazon_uk",
+      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
+    },
+    "offers": {},
     "vendor": {
       "code": "amazon_uk",
       "name": "Amazon UK",
       "homepage": "http://www.amazon.co.uk/"
+      "url": null
     },
-    "isbn": "9780340831496",
-    "country": "US",
-    "currency": "USD",
-    "ttl": 0,
-    "timestamp": 1381517829,
-    "url": null,
-    "status": "unfetched",
-    "retryDelay": 0.1,
-    "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
+    "meta": {
+      "timestamp": 1381517829,
+      "ttl": 0,
+      "retryDelay": 0.1,
+      "preConversionCurrency": null
+    }
   },
   {
+    "status": "unfetched",
+    "request": {
+      "isbn": "9780340831496",
+      "country": "US",
+      "currency": "USD",
+      "vendor": "amazon_us",
+      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_us"
+    },
+    offers: {},
     "vendor": {
       "code": "amazon_us",
       "name": "Amazon USA",
-      "homepage": "http://www.amazon.com/"
+      "homepage": "http://www.amazon.com/",
+      "url:" null
     },
-    "isbn": "9780340831496",
-    "country": "US",
-    "currency": "USD",
-    "ttl": 0,
-    "timestamp": 1381517829,
-    "url": null,
-    "status": "unfetched",
-    "retryDelay": 0.1,
-    "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_us"
+    "meta": {
+      "timestamp": 1381517829,
+      "ttl": 0,
+      "retryDelay": 0.1,
+      "preConversionCurrency": null
+    }
   },
   {
+    "status": "unfetched",
+    "request": {
+      "isbn": "9780340831496",
+      "country": "US",
+      "currency": "USD",
+      "vendor": "foyles",
+      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/foyles"
+    },
+    offers: {},
     "vendor": {
       "code": "foyles",
       "name": "Foyles",
-      "homepage": "http://www.foyles.co.uk/"
+      "homepage": "http://www.foyles.co.uk/",
+      "url": null,
     },
-    "isbn": "9780340831496",
-    "country": "US",
-    "currency": "USD",
-    "ttl": 0,
-    "timestamp": 1381517829,
-    "url": null,
-    "status": "unfetched",
-    "retryDelay": 0.1,
-    "preConversionCurrency": null,
-    "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/foyles"
+    "meta": {
+      "timestamp": 1381517829,
+      "ttl": 0,
+      "retryDelay": 0.1,
+      "preConversionCurrency": null
+    }
   }
 ]
 
@@ -88,8 +106,14 @@ GET /v1/books/{isbn}/prices/{country}/{currency}/{vendor}
 < 200
 < Content-Type: application/json
 {
-  "currency": "USD",
-  "url": "http://www.amazon.co.uk/dp/0340831499",
+  "status": "ok",
+  "request": {
+    "isbn": "9780340831496",
+    "country": "US",
+    "currency": "USD",
+    "vendor": "amazon_uk",
+    "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
+  },
   "offers": {
     "new": {
       "price": 21.7,
@@ -99,19 +123,18 @@ GET /v1/books/{isbn}/prices/{country}/{currency}/{vendor}
       "total": 28.68
     }
   },
-  "ttl": 3600,
-  "timestamp": 1381518231,
-  "isbn": "9780340831496",
   "vendor": {
     "code": "amazon_uk",
     "name": "Amazon UK",
     "homepage": "http://www.amazon.co.uk/"
+    "url": "http://www.amazon.co.uk/dp/0340831499"
   },
-  "country": "US",
-  "status": "ok",
-  "retryDelay": null,
-  "preConversionCurrency": "GBP",
-  "apiURL": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
+  "meta": {
+    "timestamp": 1381518231,
+    "ttl": 3600,
+    "retryDelay": null,
+    "preConversionCurrency": "GBP"
+  }
 }
 
 
