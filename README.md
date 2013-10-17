@@ -44,25 +44,14 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
 
 ``` json
 {
-  "isbn": "9780340831496",
-  "country": "GB",
-  "currency": "USD",
-  "vendor": {
-    "code": "test-vendor-1",
-    "name": "Test Vendor 1",
-    "homepage": "http://www.test-vendor-1.co.uk/",
-  },
-
-  "preConversionCurrency": "GBP",
-
-  "url": "http://www.test-vendor-1.co.uk/9780340831496",
-
-  "timestamp": 123456789,
-  "ttl":     86400,
   "status": "ok",
-  "retryDelay": null,
-
-  "prices": {
+  "request": {
+    "isbn": "9780340831496",
+    "country": "GB",
+    "currency": "USD",
+    "vendor": "test-vendor-1"
+  },
+  "offers": {
     "new": {
       "price": 25.55,
       "shipping": 0,
@@ -70,34 +59,53 @@ Returns the price for this `country`, `currency` and vendor. Can be made to be b
       "shippingNote": "Free second class delivery in the UK for orders over £10",
       "availabilityNote": "Despatched in 1 business day."
     },
+  },
+  "vendor": {
+    "code": "test-vendor-1",
+    "name": "Test Vendor 1",
+    "homepage": "http://www.test-vendor-1.co.uk/",
+    "url": "http://www.test-vendor-1.co.uk/9780340831496"
+  },
+  "meta": {
+    "timestamp": 123456789,
+    "ttl":     86400,
+    "retryDelay": null,
+    "preConversionCurrency": "GBP"
   }
 }
 ```
 
-### isbn
+### status
+
+Text. A description of the status of this response. Possible values are:
+
+- `ok`: The data is fresh and can be displayed
+- `unfetched`: The price data has not been fetched.
+- `pending`: The price data is being fetched, but is not available yet.
+- `stale`: The price data has been fetched in the past but is now too old to be trusted. New data is being fetched, but old data is still available.
+- `error`: There is an error fetching the price data.
+
+### request
+
+#### isbn
 
 Text. The full 13 digit isbn of the book. This is the same as the EAN.
 
-### country
+#### country
 
 Text. The two letter ISO country code for the delivery country that these prices are for.
 
-### currency
+#### currency
 
 The three letter ISO currency code that represents the currency that the `price`, `shipping` and `total` prices are provided in (either from the vendor, or converted - see details on exchange rates below.)
 
-### vendor
+#### vendor
 
 Details about the vendor, including their OpenBookPrices code (which is lowercase and is made up of letters, numbers and dashes (`-`)), the name and their main homepage address.
 
-### preConversionCurrency
-
-Text. Three letter ISO code for the currency that the vendor listed the product in. If this is `null` it was the same as `currency`. If not `null` then the prices have been converted to `currency` from `preConversionCurrency`.
-
-### prices
+### offers
 
 Hash. A hash with the keys being the category of the book: `new`, `used`, `ebook`. If a key is missing it means that the `vendor` does not stock that category. If all are missing then the book is not available.
-
 
 #### price
 
@@ -119,23 +127,39 @@ Text. Possible further details about the shipping - eg "Orders over $20 shipped 
 
 Text. A bit of text describing the exact availability. This will vary from vendor to vendor as it is taken from their site.
 
-### timestamp
+### vendor
+
+#### code
+
+The vendor's code - same as `request.vendor`.
+
+#### name
+
+The vendor's name.
+
+#### homepage
+
+The vendor's homepage.
+
+#### url
+
+The book's url at this vendor.
+
+### meta
+
+#### timestamp
 
 Integer. When the information was last generated. Seconds since epoch.
 
-### ttl
+#### ttl
 
 Integer. How many seconds from `timestamp` this information should be considered fresh for.
 
-### status
-
-Text. A description of the status of this response. Possible values are:
-
-- `ok`: The data is fresh and can be displayed
-- `pending`: The price data is being fetched, but is not available yet.
-- `stale`: The price data has been fetched in the past but is now too old to be trusted. New data is being fetched, but old data is still available.
-- `error`: There is an error fetching the price data.
-
-### retryDelay
+#### retryDelay
 
 The number of seconds to wait before requesting the data again. In the case of `pending` or `stale` responses this will typically be low. If `fresh` or `error` it will generally be `null`. When it is `null` the `timestamp` and `ttl` values should be used to decide when to fetch new data. This field is intended as a convenience for code running on machines where the clock may not be accurate (eg in a web browser as the user may not have their clock correctly set) and to make the retry decision logic simpler (if `retryDelay` has a value then wait that number of seconds and go again). If a retry should be attempted then the value will be true (ie not `0`).
+
+#### preConversionCurrency
+
+Text. Three letter ISO code for the currency that the vendor listed the product in. If this is `null` it was the same as `currency`. If not `null` then the prices have been converted to `currency` from `preConversionCurrency`.
+
