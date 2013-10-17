@@ -147,58 +147,69 @@ var samples = {
 
   "getBookPricesForVendor-9780340831496": {
     status: "ok",
-    retryDelay: null,
-    country: "GB",
-    currency: "GBP",
-    preConversionCurrency: null,
-    timestamp: zeroTime/1000,
-    ttl: 86400,
+    request: {
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      vendor: "test-vendor-1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    },
     offers: {
       new: {
         availabilityNote: "Despatched in 1 business day.",
         price: 25.55,
         shipping: 0,
         shippingNote: "Free second class delivery in the UK for orders over £10",
-        total: 25.55
+        total: 25.55,
       }
     },
-    isbn: "9780340831496",
-    url: "http://www.test-vendor-1.co.uk/9780340831496",
-    apiURL: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
+      url: "http://www.test-vendor-1.co.uk/9780340831496",
+    },
+    meta: {
+      timestamp: zeroTime/1000,
+      ttl: 86400,
+      retryDelay: null,
+      preConversionCurrency: null,
     },
   },
 
   "getBookPricesForVendor-9780340831496-pending": {
     status: "pending",
-    retryDelay: 2,
-    country: "GB",
-    currency: "GBP",
-    preConversionCurrency: null,
-    timestamp: zeroTime/1000,
-    ttl: 0,
+    request: {
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      vendor: "test-vendor-1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    },
     offers: {},
-    isbn: "9780340831496",
-    url: null,
-    apiURL: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
+      url: null,
+    },
+    meta: {
+      timestamp: zeroTime/1000,
+      ttl: 0,
+      retryDelay: 2,
+      preConversionCurrency: null,
     },
   },
 
   "getBookPricesForVendor-9780340831496-stale": {
     status: "stale",
-    retryDelay: 2,
-    country: "GB",
-    currency: "GBP",
-    preConversionCurrency: null,
-    timestamp: zeroTime/1000,
-    ttl: 86400,
+    request: {
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      vendor: "test-vendor-1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    },
     offers: {
       new: {
         availabilityNote: "Despatched in 1 business day.",
@@ -208,51 +219,66 @@ var samples = {
         total: 25.55
       }
     },
-    isbn: "9780340831496",
-    url: "http://www.test-vendor-1.co.uk/9780340831496",
-    apiURL: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
-    }
+      url: "http://www.test-vendor-1.co.uk/9780340831496",
+    },
+    meta: {
+      timestamp: zeroTime/1000,
+      ttl: 86400,
+      retryDelay: 2,
+      preConversionCurrency: null,
+    },
   },
 
   "getBookPricesForVendor-9780340831496-unfetched": {
+    status: "unfetched",
+    request: {
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      vendor: "test-vendor-1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    },
+    offers: {},
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
+      url: null,
     },
-    isbn: "9780340831496",
-    country: "GB",
-    currency: "GBP",
-    preConversionCurrency: null,
-    ttl: 0,
-    status: "unfetched",
-    retryDelay: config.retryDelayForUnfetched,
-    timestamp: zeroTime/1000,
-    url: null,
-    apiURL: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    meta: {
+      timestamp: zeroTime/1000,
+      ttl: 0,
+      retryDelay: config.retryDelayForUnfetched,
+      preConversionCurrency: null,
+    },
   },
 
   "getBookPricesForVendor-9780340831496-error": {
     status: "error",
-    preConversionCurrency: null,
+    request: {
+      isbn: "9780340831496",
+      country: "GB",
+      currency: "GBP",
+      vendor: "test-vendor-1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+    },
     offers: {},
-    url: null,
-    apiURL: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
-    retryDelay: null,
-    timestamp: 1000000000,
-    ttl: 300,
-    isbn: "9780340831496",
     vendor: {
       code: "test-vendor-1",
       name: "Test Vendor 1",
-      homepage: "http://www.test-vendor-1.co.uk/"
+      homepage: "http://www.test-vendor-1.co.uk/",
+      url: null,
     },
-    country: "GB",
-    currency: "GBP",
+    meta: {
+      timestamp: 1000000000,
+      ttl: 300,
+      retryDelay: null,
+      preConversionCurrency: null,
+    },
   },
 
 };

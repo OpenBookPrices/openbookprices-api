@@ -107,7 +107,7 @@ app.get(
         // Set the cache header. Make it the same as the scrape ttl.
         var maxAge = _.chain(vendorEntries)
           .map(function (vendorEntry) {
-            return Math.floor(vendorEntry.timestamp + vendorEntry.ttl - Date.now() / 1000);
+            return Math.floor(vendorEntry.meta.timestamp + vendorEntry.meta.ttl - Date.now() / 1000);
           })
           .min()
           .value();
@@ -148,7 +148,7 @@ app.get(
       function () {
         // Set the max age header
         var content = getter.createPendingResponse(getterArgs);
-        var maxAge = content.retryDelay;
+        var maxAge = content.meta.retryDelay;
         if (!res.headerSent) {
           res.header("Cache-Control", helpers.cacheControl(maxAge));
           res.jsonp(content);
@@ -165,7 +165,7 @@ app.get(
         }
 
         // Set the cache header. Make it the same as the scrape ttl.
-        var maxAge = Math.floor(details.timestamp + details.ttl - Date.now() / 1000);
+        var maxAge = Math.floor(details.meta.timestamp + details.meta.ttl - Date.now() / 1000);
 
         if (!res.headerSent) {
           res.header( "Cache-Control", helpers.cacheControl(maxAge) );
@@ -175,16 +175,4 @@ app.get(
     );
   }
 );
-
-
-
-
-
-
-
-
-
-
-
-
 

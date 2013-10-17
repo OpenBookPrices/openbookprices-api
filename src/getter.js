@@ -115,39 +115,47 @@ function getBookPricesForVendor (args, cb) {
       // something went wrong with the scraper. Store an error in cache to back
       // off for a little while.
       // console.log(args, err);
-      rawResult = createErrorResponse(args);
+      rawResult = createErrorFetchResponse(args);
 
       // This is hacky, but because of the error the caching did not happen earlier.
-      // The flow of this port of the process needs to be looked at to see if it could
+      // The flow of this part of the process needs to be looked at to see if it could
       // be made clearer.
       cacheBookPrices([rawResult]);
     }
 
-    // Let us alter the top level attributes without affecting that which is
-    // being stored in the cache.
-    var result = _.clone(rawResult);
+    var result = {
+      status: rawResult.status || null,
+      request: _.pick(rawResult, "isbn", "country", "vendor", "currency"), // note that currency will be changed to match args.currency later
+      offers: rawResult.offers || {},
+      vendor: {
+        code: rawResult.vendor,
+        url: rawResult.url
+      },
+      meta: _.pick(rawResult, "timestamp", "ttl"),
+    };
+
 
     if (!result.status) {
-      if ( result.timestamp ) {
-        result.status = Date.now()/1000 < result.timestamp + result.ttl ? "ok" : "stale";
+      if ( result.meta.timestamp ) {
+        result.status = Date.now()/1000 < result.meta.timestamp + result.meta.ttl ? "ok" : "stale";
       } else {
         result.status = args.fromCacheOnly ? "unfetched" : "pending";
-        result.timestamp = Math.floor(Date.now() / 1000);
+        result.meta.timestamp = Math.floor(Date.now() / 1000);
       }
     }
 
     switch (result.status) {
     case "unfetched":
-      result.retryDelay = config.retryDelayForUnfetched;
+      result.meta.retryDelay = config.retryDelayForUnfetched;
       break;
     case "pending":
-      result.retryDelay = config.retryDelayForPending;
+      result.meta.retryDelay = config.retryDelayForPending;
       break;
     case "stale":
-      result.retryDelay = config.retryDelayForStale;
+      result.meta.retryDelay = config.retryDelayForStale;
       break;
     default:
-      result.retryDelay = null;
+      result.meta.retryDelay = null;
     }
 
     // convert the price if needed
@@ -191,11 +199,11 @@ function getBookPricesForVendor (args, cb) {
 
 
 function convertCurrencyInBookPrices (result, currency) {
-  var from = result.preConversionCurrency = result.currency;
-  var to = result.currency = currency;
+  var from = result.meta.preConversionCurrency = result.request.currency;
+  var to = result.request.currency = currency;
 
   if (from == to) {
-    result.preConversionCurrency = null;
+    result.meta.preConversionCurrency = null;
     return result;
   }
 
@@ -208,7 +216,6 @@ function convertCurrencyInBookPrices (result, currency) {
     entry.total = exchange.round( to, entry.price + entry.shipping );
   });
 
-
   return result;
 }
 
@@ -220,21 +227,21 @@ function addVendorPriceEndPointUrl (entry) {
     "",
     "v1",
     "books",
-    entry.isbn,
+    entry.request.isbn,
     "prices",
-    entry.country,
-    entry.currency,
-    entry.vendor
+    entry.request.country,
+    entry.request.currency,
+    entry.request.vendor
   ].join("/");
-  entry.apiURL =  base + path;
+  entry.request.url = base + path;
   return entry;
 }
 
 
 function expandVendorDetails (entry) {
   // expand vendor into fuller details
-  var vendorDetails = fetcher.vendorDetails(entry.vendor);
-  entry.vendor = vendorDetails;
+  var vendorDetails = fetcher.vendorDetails(entry.request.vendor);
+  _.extend(entry.vendor, vendorDetails);
   return entry;
 }
 
@@ -291,18 +298,21 @@ function isVendorCodeKnown (vendor) {
 
 
 function createPendingResponse (args) {
-  var response = _.extend(
-    {
-      status: "pending",
-      preConversionCurrency: null,
-      offers: {},
+  var response = {
+    status: "pending",
+    request: _.clone(args),
+    offers: {},
+    vendor: {
+      code: args.vendor,
       url: null,
-      retryDelay: config.retryDelayForPending,
+    },
+    meta: {
       timestamp: Math.floor(Date.now()/1000),
       ttl: 0,
+      retryDelay: config.retryDelayForPending,
+      preConversionCurrency: null,
     },
-    args
-  );
+  };
 
   response = addVendorPriceEndPointUrl(response);
   response = expandVendorDetails(response);
@@ -310,7 +320,7 @@ function createPendingResponse (args) {
   return response;
 }
 
-function createErrorResponse (args) {
+function createErrorFetchResponse (args) {
   var response = _.extend(
     {
       status: "error",
@@ -326,7 +336,6 @@ function createErrorResponse (args) {
 
   return response;
 }
-
 
 module.exports = {
   createPendingResponse: createPendingResponse,

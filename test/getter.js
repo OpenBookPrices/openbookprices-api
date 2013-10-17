@@ -97,21 +97,27 @@ describe("Getter", function () {
                 prices,
                 [
                   {
-                    isbn: "9780340831496",
-                    country: "GB",
-                    currency: "GBP",
-                    apiURL: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
-                    preConversionCurrency: null,
+                    status: "unfetched",
+                    request:{
+                      isbn: "9780340831496",
+                      country: "GB",
+                      currency: "GBP",
+                      vendor: "test-vendor-1",
+                      url: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
+                    },
+                    offers: {},
                     vendor: {
                       code: "test-vendor-1",
                       name: "Test Vendor 1",
                       homepage: "http://www.test-vendor-1.co.uk/",
+                      url: null,
                     },
-                    url: null,
-                    ttl: 0,
-                    timestamp: Date.now()/1000,
-                    status: "unfetched",
-                    retryDelay: config.retryDelayForUnfetched,
+                    meta: {
+                      timestamp: Date.now()/1000,
+                      ttl: 0,
+                      retryDelay: config.retryDelayForUnfetched,
+                      preConversionCurrency: null,
+                    },
                   }
                 ]
               );

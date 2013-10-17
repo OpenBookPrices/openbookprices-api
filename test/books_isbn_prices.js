@@ -186,7 +186,7 @@ describe("/v1/books/:isbn/prices", function () {
             request
               .get("/v1/books/9780340831496/prices/GB/GBP")
               .expect(200)
-              .expect("Cache-Control", helpers.cacheControl(expected.ttl))
+              .expect("Cache-Control", helpers.cacheControl(expected.meta.ttl))
               .expect([expected])
               .end(cb);
           }
@@ -216,8 +216,8 @@ describe("/v1/books/:isbn/prices", function () {
 
             // Copy the expected results and change to USD
             var expected = samples("getBookPricesForVendor-9780340831496");
-            expected.currency = "USD";
-            expected.preConversionCurrency = "GBP";
+            expected.request.currency = "USD";
+            expected.meta.preConversionCurrency = "GBP";
             expected.offers = {
               new: _.extend(
                 {},
@@ -225,8 +225,7 @@ describe("/v1/books/:isbn/prices", function () {
                 { price: 39.31, total: 39.31 }
               )
             };
-            expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
-
+            expected.request.url = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
 
             // Get the currency endpoint and check that cached values are now
             // included.
@@ -338,11 +337,9 @@ describe("/v1/books/:isbn/prices", function () {
 
         // cache is empty, run a scrape that times out
         function (cb) {
-          var expected = _.extend(
-            {},
-            samples("getBookPricesForVendor-9780340831496-pending"),
-            {timestamp: Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout}
-          );
+          var expected = samples("getBookPricesForVendor-9780340831496-pending");
+          expected.meta.timestamp = Math.floor(Date.now()/1000) + config.getBookPricesForVendorTimeout;
+
           request
             .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
             .expect(200)
@@ -358,7 +355,7 @@ describe("/v1/books/:isbn/prices", function () {
 
           var expectedContent = samples("getBookPricesForVendor-9780340831496");
 
-          var expectedMaxAge = Math.floor(expectedContent.timestamp + expectedContent.ttl - Date.now()/1000);
+          var expectedMaxAge = Math.floor(expectedContent.meta.timestamp + expectedContent.meta.ttl - Date.now()/1000);
 
           // Fire off another request that should get a completed scrape
           request
@@ -470,8 +467,8 @@ describe("/v1/books/:isbn/prices", function () {
 
       // Copy the expected results and change to USD
       var expected = samples("getBookPricesForVendor-9780340831496");
-      expected.currency = "USD";
-      expected.preConversionCurrency = "GBP";
+      expected.request.currency = "USD";
+      expected.meta.preConversionCurrency = "GBP";
       expected.offers = {
         new: _.extend(
           {},
@@ -479,7 +476,7 @@ describe("/v1/books/:isbn/prices", function () {
           { price: 39.31, total: 39.31 }
         )
       };
-      expected.apiURL = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
+      expected.request.url = config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/USD/test-vendor-1";
 
 
       request
