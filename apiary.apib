@@ -3,9 +3,9 @@ HOST: http://api.openbookprices.com/
 --- OpenBookPrices ---
 
 ---
-The OpenBookPrices API lets you get current prices from book vendors around the
-world, including shipping costs to your country and all converted into your
-currency.
+The [OpenBookPrices](http://www.openbookprices.com/) API lets you get current prices
+from book vendors around the world, including shipping costs to your country and all
+converted into your currency.
 ---
 
 -- Books and prices --
@@ -24,7 +24,7 @@ GET /v1/books/{isbn}/prices/{country}
 Redirecting to http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD
 
 
-Return immediately a list of all the venders who ship to `country` and the pricing details that are currently known.
+Return immediately a list of all the vendors who ship to `country` and the pricing details that are currently known.
 GET /v1/books/{isbn}/prices/{country}/{currency}
 < 200
 < Content-Type: application/json
