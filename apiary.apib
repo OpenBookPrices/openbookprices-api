@@ -8,7 +8,21 @@ from book vendors around the world, including shipping costs to your country and
 converted into your currency.
 ---
 
--- Books and prices --
+-- Book Details --
+
+Return very basic details about the book, currently just title and authors. If you want more details here please [create an issue](https://github.com/OpenBookPrices/openbookprices-api/issues) requesting them.
+GET /v1/books/{isbn}/details
+< 200
+< Content-Type: application/json
+{
+  "authors": [
+    "Henry David Thoreau"
+  ],
+  "title": "Walden",
+  "isbn": "9781619493919"
+}
+
+-- Book Prices --
 
 Determine the country (and hence currency) of the IP address making the request and then redirect to the specific url.
 GET /v1/books/{isbn}/prices
