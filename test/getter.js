@@ -18,6 +18,10 @@ describe("Getter", function () {
       null,
       samples("fetch-9780340831496")
     );
+    this.getDetailsStub = this.sandbox.stub(fetcher, "getDetails").yields(
+      null,
+      samples("getDetails-9780340831496")
+    );
   });
 
   it("should get book details, then cache", function (done) {
@@ -40,7 +44,7 @@ describe("Getter", function () {
 
         // Check that the scape only happened once
         function (cb) {
-          assert.equal(test.fetchStub.callCount, 1);
+          assert.equal(test.getDetailsStub.callCount, 1);
           cb();
         }
       ],

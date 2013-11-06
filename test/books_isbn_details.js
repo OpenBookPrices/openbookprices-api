@@ -19,8 +19,8 @@ describe("/v1/books/:isbn/details", function () {
   beforeEach(function () {
     // stub the fetch so that it does not do a scrape
     fetchStub = this.sandbox
-      .stub(fetcher, "fetch")
-      .yields(null, samples("fetch-9780340831496"));
+      .stub(fetcher, "getDetails")
+      .yields(null, samples("getDetails-9780340831496"));
   });
 
   it("should return correct details for valid isbn", function (done) {

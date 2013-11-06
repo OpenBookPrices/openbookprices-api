@@ -21,46 +21,22 @@ function getBookDetails (isbn, cb) {
     if ( reply ) {
       cb( null, JSON.parse(reply) );
     } else {
-      fetchFromScrapers(
-        {vendor: "foyles", isbn: isbn, country: "GB", currency: "GBP"},
-        function (err, results) {
+      fetcher.getDetails(
+        isbn,
+        function (err, details) {
           if (err) { return cb(err); }
-          var bookDetails = extractBookDetails(results);
-          cb(null, bookDetails);
-        }
-      );
-    }
-  });
-
-}
-
-function extractBookDetails (results) {
-  var data = {
-    isbn:    results.args.isbn,
-    authors: results.authors,
-    title:   results.title,
-  };
-  return data;
-}
-
-
-function cacheBookDetails (data) {
-  var isbn = data.args.isbn;
-  var cacheKey = bookDetailsCacheKey(isbn);
-
-  client.exists(cacheKey, function (err, exists) {
-    if (err) {
-      console.warn(err);
-    }
-    if (!err && !exists) {
-      var bookDetails = extractBookDetails(data);
-      client.set(
-        cacheKey,
-        JSON.stringify(bookDetails),
-        function (err) {
-          if (err) {
-            console.warn(err);
-          }
+          details.isbn = isbn;
+          client.setex(
+            cacheKey,
+            86400 * 28, // 4 weeks
+            JSON.stringify(details),
+            function (err) {
+              if (err) {
+                console.warn(err);
+              }
+            }
+          );
+          cb(null, details);
         }
       );
     }
@@ -76,8 +52,6 @@ function fetchFromScrapers (options, cb) {
       if (err) {
         return cb(err);
       }
-      cacheBookDetails(data);
-      // cacheBookPrices(data);
       cb(null, data);
     }
   );
