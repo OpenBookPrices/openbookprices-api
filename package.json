@@ -18,7 +18,7 @@
     "underscore": "~1.4.4",
     "redis": "~0.8.4",
     "hiredis": "~0.1.15",
-    "openbookprices-fetchers": "git://github.com/OpenBookPrices/openbookprices-fetchers.git#v0.0.2",
+    "openbookprices-fetchers": "git://github.com/OpenBookPrices/openbookprices-fetchers.git#v0.0.3",
     "country-data": "~0.0.5",
     "async": "~0.2.9",
     "money": "~0.1.3",
