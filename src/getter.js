@@ -136,7 +136,7 @@ function getBookPricesForVendor (args, cb) {
     result = convertCurrencyInBookPrices(result, args.currency);
 
     // add the vendor specific endpoint
-    result = addVendorPriceEndPointUrl(result);
+    result = addEndPointUrl(result);
 
     // Expand vendor into fuller details
     result = expandVendorDetails(result);
@@ -194,10 +194,10 @@ function convertCurrencyInBookPrices (result, currency) {
 }
 
 
-function addVendorPriceEndPointUrl (entry) {
+function addEndPointUrl (entry) {
   var base = config.api.protocol + "://" + config.api.hostport;
 
-  var path= [
+  var pathItems = [
     "",
     "v1",
     "books",
@@ -205,8 +205,13 @@ function addVendorPriceEndPointUrl (entry) {
     "prices",
     entry.request.country,
     entry.request.currency,
-    entry.request.vendor
-  ].join("/");
+  ];
+
+  if (entry.request.vendor) {
+    pathItems.push(entry.request.vendor);
+  }
+
+  var path = pathItems.join("/");
   entry.request.url = base + path;
   return entry;
 }
@@ -288,7 +293,7 @@ function createPendingResponse (args) {
     },
   };
 
-  response = addVendorPriceEndPointUrl(response);
+  response = addEndPointUrl(response);
   response = expandVendorDetails(response);
 
   return response;
@@ -318,6 +323,7 @@ module.exports = {
   getBookPricesForVendor: getBookPricesForVendor,
   doesVendorServeCountry: doesVendorServeCountry,
   isVendorCodeKnown: isVendorCodeKnown,
+  addEndPointUrl: addEndPointUrl,
   enterTestMode: function (cb) {
     client.select(15, function (err) {
       if (err) { return cb(err); }
