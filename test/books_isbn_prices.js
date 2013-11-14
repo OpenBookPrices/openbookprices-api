@@ -13,7 +13,7 @@ var assert  = require("assert"),
     config  = require("config");
 
 var testBaseUrl = config.api.protocol + "://" + config.api.hostport;
-
+var booksBaseURL = samples("booksBaseURL");
 request = request(apiApp());
 
 describe("/v1/books/:isbn/prices", function () {
@@ -163,7 +163,15 @@ describe("/v1/books/:isbn/prices", function () {
               .get("/v1/books/9780340831496/prices/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(config.minimumMaxAgeForPrices))
-              .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
+              .expect({
+                request: {
+                  isbn: "9780340831496",
+                  country: "GB",
+                  currency: "GBP",
+                  url: booksBaseURL + "9780340831496/prices/GB/GBP",
+                },
+                results: [samples("getBookPricesForVendor-9780340831496-unfetched")],
+              })
               .end(function (err) {
                 assert.ifError(err);
                 assert.equal(fetchStub.callCount, 0);
@@ -187,7 +195,15 @@ describe("/v1/books/:isbn/prices", function () {
               .get("/v1/books/9780340831496/prices/GB/GBP")
               .expect(200)
               .expect("Cache-Control", helpers.cacheControl(expected.meta.ttl))
-              .expect([expected])
+              .expect({
+                request: {
+                  isbn: "9780340831496",
+                  country: "GB",
+                  currency: "GBP",
+                  url: booksBaseURL + "9780340831496/prices/GB/GBP",
+                },
+                results: [expected]
+              })
               .end(cb);
           }
         ],
@@ -232,7 +248,15 @@ describe("/v1/books/:isbn/prices", function () {
             request
               .get("/v1/books/9780340831496/prices/GB/USD")
               .expect(200)
-              .expect([expected])
+              .expect({
+                request: {
+                  isbn: "9780340831496",
+                  country: "GB",
+                  currency: "USD",
+                  url: booksBaseURL + "9780340831496/prices/GB/USD",
+                },
+                results: [expected]
+              })
               .end(cb);
           }
         ],
@@ -523,7 +547,15 @@ describe("/v1/books/:isbn/prices", function () {
           request
             .get("/v1/books/9780340831496/prices/GB/GBP")
             .expect(200)
-            .expect([samples("getBookPricesForVendor-9780340831496-unfetched")])
+            .expect({
+              request: {
+                isbn: "9780340831496",
+                country: "GB",
+                currency: "GBP",
+                url: booksBaseURL + "9780340831496/prices/GB/GBP",
+              },
+              results: [samples("getBookPricesForVendor-9780340831496-unfetched")]
+            })
             .end(cb);
         },
         // request to scrape should return error response
@@ -539,7 +571,15 @@ describe("/v1/books/:isbn/prices", function () {
           request
             .get("/v1/books/9780340831496/prices/GB/GBP")
             .expect(200)
-            .expect([samples("getBookPricesForVendor-9780340831496-error")])
+            .expect({
+              request: {
+                isbn: "9780340831496",
+                country: "GB",
+                currency: "GBP",
+                url: booksBaseURL + "9780340831496/prices/GB/GBP",
+              },
+              results: [samples("getBookPricesForVendor-9780340831496-error")]
+            })
             .end(cb);
         },
 

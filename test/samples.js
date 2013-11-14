@@ -15,6 +15,8 @@ var booksBaseURL = config.api.protocol + "://" + config.api.hostport + "/v1/book
 
 var samples = {
 
+  booksBaseURL: booksBaseURL,
+
   zeroTime: zeroTime,
 
   "fetch-9780340831496": {

@@ -114,8 +114,18 @@ app.get(
 
         maxAge = _.max([maxAge, config.minimumMaxAgeForPrices]);
 
+        var response = {
+          request: {
+            isbn: req.isbn,
+            country: req.country.alpha2,
+            currency: req.currency.code,
+          },
+          results: vendorEntries
+        };
+        getter.addEndPointUrl(response);
+
         res.header( "Cache-Control", helpers.cacheControl(maxAge) );
-        res.jsonp( vendorEntries );
+        res.jsonp(response);
 
       }
     );
