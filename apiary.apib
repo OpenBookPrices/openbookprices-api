@@ -42,77 +42,85 @@ Return immediately a list of all the vendors who ship to `country` and the prici
 GET /v1/books/{isbn}/prices/{country}/{currency}
 < 200
 < Content-Type: application/json
-[
-  {
-    "status": "unfetched",
-    "request": {
-      "isbn": "9780340831496",
-      "country": "US",
-      "currency": "USD",
-      "vendor": "amazon_uk",
-      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
-    },
-    "offers": {},
-    "vendor": {
-      "code": "amazon_uk",
-      "name": "Amazon UK",
-      "homepage": "http://www.amazon.co.uk/"
-      "url": null
-    },
-    "meta": {
-      "timestamp": 1381517829,
-      "ttl": 0,
-      "retryDelay": 0.1,
-      "preConversionCurrency": null
-    }
+{
+  request: {
+    isbn: "9780340831496",
+    country: "GB",
+    currency: "GBP",
+    url: "http://api.openbookprices.com/v1/books/9780340831496/prices/GB/GBP",
   },
-  {
-    "status": "unfetched",
-    "request": {
-      "isbn": "9780340831496",
-      "country": "US",
-      "currency": "USD",
-      "vendor": "amazon_us",
-      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_us"
+  results: [
+    {
+      "status": "unfetched",
+      "request": {
+        "isbn": "9780340831496",
+        "country": "US",
+        "currency": "USD",
+        "vendor": "amazon_uk",
+        "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_uk"
+      },
+      "offers": {},
+      "vendor": {
+        "code": "amazon_uk",
+        "name": "Amazon UK",
+        "homepage": "http://www.amazon.co.uk/"
+        "url": null
+      },
+      "meta": {
+        "timestamp": 1381517829,
+        "ttl": 0,
+        "retryDelay": 0.1,
+        "preConversionCurrency": null
+      }
     },
-    offers: {},
-    "vendor": {
-      "code": "amazon_us",
-      "name": "Amazon USA",
-      "homepage": "http://www.amazon.com/",
-      "url:" null
+    {
+      "status": "unfetched",
+      "request": {
+        "isbn": "9780340831496",
+        "country": "US",
+        "currency": "USD",
+        "vendor": "amazon_us",
+        "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/amazon_us"
+      },
+      offers: {},
+      "vendor": {
+        "code": "amazon_us",
+        "name": "Amazon USA",
+        "homepage": "http://www.amazon.com/",
+        "url:" null
+      },
+      "meta": {
+        "timestamp": 1381517829,
+        "ttl": 0,
+        "retryDelay": 0.1,
+        "preConversionCurrency": null
+      }
     },
-    "meta": {
-      "timestamp": 1381517829,
-      "ttl": 0,
-      "retryDelay": 0.1,
-      "preConversionCurrency": null
+    {
+      "status": "unfetched",
+      "request": {
+        "isbn": "9780340831496",
+        "country": "US",
+        "currency": "USD",
+        "vendor": "foyles",
+        "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/foyles"
+      },
+      offers: {},
+      "vendor": {
+        "code": "foyles",
+        "name": "Foyles",
+        "homepage": "http://www.foyles.co.uk/",
+        "url": null,
+      },
+      "meta": {
+        "timestamp": 1381517829,
+        "ttl": 0,
+        "retryDelay": 0.1,
+        "preConversionCurrency": null
+      }
     }
-  },
-  {
-    "status": "unfetched",
-    "request": {
-      "isbn": "9780340831496",
-      "country": "US",
-      "currency": "USD",
-      "vendor": "foyles",
-      "url": "http://api.openbookprices.com/v1/books/9780340831496/prices/US/USD/foyles"
-    },
-    offers: {},
-    "vendor": {
-      "code": "foyles",
-      "name": "Foyles",
-      "homepage": "http://www.foyles.co.uk/",
-      "url": null,
-    },
-    "meta": {
-      "timestamp": 1381517829,
-      "ttl": 0,
-      "retryDelay": 0.1,
-      "preConversionCurrency": null
-    }
-  }
-]
+  ]
+}
 
 
 Return fresh details for the vendor. If needed this will initiate a fetch of the details so the response may block whilst this is happening.
