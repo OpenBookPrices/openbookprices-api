@@ -7,6 +7,9 @@ module.exports = {
   retryDelayForStale: 2,
   retryDelayForUnfetched: 0.1,
 
+  duplicateScrapeExpiry:  60  * 1000,
+  duplicateScrapeBackoff: 0.2 * 1000,
+
   ttlForError: 300,
 
   minimumMaxAgeForPrices: 30,

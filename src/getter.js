@@ -145,6 +145,7 @@ function getBookPricesForVendor (args, cb) {
   });
 
   var cacheKey = bookPricesCacheKey(scrapeArgs);
+  var dupCacheKey = "duplicate_scrape_detect-" + cacheKey;
 
   client.get(cacheKey, function (err, reply) {
     if ( reply ) {
@@ -158,15 +159,33 @@ function getBookPricesForVendor (args, cb) {
       return wrappedCB( null, emptyResponse);
 
     } else {
-      fetchFromScrapers(
-        scrapeArgs,
-        function (err, results) {
-          if (err) { return wrappedCB(err); }
-          var bookPrices = extractBookPrices(results);
-          cacheBookPrices(bookPrices);
-          return wrappedCB(null, bookPrices[scrapeArgs.country]);
+      // Need to fetch content from vendor so use duplicate scrape prevention
+      client.setnx(dupCacheKey, 1, function (err, okToScrape) {
+        if (okToScrape) {
+          client.expire(dupCacheKey, config.duplicateScrapeExpiry);
+          fetchFromScrapers(
+            scrapeArgs,
+            function (err, results) {
+              if (err) { return wrappedCB(err); }
+              var bookPrices = extractBookPrices(results);
+              cacheBookPrices(bookPrices);
+              client.del(dupCacheKey);
+              return wrappedCB(null, bookPrices[scrapeArgs.country]);
+            }
+          );
+        } else {
+          // delay and run later.
+          setTimeout(
+            function () {
+              getBookPricesForVendor (args, cb);
+            },
+            config.duplicateScrapeBackoff
+          );
+          return false;
         }
-      );
+
+      });
+
     }
   });
 }

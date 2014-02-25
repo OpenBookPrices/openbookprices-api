@@ -512,7 +512,46 @@ describe("/v1/books/:isbn/prices", function () {
 
     });
 
-    it.skip("should use some sort of locking to prevent multiple scrapes of the same book details");
+    it("should not issue duplicate scrapes", function (done) {
+      // if the api is asked to fetch the same details twice then only one
+      // request should be sent to the vendor's site. The requests should both
+      // block until there is something to return.
+
+      var clock = this.sandbox.clock;
+      var fetchStub = this.fetchStub;
+
+      // function to request the details. Will be called multiple times.
+      var getDetails = function (cb) {
+        request
+          .get("/v1/books/9780340831496/prices/GB/GBP/test-vendor-1")
+          .expect(200)
+          .expect(samples("getBookPricesForVendor-9780340831496"))
+          .end(
+            function (err) {
+              // console.log("request complete");
+
+              // Once a request is complete we can tick on to allow other
+              // scrapes to proceed.
+              clock.tick(config.duplicateScrapeBackoff);
+              cb(err);
+            }
+          );
+      };
+
+      async.parallel(
+        [
+          getDetails,
+          getDetails,
+          getDetails,
+        ],
+        function (err) {
+          assert.ifError(err);
+          assert.equal(fetchStub.callCount, 1);
+          done();
+        }
+      );
+
+    });
 
     it("should serve content-length", function (done) {
       request
