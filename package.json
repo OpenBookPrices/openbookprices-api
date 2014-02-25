@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "jshint": "~1.1.0",
-    "mocha": "~1.8.2",
+    "mocha": "~1.14.0",
     "sinon": "~1.6.0",
     "supertest": "~0.5.1"
   },
