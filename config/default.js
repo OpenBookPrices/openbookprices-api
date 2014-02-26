@@ -8,7 +8,7 @@ module.exports = {
   retryDelayForUnfetched: 0.1,
 
   duplicateScrapeExpiry:  60  * 1000,
-  duplicateScrapeBackoff: 0.2 * 1000,
+  duplicateScrapeBackoff: 1 * 1000,
 
   ttlForError: 300,
 
