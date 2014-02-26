@@ -5,7 +5,8 @@ var _       = require("underscore"),
     client  = require("./redis-client"),
     fetcher = require("openbookprices-fetchers"),
     config  = require("config"),
-    exchange = require("../src/exchange");
+    exchange = require("../src/exchange"),
+    logger = require("./logger.js");
 
 
 
@@ -46,6 +47,9 @@ function getBookDetails (isbn, cb) {
 
 
 function fetchFromScrapers (options, cb) {
+
+  logger.info(options, "Scraping content");
+
   fetcher.fetch(
     options,
     function (err, data) {
@@ -162,6 +166,7 @@ function getBookPricesForVendor (args, cb) {
       // Need to fetch content from vendor so use duplicate scrape prevention
       client.setnx(dupCacheKey, 1, function (err, okToScrape) {
         if (okToScrape) {
+          logger.debug("Setting scrape lock for %s", dupCacheKey);
           client.expire(dupCacheKey, config.duplicateScrapeExpiry);
           fetchFromScrapers(
             scrapeArgs,
@@ -169,6 +174,7 @@ function getBookPricesForVendor (args, cb) {
               if (err) { return wrappedCB(err); }
               var bookPrices = extractBookPrices(results);
               cacheBookPrices(bookPrices);
+              logger.debug("Clearing scrape lock for %s", dupCacheKey);
               client.del(dupCacheKey);
               return wrappedCB(null, bookPrices[scrapeArgs.country]);
             }

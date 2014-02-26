@@ -5,6 +5,7 @@ var sinon   = require("sinon"),
     path = require("path"),
     getter = require("../src/getter"),
     client = require("../src/redis-client"),
+    logger = require("../src/logger"),
     samples = require("./samples"),
     fetcher = require("openbookprices-fetchers"),
     exchange = require("../src/exchange");
@@ -17,6 +18,7 @@ process.env[envKey] = "testing";
 // and flushing it.
 beforeEach(function (done) {
   getter.enterTestMode(done);
+  logger.level("fatal");
 });
 
 // Create a fresh Sinon sandbox before every test
