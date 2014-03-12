@@ -48,7 +48,9 @@ var samples = {
             price: 25.55,
             shipping: 0,
             shippingNote: "Free second class delivery in the UK for orders over £10",
-            total: 25.55
+            total: 25.55,
+            condition: "new",
+            url: "http://www.test-vendor-1.co.uk/9780340831496",
           }
         },
         isbn: "9780340831496",
@@ -69,7 +71,9 @@ var samples = {
             price: 25.55,
             shipping: 5,
             shippingNote: "Air mail from UK: 4 - 14 days",
-            total: 30.55
+            total: 30.55,
+            condition: "new",
+            url: "http://www.test-vendor-1.co.uk/9780340831496",
           }
         },
         isbn: "9780340831496",
@@ -89,7 +93,9 @@ var samples = {
             price: 25.55,
             shipping: 7,
             shippingNote: "Air mail from UK: 4 - 14 days",
-            total: 32.55
+            total: 32.55,
+            condition: "new",
+            url: "http://www.test-vendor-1.co.uk/9780340831496",
           }
         },
         isbn: "9780340831496",
@@ -129,7 +135,9 @@ var samples = {
             price: 25.55,
             shipping: 8,
             shippingNote: "Air mail from UK: 7 - 21 days",
-            total: 33.55
+            total: 33.55,
+            condition: "new",
+            url: "http://www.test-vendor-1.co.uk/9780340831496",
           }
         },
         isbn: "9780340831496",
@@ -167,6 +175,8 @@ var samples = {
         shipping: 0,
         shippingNote: "Free second class delivery in the UK for orders over £10",
         total: 25.55,
+        condition: "new",
+        url: "http://www.test-vendor-1.co.uk/9780340831496",
       }
     },
     vendor: {
@@ -222,7 +232,9 @@ var samples = {
         price: 25.55,
         shipping: 0,
         shippingNote: "Free second class delivery in the UK for orders over £10",
-        total: 25.55
+        total: 25.55,
+        condition: "new",
+        url: "http://www.test-vendor-1.co.uk/9780340831496",
       }
     },
     vendor: {
