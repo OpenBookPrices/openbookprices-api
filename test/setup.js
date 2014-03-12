@@ -46,27 +46,27 @@ beforeEach(function () {
   // Stub the tester so that we only use our test vendors.
   sandbox
     .stub(fetcher, "allVendorCodes")
-    .returns(["test-vendor-1", "test-vendor-2"]);
+    .returns(["test_vendor_1", "test-vendor-2"]);
 
   // Stub the vendorDetails for our fake vendors.
   sandbox
     .stub(fetcher, "vendorDetails")
-    .withArgs("test-vendor-1").returns({
-      code: "test-vendor-1",
+    .withArgs("test_vendor_1").returns({
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
     });
 
-  // stub the country so that only test-vendor-1 is returned
+  // stub the country so that only test_vendor_1 is returned
   var vendorsForCountry = this.sandbox
     .stub(fetcher, "vendorsForCountry");
-  vendorsForCountry.withArgs("GB").returns(["test-vendor-1"]);
-  vendorsForCountry.withArgs("US").returns(["test-vendor-1"]);
+  vendorsForCountry.withArgs("GB").returns(["test_vendor_1"]);
+  vendorsForCountry.withArgs("US").returns(["test_vendor_1"]);
 
   // stub the currencies
   this.sandbox
     .stub(fetcher, "currencyForVendor")
-    .withArgs("test-vendor-1").returns(["GBP"]);
+    .withArgs("test_vendor_1").returns(["GBP"]);
 
   // stubs the exchange rates pathToLatestJSON to use the test file
   var initialJSON = path.join(config.pathToConfigFiles, "initial_exchange_rates.json");

@@ -73,7 +73,9 @@ exports.currencyCode = function (req, res, next) {
 
 
 exports.vendorCode = function (req, res, next) {
-  var code     = (req.params.vendorCode || "").toLowerCase();
+  var code = (req.params.vendorCode || "")
+    .toLowerCase()
+    .replace(/\W+/, "_");
 
   // if not valid, or not found then 404
   if (!getter.isVendorCodeKnown(code)) {

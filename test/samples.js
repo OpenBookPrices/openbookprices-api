@@ -25,7 +25,7 @@ var samples = {
       currency: "GBP",
       isbn: "9780340831496",
       vendor: {
-        code: "test-vendor-1",
+        code: "test_vendor_1",
         name: "Test Vendor 1",
         homepage: "http://www.test-vendor-1.co.uk/",
       }
@@ -56,7 +56,7 @@ var samples = {
         isbn: "9780340831496",
         ttl: 86400,
         url: "http://www.test-vendor-1.co.uk/9780340831496",
-        vendor: "test-vendor-1"
+        vendor: "test_vendor_1"
       },
       {
         countries: [
@@ -79,7 +79,7 @@ var samples = {
         isbn: "9780340831496",
         ttl: 86400,
         url: "http://www.test-vendor-1.co.uk/9780340831496",
-        vendor: "test-vendor-1"
+        vendor: "test_vendor_1"
       },
       {
         countries: [
@@ -101,7 +101,7 @@ var samples = {
         isbn: "9780340831496",
         ttl: 86400,
         url: "http://www.test-vendor-1.co.uk/9780340831496",
-        vendor: "test-vendor-1"
+        vendor: "test_vendor_1"
       },
       {
         countries: [
@@ -143,7 +143,7 @@ var samples = {
         isbn: "9780340831496",
         ttl: 86400,
         url: "http://www.test-vendor-1.co.uk/9780340831496",
-        vendor: "test-vendor-1"
+        vendor: "test_vendor_1"
       }
     ],
   },
@@ -165,8 +165,8 @@ var samples = {
       isbn: "9780340831496",
       country: "GB",
       currency: "GBP",
-      vendor: "test-vendor-1",
-      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+      vendor: "test_vendor_1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test_vendor_1",
     },
     offers: {
       new: {
@@ -180,7 +180,7 @@ var samples = {
       }
     },
     vendor: {
-      code: "test-vendor-1",
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
       url: "http://www.test-vendor-1.co.uk/9780340831496",
@@ -199,12 +199,12 @@ var samples = {
       isbn: "9780340831496",
       country: "GB",
       currency: "GBP",
-      vendor: "test-vendor-1",
-      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+      vendor: "test_vendor_1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test_vendor_1",
     },
     offers: {},
     vendor: {
-      code: "test-vendor-1",
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
       url: null,
@@ -223,8 +223,8 @@ var samples = {
       isbn: "9780340831496",
       country: "GB",
       currency: "GBP",
-      vendor: "test-vendor-1",
-      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+      vendor: "test_vendor_1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test_vendor_1",
     },
     offers: {
       new: {
@@ -238,7 +238,7 @@ var samples = {
       }
     },
     vendor: {
-      code: "test-vendor-1",
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
       url: "http://www.test-vendor-1.co.uk/9780340831496",
@@ -257,12 +257,12 @@ var samples = {
       isbn: "9780340831496",
       country: "GB",
       currency: "GBP",
-      vendor: "test-vendor-1",
-      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+      vendor: "test_vendor_1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test_vendor_1",
     },
     offers: {},
     vendor: {
-      code: "test-vendor-1",
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
       url: null,
@@ -281,12 +281,12 @@ var samples = {
       isbn: "9780340831496",
       country: "GB",
       currency: "GBP",
-      vendor: "test-vendor-1",
-      url: booksBaseURL + "9780340831496/prices/GB/GBP/test-vendor-1",
+      vendor: "test_vendor_1",
+      url: booksBaseURL + "9780340831496/prices/GB/GBP/test_vendor_1",
     },
     offers: {},
     vendor: {
-      code: "test-vendor-1",
+      code: "test_vendor_1",
       name: "Test Vendor 1",
       homepage: "http://www.test-vendor-1.co.uk/",
       url: null,

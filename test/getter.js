@@ -58,7 +58,7 @@ describe("Getter", function () {
 
     var runTests = function (cb) {
       getter.getBookPricesForVendor(
-        { isbn: "9780340831496", vendor: "test-vendor-1", country: "GB", currency: "GBP"},
+        { isbn: "9780340831496", vendor: "test_vendor_1", country: "GB", currency: "GBP"},
         function (err, details) {
           assert.ifError(err);
           assert.deepEqual(
@@ -106,12 +106,12 @@ describe("Getter", function () {
                       isbn: "9780340831496",
                       country: "GB",
                       currency: "GBP",
-                      vendor: "test-vendor-1",
-                      url: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test-vendor-1",
+                      vendor: "test_vendor_1",
+                      url: config.api.protocol + "://" + config.api.hostport + "/v1/books/9780340831496/prices/GB/GBP/test_vendor_1",
                     },
                     offers: {},
                     vendor: {
-                      code: "test-vendor-1",
+                      code: "test_vendor_1",
                       name: "Test Vendor 1",
                       homepage: "http://www.test-vendor-1.co.uk/",
                       url: null,
@@ -131,7 +131,7 @@ describe("Getter", function () {
         },
         function (cb) {
           getter.getBookPricesForVendor(
-            { isbn: "9780340831496", vendor: "test-vendor-1", country: "GB", currency: "GBP"},
+            { isbn: "9780340831496", vendor: "test_vendor_1", country: "GB", currency: "GBP"},
             function (err, details) {
               assert.ifError(err);
               assert.deepEqual(
