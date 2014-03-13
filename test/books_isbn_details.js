@@ -19,8 +19,10 @@ describe("/v1/books/:isbn/details", function () {
   beforeEach(function () {
     // stub the fetch so that it does not do a scrape
     fetchStub = this.sandbox
-      .stub(fetcher, "getDetails")
-      .yields(null, samples("getDetails-9780340831496"));
+      .stub(fetcher, "getDetails", function (isbn, cb) {
+        var details = samples("getDetails-" + isbn);
+        cb(null, details);
+      });
   });
 
   it("should return correct details for valid isbn", function (done) {
@@ -34,6 +36,35 @@ describe("/v1/books/:isbn/details", function () {
         .expect("Content-Type", "application/json; charset=utf-8")
         .expect("Cache-Control", helpers.cacheControl(86400))
         .expect(samples("getBookDetails-9780340831496"))
+        .end(cb);
+    };
+
+    async.series(
+      [
+        testRequest,
+        delay(50),
+        testRequest,
+      ],
+      function (err) {
+        assert(fetchStub.calledOnce);
+        done(err);
+      }
+    );
+
+  });
+
+  it("should return correct details for not found isbn", function (done) {
+
+    var delay = this.delay;
+
+    // This isbn not found on Amazon as it is a Nook eBook.
+    var testRequest = function (cb) {
+      request
+        .get("/v1/books/9781781100295/details")
+        .expect(404)
+        .expect("Content-Type", "application/json; charset=utf-8")
+        .expect("Cache-Control", helpers.cacheControl(86400))
+        .expect(samples("getBookDetails-9781781100295"))
         .end(cb);
     };
 

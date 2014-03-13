@@ -50,6 +50,11 @@ app.get("/:isbn/details", middleware.redirectToCanonicalURL(["isbn", "details"])
     function (err, data) {
       if (err) { return next(err); }
       res.set("Cache-Control", helpers.cacheControl(86400));
+      if (!data) {
+        // no data was found
+        data = { error: "No details could be found for " + isbn };
+        res.status(404);
+      }
       res.jsonp(data);
     }
   );

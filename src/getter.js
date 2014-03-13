@@ -26,10 +26,17 @@ function getBookDetails (isbn, cb) {
         isbn,
         function (err, details) {
           if (err) { return cb(err); }
-          details.isbn = isbn;
+
+          if (details) {
+            details.isbn = isbn;
+          }
+
+          var goodTTL = 86400 * 28; // 4 weeks
+          var badTTL  = 86400; // 1 day
+
           client.setex(
             cacheKey,
-            86400 * 28, // 4 weeks
+            details ? goodTTL : badTTL,
             JSON.stringify(details),
             function (err) {
               if (err) {

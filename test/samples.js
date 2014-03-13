@@ -153,10 +153,16 @@ var samples = {
     title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
   },
 
+  "getDetails-9781781100295": null,
+
   "getBookDetails-9780340831496": {
     isbn: "9780340831496",
     authors: [ "Harold McGee" ],
     title: "McGee on Food and Cooking: An Encyclopedia of Kitchen Science, History and Culture",
+  },
+
+  "getBookDetails-9781781100295": {
+    error: "No details could be found for 9781781100295",
   },
 
   "getBookPricesForVendor-9780340831496": {
