@@ -68,6 +68,33 @@ describe("/v1/country", function () {
         .end(done);
     });
 
+    it("IP address specified as parameter", function (done) {
+      request
+        .get("/v1/country/determineFromIPAddress?ip=217.64.234.65") // UK
+        .set("X-Forwarded-For", "217.70.184.1, 127.0.0.1") // French
+        .expect(200)
+        .expect("Cache-Control", "private, max-age=600")
+        .expect({
+          id: "GB",
+          code: "GB",
+          name: "United Kingdom",
+          currencies: [{code: "GBP", name: "Pound sterling"}],
+          ip: "217.64.234.65"
+        })
+        .end(done);
+    });
+
+    it("invalid IP address specified as parameter", function (done) {
+      request
+        .get("/v1/country/determineFromIPAddress?ip=foobar") // invalid
+        .set("X-Forwarded-For", "217.70.184.1, 127.0.0.1") // French
+        .expect(404)
+        .expect({
+          error: "'foobar' is not a valid IP address"
+        })
+        .end(done);
+    });
+
 
   });
 });

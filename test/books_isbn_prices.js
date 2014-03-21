@@ -47,6 +47,27 @@ describe("/v1/books/:isbn/prices", function () {
         .end(done);
     });
 
+    it("should redirect to .../GB/GBP (using ip parameter)", function (done) {
+      request
+        .get("/v1/books/9780340831496/prices?ip=217.64.234.65")
+        .set("X-Forwarded-For", "127.0.0.1")
+        .expect(302)
+        .expect("Cache-Control", "private, max-age=600")
+        .expect("Location", testBaseUrl + "/v1/books/9780340831496/prices/GB/GBP")
+        .end(done);
+    });
+
+    it("should 404 for invalid ip parameter", function (done) {
+      request
+        .get("/v1/books/9780340831496/prices?ip=123.456.789.012")
+        .set("X-Forwarded-For", "127.0.0.1")
+        .expect(404)
+        .expect({
+          error: "'123.456.789.012' is not a valid IP address"
+        })
+        .end(done);
+    });
+
     it("should use fallbacks when not able to geolocate", function (done) {
       request
         .get("/v1/books/9780340831496/prices")

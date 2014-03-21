@@ -3,11 +3,19 @@
 var geoip        = require("geoip-lite"),
     countryData  = require("country-data"),
     helpers      = require("./helpers"),
+    validator    = require("validator"),
     _            = require("underscore");
 
 exports.geolocateFromIP = function (req, res, next) {
 
-  var ip = req.ip;
+  var ip = req.param("ip") || req.ip;
+
+  // validate the IP address. If bad 404
+  if (!validator.isIP(ip)) {
+    res.status(404);
+    res.jsonp({error: "'" + ip + "' is not a valid IP address"});
+    return;
+  }
 
   var lookup = geoip.lookup(ip);
 
